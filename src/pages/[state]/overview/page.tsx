@@ -5,7 +5,7 @@ export default function Page() {
     const [, state_name] = useSelectedState()
 
     return (
-        <div>
+        <div className="flex-1">
             <h3>
                 You have selected to get a <b>breakdowns</b> of population
                 distribution, voter behavior, and other analysis in{" "}

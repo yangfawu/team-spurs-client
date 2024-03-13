@@ -14,6 +14,7 @@ export default defineConfig({
             "@/components": path.resolve(__dirname, "./src/components"),
             "@/constants": path.resolve(__dirname, "./src/constants"),
             "@/hooks": path.resolve(__dirname, "./src/hooks"),
+            "@/redux": path.resolve(__dirname, "./src/redux"),
         },
     },
 })
