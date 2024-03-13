@@ -1,7 +1,7 @@
 import type { Entries } from "type-fest"
 
 export const SUPPORTED_STATE_DIRECTORY = {
-    ny: "New York",
+    nj: "New Jersey",
     va: "Virginia",
 }
 Object.freeze(SUPPORTED_STATE_DIRECTORY)
