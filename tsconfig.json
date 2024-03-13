@@ -23,8 +23,10 @@
         /* Aliases */
         "baseUrl": ".",
         "paths": {
+            "@/assets/*": ["src/assets/*"],
             "@/components/*": ["src/components/*"],
-            "@/assets/*": ["src/assets/*"]
+            "@/constants/*": ["src/constants/*"],
+            "@/hooks/*": ["src/hooks/*"],
         }
     },
     "include": ["src"],
