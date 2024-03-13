@@ -1,12 +1,17 @@
+import { SUPPORTED_STATE_ENTRIES } from "@/constants/states"
+import { Link } from "react-router-dom"
+
 export default function Page() {
     return (
-        <>
-            <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
-                <div className="text-center">
-                    <h3 className="text-3xl font-bold">Vite + React</h3>
-                    <h4 className="text-xl italic">Home Page</h4>
-                </div>
-            </div>
-        </>
+        <div>
+            <h3>Select a State</h3>
+            <ol className="list-decimal list-inside">
+                {SUPPORTED_STATE_ENTRIES.map(([key, name]) => (
+                    <li key={key}>
+                        <Link to={key}>{name}</Link>
+                    </li>
+                ))}
+            </ol>
+        </div>
     )
 }
