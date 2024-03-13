@@ -5,7 +5,7 @@ export default function Page() {
     const [, state_name] = useSelectedState()
 
     return (
-        <div>
+        <div className="flex-1">
             <h3>
                 You have selected to view the <b>district plan</b> of{" "}
                 <b>{state_name}</b>

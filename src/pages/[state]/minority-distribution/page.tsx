@@ -5,7 +5,7 @@ export default function Page() {
     const [, state_name] = useSelectedState()
 
     return (
-        <div>
+        <div className="flex-1">
             <h3>
                 Visualize the <b>minority distribution</b> of different groups
                 in <b>{state_name}</b>
