@@ -62,6 +62,7 @@ const MyMenuItems = tw(Menu.Items)`
     bg-white
     border rounded-md
     divide-y
+    z-[500]
 `
 
 const Option = tw(Link)`
