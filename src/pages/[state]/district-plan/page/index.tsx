@@ -40,7 +40,7 @@ export default function Page() {
                 <PanelResizeHandle className="bg-gray-800 w-0.5" />
                 <Panel minSize={20} maxSize={40} collapsible>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.RIGHT}>
-                        <Panel minSize={25} collapsible defaultSize={50}>
+                        <Panel minSize={25} collapsible defaultSize={40}>
                             <PopulationModule />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
