@@ -17,7 +17,14 @@ export default function Layout() {
                 <div className="flex divide-black divide-x-2">
                     <NamedLogo />
                     <StateSelection value={state_code} getPath={v => `/${v}/minority-distribution/${group}`} />
-                    <ModeSelection value="minority-distribution" getPath={v => `/${state_code}/${v}/${group}`} />
+                    <ModeSelection
+                        value="minority-distribution"
+                        getPath={v =>
+                            v === "minority-distribution"
+                                ? `/${state_code}/minority-distribution/${group}`
+                                : `/${state_code}/${v}`
+                        }
+                    />
                     <GroupSelection value={group} getPath={v => `/${state_code}/minority-distribution/${v}`} />
                 </div>
                 <Outlet />
