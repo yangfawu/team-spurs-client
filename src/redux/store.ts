@@ -5,12 +5,14 @@ import { compareSlice } from "./compare.slice"
 import { districtPlanSlice } from "./district-plan.slice"
 import { minorityDistributionSlice } from "./minority-dsitribution.slice"
 import { overviewSlice } from "./overview.slice"
+import { countiesApiSlice } from "./counties-api-slice"
 
 const rootReducer = combineSlices(
     compareSlice,
     districtPlanSlice,
     minorityDistributionSlice,
     overviewSlice,
+    countiesApiSlice,
     /* insert more slices later */
 )
 
@@ -22,6 +24,8 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     const store = configureStore({
         reducer: rootReducer,
         preloadedState,
+        middleware: builder => builder()
+            .concat(countiesApiSlice.middleware),
     })
     setupListeners(store.dispatch)
     return store
