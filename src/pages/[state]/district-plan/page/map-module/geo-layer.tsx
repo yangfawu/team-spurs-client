@@ -1,36 +1,40 @@
 import useSelectedState from "@/hooks/use-selected-state"
 import { useGetCountiesQuery } from "@/redux/counties-api-slice"
 import {
-    LeafletMouseEventHandlerFn
+    FeatureGroup as LeafletFeatureGroup,
+    LeafletMouseEventHandlerFn,
 } from "leaflet"
-import { useMemo } from "react"
-import { GeoJSON, GeoJSONProps, LayerGroup } from "react-leaflet"
+import { RefObject, useMemo } from "react"
+import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
 
-export default function GeoLayer() {
+interface Props {
+    geoRef: RefObject<LeafletFeatureGroup>
+}
+export default function GeoLayer({ geoRef }: Props) {
     const [state_code] = useSelectedState()
     const { currentData, isSuccess } = useGetCountiesQuery(state_code)
 
     const click: LeafletMouseEventHandlerFn = useMemo(() => {
-        return e => {
-            const map = e.target._map
+        return ({ target }) => {
+            const map = target._map
             if (!map) return
-            const districtBounds = e.target.getBounds()
+
+            const districtBounds = target.getBounds()
             map.fitBounds(districtBounds)
+        }
+    }, [])
+
+    const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
+        return ({ properties: p }, layer) => {
+            const { DISTRICT } = p
+            layer.bindTooltip(`District ${DISTRICT}`, { sticky: true })
         }
     }, [])
 
     if (!isSuccess || !currentData?.features) return null
 
-    const onEachFeature: GeoJSONProps["onEachFeature"] = (
-        { properties: p },
-        layer,
-    ) => {
-        const { DISTRICT } = p
-        layer.bindTooltip(`District ${DISTRICT}`, { sticky: true })
-    }
-
     return (
-        <LayerGroup key={state_code}>
+        <FeatureGroup key={state_code} ref={geoRef}>
             {currentData.features.map((feature, i) => (
                 <GeoJSON
                     key={i}
@@ -39,6 +43,6 @@ export default function GeoLayer() {
                     eventHandlers={{ click }}
                 />
             ))}
-        </LayerGroup>
+        </FeatureGroup>
     )
 }
