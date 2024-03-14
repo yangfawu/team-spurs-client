@@ -11,8 +11,8 @@ export default function Layout() {
         <div className="h-full flex flex-col divide-black divide-y-2">
             <div className="flex divide-black divide-x-2">
                 <NamedLogo />
-                <StateSelection value={state_code} />
-                <ModeSelection value="ovr"/>
+                <StateSelection value={state_code} getPath={v => `/${v}/overview`} />
+                <ModeSelection value="overview" getPath={v => `/${state_code}/${v}`} />
             </div>
             <Outlet />
         </div>
