@@ -1,38 +1,19 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 
-export interface MinorityDistributionSliceState {
-    layout: Record<string, string>
-}
+export interface MinorityDistributionSliceState {}
 
-const initialState: MinorityDistributionSliceState = {
-    layout: {},
-}
-
-interface SaveLayoutPayload {
-    name: string
-    value: string
-}
+const initialState: MinorityDistributionSliceState = {}
 
 export const minorityDistributionSlice = createSlice({
     name: "minority-distribution",
     initialState,
-    reducers: create => ({
-        saveLayout: create.reducer(
-            (state, action: PayloadAction<SaveLayoutPayload>) => {
-                const { name, value } = action.payload
-                state.layout[name] = value
-            },
-        ),
-    }),
+    reducers: create => ({}),
     selectors: {
         selectApp: root => root,
-        selectLayout: root => root.layout,
+        // selectLayout: root => root.layout,
     },
 })
 
 export const {} = minorityDistributionSlice.actions
 
-export const { selectLayout } = minorityDistributionSlice.selectors
-
-// export const selectPanel = (id: string) =>
-//     createSelector([selectApp], root => root.panel_directory[id])
+export const { selectApp } = minorityDistributionSlice.selectors

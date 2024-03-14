@@ -22,7 +22,6 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     const store = configureStore({
         reducer: rootReducer,
         preloadedState,
-        // middleware: builder => builder().concat(countiesApiSlice.middleware),
     })
     setupListeners(store.dispatch)
     return store
