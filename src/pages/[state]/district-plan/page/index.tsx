@@ -3,6 +3,7 @@ import { Map } from "leaflet"
 import { useMemo, useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 import MapModule from "./map-module"
+import TableModule from "./table-module"
 
 export default function Page() {
     const mapRef = useRef<Map>(null)
@@ -47,9 +48,7 @@ export default function Page() {
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={10} collapsible>
-                            <div>
-                                <h3>Table goes here</h3>
-                            </div>
+                            <TableModule />
                         </Panel>
                     </PanelGroup>
                 </Panel>
