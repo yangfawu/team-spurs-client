@@ -1,18 +1,20 @@
 import GrayWorldTileLayer from "@/components/leaflet/gray-world-tile-layer"
 import { LEAFLET_COORDINATES } from "@/constants/states"
 import useSelectedState from "@/hooks/use-selected-state"
-import { LatLngExpression, Map } from "leaflet"
+import { FeatureGroup, LatLngExpression, Map } from "leaflet"
 import "leaflet/dist/leaflet.css"
-import { Ref, useMemo } from "react"
+import { RefObject, useMemo, useRef } from "react"
 import { MapContainer } from "react-leaflet"
 import GeoLayer from "./geo-layer"
 import RefocusButton from "./refocus-button"
 
 interface Props {
-    mapRef?: Ref<Map>
+    mapRef?: RefObject<Map>
 }
 export default function MapModule({ mapRef }: Props) {
     const [state_code] = useSelectedState()
+
+    const geoRef = useRef<FeatureGroup>(null)
 
     const [center, zoom] = useMemo(() => {
         const res = LEAFLET_COORDINATES.get(state_code)
@@ -32,8 +34,8 @@ export default function MapModule({ mapRef }: Props) {
             ref={mapRef}
         >
             <GrayWorldTileLayer />
-            <GeoLayer />
-            <RefocusButton />
+            <GeoLayer geoRef={geoRef} />
+            <RefocusButton geoRef={geoRef} />
         </MapContainer>
     )
 }

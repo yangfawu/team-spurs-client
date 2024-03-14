@@ -53,7 +53,7 @@ export default function Page() {
                     </PanelGroup>
                 </Panel>
                 <PanelResizeHandle className="bg-gray-800 w-0.5" />
-                <Panel minSize={10} collapsible>
+                <Panel minSize={20} maxSize={30} collapsible>
                     <div>
                         <h3>Charts goes here</h3>
                     </div>
