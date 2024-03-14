@@ -2,7 +2,9 @@ import { DistrictPlanLayout } from "@/constants/panel-layout"
 import { Map } from "leaflet"
 import { useMemo, useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import EnsembleModule from "./ensemble-module"
 import MapModule from "./map-module"
+import PopulationModule from "./population-module"
 import TableModule from "./table-module"
 
 export default function Page() {
@@ -23,27 +25,10 @@ export default function Page() {
 
     return (
         <div className="flex-1">
-            <PanelGroup
-                direction="horizontal"
-                autoSaveId={DistrictPlanLayout.ROOT}
-            >
-                <Panel
-                    minSize={10}
-                    defaultSize={70}
-                    collapsible
-                    onResize={updateMap}
-                >
-                    <PanelGroup
-                        direction="vertical"
-                        autoSaveId={DistrictPlanLayout.LEFT}
-                    >
-                        <Panel
-                            className="relative"
-                            minSize={10}
-                            collapsible
-                            defaultSize={80}
-                            onResize={updateMap}
-                        >
+            <PanelGroup direction="horizontal" autoSaveId={DistrictPlanLayout.ROOT}>
+                <Panel minSize={10} defaultSize={70} collapsible onResize={updateMap}>
+                    <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.LEFT}>
+                        <Panel className="relative" minSize={10} collapsible defaultSize={80} onResize={updateMap}>
                             <MapModule mapRef={mapRef} />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
@@ -53,10 +38,16 @@ export default function Page() {
                     </PanelGroup>
                 </Panel>
                 <PanelResizeHandle className="bg-gray-800 w-0.5" />
-                <Panel minSize={20} maxSize={30} collapsible>
-                    <div>
-                        <h3>Charts goes here</h3>
-                    </div>
+                <Panel minSize={20} maxSize={40} collapsible>
+                    <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.RIGHT}>
+                        <Panel minSize={25} collapsible defaultSize={50}>
+                            <PopulationModule />
+                        </Panel>
+                        <PanelResizeHandle className="bg-gray-800 h-0.5" />
+                        <Panel minSize={25} collapsible>
+                            <EnsembleModule />
+                        </Panel>
+                    </PanelGroup>
                 </Panel>
             </PanelGroup>
         </div>

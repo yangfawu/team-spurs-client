@@ -11,7 +11,7 @@ export default function Page() {
         <div className="h-full flex flex-col divide-black divide-y-2">
             <div className="flex divide-black divide-x-2">
                 <NamedLogo />
-                <StateSelection value={state_code} />
+                <StateSelection value={state_code} getPath={v => `/${v}`} />
             </div>
             <div className="flex-1 flex items-center justify-center p-4">
                 <div className="space-y-8">

@@ -1,38 +1,24 @@
+import { ETHNICITIES } from "@/constants/ethnicities"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
-import { Fragment } from "react"
+import { Fragment, useMemo } from "react"
 import { Link } from "react-router-dom"
 import tw from "tailwind-styled-components"
 
-const SUPPORTED_MODES = {
-    "district-plan": {
-        name: "District Plan",
-        link: "district-plan",
-    },
-    "minority-distribution": {
-        name: "Minority Distribution",
-        link: "minority-distribution",
-    },
-    "overview": {
-        name: "Overview",
-        link: "overview",
-    },
-    "compare": {
-        name: "Compare",
-        link: "compare",
-    },
-}
-
 interface Props {
-    value: keyof typeof SUPPORTED_MODES
+    value: string
     getPath: (value: string) => string
 }
-export default function ModeSelection({ value, getPath }: Props) {
+export default function GroupSelection({ value, getPath }: Props) {
+    const group = useMemo(() => {
+        return ETHNICITIES.find(e => e.key === value)
+    }, [ETHNICITIES, value])
+
     return (
         <div className="flex items-center justify-center p-2">
             <Menu as="div" className="relative inline-block text-left">
                 <MyMenuButton>
-                    {SUPPORTED_MODES[value].name}
+                    {group?.name || "Unknown"}
                     <ChevronDownIcon className="h-5 w-5" />
                 </MyMenuButton>
                 <Transition
@@ -44,15 +30,11 @@ export default function ModeSelection({ value, getPath }: Props) {
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <MyMenuItems>
-                        {Object.entries(SUPPORTED_MODES).map(([key, data]) => (
+                        {ETHNICITIES.map(({ key, name }) => (
                             <Menu.Item key={key} as={Fragment}>
                                 {({ active }) => (
-                                    <Option
-                                        className={`${active && "bg-gray-300"}`}
-                                        to={getPath(data.link)}
-                                        relative="path"
-                                    >
-                                        {data.name}
+                                    <Option className={`${active && "bg-gray-300"}`} to={getPath(key)} relative="path">
+                                        {name}
                                     </Option>
                                 )}
                             </Menu.Item>

@@ -11,8 +11,9 @@ import tw from "tailwind-styled-components"
 
 interface Props {
     value: SupportedStateKey
+    getPath: (value: string) => string
 }
-export default function StateSelection({ value }: Props) {
+export default function StateSelection({ value, getPath }: Props) {
     return (
         <div className="flex items-center justify-center p-2">
             <Menu as="div" className="relative inline-block text-left">
@@ -34,7 +35,7 @@ export default function StateSelection({ value }: Props) {
                                 {({ active }) => (
                                     <Option
                                         className={`${active && "bg-gray-300"}`}
-                                        to={`/${key}`}
+                                        to={getPath(key)}
                                     >
                                         {name}
                                     </Option>

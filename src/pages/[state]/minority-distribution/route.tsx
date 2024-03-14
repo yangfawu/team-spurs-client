@@ -1,12 +1,11 @@
-import { lazy } from "react"
-import { Route } from "react-router-dom"
-
-const Layout = lazy(() => import("./layout"))
-const Page = lazy(() => import("./page"))
+import { ETHNICITIES } from "@/constants/ethnicities"
+import { Navigate, Route } from "react-router-dom"
+import GROUP_ROUTER from "./[group]/route"
 
 const MINORITY_DISTRIBUTION_ROUTER = (
-    <Route path="minority-distribution" Component={Layout}>
-        <Route index Component={Page} />
+    <Route path="minority-distribution">
+        <Route index element={<Navigate to={ETHNICITIES[0].key} replace />} />
+        {GROUP_ROUTER}
     </Route>
 )
 
