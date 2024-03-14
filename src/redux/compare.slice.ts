@@ -1,38 +1,19 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 
-export interface CompareSliceState {
-    layout: Record<string, string>
-}
+export interface CompareSliceState {}
 
-const initialState: CompareSliceState = {
-    layout: {},
-}
-
-interface SaveLayoutPayload {
-    name: string
-    value: string
-}
+const initialState: CompareSliceState = {}
 
 export const compareSlice = createSlice({
-    name: "district-plan",
+    name: "compare",
     initialState,
-    reducers: create => ({
-        saveLayout: create.reducer(
-            (state, action: PayloadAction<SaveLayoutPayload>) => {
-                const { name, value } = action.payload
-                state.layout[name] = value
-            },
-        ),
-    }),
+    reducers: create => ({}),
     selectors: {
         selectApp: root => root,
-        selectLayout: root => root.layout,
+        // selectLayout: root => root.layout,
     },
 })
 
 export const {} = compareSlice.actions
 
-export const { selectLayout } = compareSlice.selectors
-
-// export const selectPanel = (id: string) =>
-//     createSelector([selectApp], root => root.panel_directory[id])
+export const { selectApp } = compareSlice.selectors
