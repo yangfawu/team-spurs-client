@@ -9,7 +9,7 @@ import GeoLayer from "./geo-layer"
 import RefocusButton from "./refocus-button"
 
 interface Props {
-    mapRef?: RefObject<Map>
+    mapRef: RefObject<Map>
 }
 export default function MapModule({ mapRef }: Props) {
     const [state_code] = useSelectedState()
