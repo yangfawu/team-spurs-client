@@ -6,6 +6,7 @@ import EnsembleModule from "./ensemble-module"
 import MapModule from "./map-module"
 import PopulationModule from "./population-module"
 import TableModule from "./table-module"
+import DistrictModule from "./district-module"
 
 export default function Page() {
     const mapRef = useRef<Map>(null)
@@ -40,8 +41,12 @@ export default function Page() {
                 <PanelResizeHandle className="bg-gray-800 w-0.5" />
                 <Panel minSize={20} maxSize={40} collapsible>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.RIGHT}>
-                        <Panel minSize={25} maxSize={40} collapsible defaultSize={40}>
+                        <Panel minSize={25} collapsible defaultSize={33}>
                             <PopulationModule />
+                        </Panel>
+                        <PanelResizeHandle className="bg-gray-800 h-0.5" />
+                        <Panel minSize={25} collapsible defaultSize={33}>
+                            <DistrictModule />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible>
