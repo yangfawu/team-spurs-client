@@ -3,6 +3,7 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { compareSlice } from "./compare.slice"
 import { districtPlanSlice } from "./district-plan.slice"
+import { mapApi } from "./map.api"
 import { minorityDistributionSlice } from "./minority-dsitribution.slice"
 import { overviewSlice } from "./overview.slice"
 import { countiesApiSlice } from "./counties-api-slice"
@@ -12,6 +13,7 @@ const rootReducer = combineSlices(
     districtPlanSlice,
     minorityDistributionSlice,
     overviewSlice,
+    mapApi,
     countiesApiSlice,
     /* insert more slices later */
 )
@@ -25,6 +27,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         reducer: rootReducer,
         preloadedState,
         middleware: builder => builder()
+            .concat(mapApi.middleware)
             .concat(countiesApiSlice.middleware),
     })
     setupListeners(store.dispatch)

@@ -2,6 +2,7 @@ import useSelectedState from "@/hooks/use-selected-state"
 import { useGetCountiesQuery } from "@/redux/counties-api-slice"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { useGetRegularDistrictMapQuery } from "@/redux/map.api"
 import { FeatureGroup as LeafletFeatureGroup } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -14,7 +15,7 @@ export default function GeoLayer({ geoRef }: Props) {
     const chosenDistrict = useAppSelector(selectDistrict)
 
     const [state_code] = useSelectedState()
-    const { currentData, isSuccess } = useGetCountiesQuery(state_code)
+    const { currentData, isSuccess } = useGetRegularDistrictMapQuery(state_code)
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties: p }, layer) => {
