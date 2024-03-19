@@ -1,5 +1,4 @@
 import useSelectedState from "@/hooks/use-selected-state"
-import { useGetCountiesQuery } from "@/redux/counties-api-slice"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { useGetRegularDistrictMapQuery } from "@/redux/map.api"
