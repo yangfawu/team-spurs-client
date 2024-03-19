@@ -2,10 +2,11 @@ import { DistrictPlanLayout } from "@/constants/panel-layout"
 import { Map } from "leaflet"
 import { useMemo, useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import DistrictModule from "./district-module"
+import LegendModule from "./legend-module"
 import MapModule from "./map-module"
 import PopulationModule from "./population-module"
 import TableModule from "./table-module"
-import DistrictModule from "./district-module"
 
 export default function Page() {
     const mapRef = useRef<Map>(null)
@@ -33,13 +34,17 @@ export default function Page() {
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible>
-                            <TableModule mapRef={mapRef}/>
+                            <TableModule mapRef={mapRef} />
                         </Panel>
                     </PanelGroup>
                 </Panel>
                 <PanelResizeHandle className="bg-gray-800 w-0.5" />
                 <Panel minSize={20} maxSize={40} collapsible>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.RIGHT}>
+                        <Panel minSize={10} collapsible defaultSize={20}>
+                            <LegendModule />
+                        </Panel>
+                        <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible defaultSize={50}>
                             <PopulationModule />
                         </Panel>
