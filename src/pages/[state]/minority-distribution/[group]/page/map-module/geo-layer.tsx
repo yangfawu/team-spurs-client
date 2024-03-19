@@ -70,7 +70,7 @@ export default function GeoLayer({ geoRef }: Props) {
             const num = count - min
             const den = max - min
             const frac = num / den
-            const grade = Math.floor(frac * (255 - 50)) + 50
+            const grade = 255 - Math.floor(frac * (255 - 50)) + 50
             return { 
                 fillColor: `rgb(222, ${grade}, ${grade})`, 
                 fillOpacity: 1
