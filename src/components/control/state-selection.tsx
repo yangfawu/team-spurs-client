@@ -1,8 +1,4 @@
-import {
-    SUPPORTED_STATE_DIRECTORY,
-    SUPPORTED_STATE_ENTRIES,
-    SupportedStateKey,
-} from "@/constants/states"
+import { SUPPORTED_STATE_DIRECTORY, SUPPORTED_STATE_ENTRIES, SupportedStateKey } from "@/constants/states"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Fragment } from "react"
@@ -33,12 +29,20 @@ export default function StateSelection({ value, getPath }: Props) {
                         {SUPPORTED_STATE_ENTRIES.map(([key, name]) => (
                             <Menu.Item key={key} as={Fragment}>
                                 {({ active }) => (
-                                    <Option
+                                    // <Option
+                                    //     className={`${active && "bg-gray-300"}`}
+                                    //     to={getPath(key)}
+                                    // >
+                                    //     {name}
+                                    // </Option>
+                                    <AltOption
                                         className={`${active && "bg-gray-300"}`}
-                                        to={getPath(key)}
+                                        onClick={() => {
+                                            window.location.href = getPath(key)
+                                        }}
                                     >
                                         {name}
-                                    </Option>
+                                    </AltOption>
                                 )}
                             </Menu.Item>
                         ))}
@@ -67,6 +71,18 @@ const MyMenuItems = tw(Menu.Items)`
 `
 
 const Option = tw(Link)`
+    block
+    px-2 py-1
+    text-md
+    transition-colors
+    active:bg-gray-600
+    first:rounded-tl-sm
+    first:rounded-tr-sm
+    last:rounded-bl-sm
+    last:rounded-br-sm
+`
+
+const AltOption = tw.div`
     block
     px-2 py-1
     text-md
