@@ -1,4 +1,8 @@
-import { ETHNICITIES } from "@/constants/ethnicities"
+import {
+    SUPPORTED_ETHNICITY_DIRECTORY,
+    SUPPORTED_ETHNICITY_ENTRIES,
+    SupportedEthnicityKey,
+} from "@/constants/ethnicities"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Fragment, useMemo } from "react"
@@ -6,19 +10,19 @@ import { Link } from "react-router-dom"
 import tw from "tailwind-styled-components"
 
 interface Props {
-    value: string
+    value: SupportedEthnicityKey
     getPath: (value: string) => string
 }
 export default function GroupSelection({ value, getPath }: Props) {
     const group = useMemo(() => {
-        return ETHNICITIES.find(e => e.key === value)
-    }, [ETHNICITIES, value])
+        return SUPPORTED_ETHNICITY_DIRECTORY[value] || "Unknown"
+    }, [SUPPORTED_ETHNICITY_DIRECTORY, value])
 
     return (
         <div className="flex items-center justify-center p-2">
             <Menu as="div" className="relative inline-block text-left">
                 <MyMenuButton>
-                    {group?.name || "Unknown"}
+                    {group || "Unknown"}
                     <ChevronDownIcon className="h-5 w-5" />
                 </MyMenuButton>
                 <Transition
@@ -30,7 +34,7 @@ export default function GroupSelection({ value, getPath }: Props) {
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <MyMenuItems>
-                        {ETHNICITIES.map(({ key, name }) => (
+                        {SUPPORTED_ETHNICITY_ENTRIES.map(([key, name]) => (
                             <Menu.Item key={key} as={Fragment}>
                                 {({ active }) => (
                                     <Option className={`${active && "bg-gray-300"}`} to={getPath(key)} relative="path">

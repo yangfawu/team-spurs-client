@@ -1,21 +1,27 @@
-import { ETHNICITIES } from "@/constants/ethnicities"
+import {
+    SUPPORTED_ETHNICITY_DIRECTORY,
+    SUPPORTED_ETHNICITY_ENTRIES,
+    SupportedEthnicityKey,
+} from "@/constants/ethnicities"
 import { Listbox, Transition } from "@headlessui/react"
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid"
-import { Fragment } from "react"
+import { Fragment, useMemo } from "react"
 import tw from "tailwind-styled-components"
 
-type Group = (typeof ETHNICITIES)[number]
-
 interface Props {
-    group: Group
-    setGroup: (newGroup: Group) => any
+    group: SupportedEthnicityKey
+    setGroup: (newGroup: SupportedEthnicityKey) => any
 }
 export default function SelectGroup({ group, setGroup }: Props) {
+    const selectedName = useMemo(() => {
+        return SUPPORTED_ETHNICITY_DIRECTORY[group] || "Unknown"
+    }, [group])
+
     return (
         <Listbox value={group} onChange={setGroup}>
             <div className="relative flex-1">
                 <MySelectButton>
-                    <span className="block truncate">{group.name}</span>
+                    <span className="block truncate">{selectedName}</span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
                     </span>
@@ -27,12 +33,12 @@ export default function SelectGroup({ group, setGroup }: Props) {
                     leaveTo="opacity-0"
                 >
                     <MySelectOptions>
-                        {ETHNICITIES.map(g => (
-                            <MySelectOption key={g.key} value={g}>
+                        {SUPPORTED_ETHNICITY_ENTRIES.map(([key, name]) => (
+                            <MySelectOption key={key} value={key}>
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                                     <CheckIcon className="h-5 w-5 hidden ui-selected:block" />
                                 </span>
-                                {g.name}
+                                {name}
                             </MySelectOption>
                         ))}
                     </MySelectOptions>
