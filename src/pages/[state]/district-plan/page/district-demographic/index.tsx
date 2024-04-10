@@ -1,0 +1,32 @@
+import { selectApp } from "@/redux/district-plan.slice"
+import { useAppSelector } from "@/redux/hooks"
+import tw from "tailwind-styled-components"
+import Chart from "./chart"
+
+export default function DistrictModule() {
+    const { district } = useAppSelector(selectApp)
+
+    if (district === undefined) {
+        return (
+            <Container>
+                <h3 className="text-lg font-bold">District Demographic</h3>
+                <div className="flex-1 bg-gray-300 p-4 flex justify-center items-center">
+                    <p className="text-center">Select a district to see data.</p>
+                </div>
+            </Container>
+        )
+    }
+
+    return (
+        <Container>
+            <h3 className="text-lg font-bold">District {district} Demographic</h3>
+            <Chart district={district} />
+        </Container>
+    )
+}
+
+const Container = tw.div`
+    flex flex-col gap-2
+    w-full h-full p-2 
+    overflow-auto
+`

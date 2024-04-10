@@ -1,8 +1,8 @@
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { fetchRegularDistrictMap } from "@/redux/map.api"
-import { FeatureGroup as LeafletFeatureGroup } from "leaflet"
+import { RegularDistrictGeoFeature, fetchRegularDistrictMap } from "@/redux/map.api"
+import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
 
@@ -11,48 +11,56 @@ interface Props {
 }
 export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
-    const chosenDistrict = useAppSelector(selectDistrict)
 
     const state = useSelectedState()
     const { currentData, isSuccess } = fetchRegularDistrictMap(state)
 
+    const district = useAppSelector(selectDistrict)
+
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
-        return ({ properties: p }, layer) => {
-            const { DISTRICT } = p
-            layer.bindTooltip(`District ${DISTRICT}`, { sticky: true })
+        return ({ properties }: RegularDistrictGeoFeature, layer) => {
+            const { district: $d } = properties
+            layer.bindTooltip(`District ${$d}`, { sticky: true })
+
             layer.on("click", ({ target }) => {
-                const map = target._map
+                // make the map zoom to it
+                const map = target._map as Map
                 if (map) {
                     map.fitBounds(target.getBounds())
                 }
 
-                dispatch(showcaseDistrict(Number(DISTRICT) || undefined))
+                // notify the store that this district will be showcased
+                dispatch(showcaseDistrict($d))
             })
         }
-    }, [chosenDistrict])
+    }, [district])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         return feature => {
-            if (!feature?.properties) {
-                return { fillColor: "#3388ff" }
+            if (!feature) {
+                return { fillColor: Fill.REGULAR }
             }
 
-            const { DISTRICT } = feature?.properties
-            if (chosenDistrict === Number(DISTRICT)) {
-                return { fillColor: "black" }
-            }
-
-            return { fillColor: "#3388ff" }
+            const {
+                properties: { district: $d },
+            } = feature as RegularDistrictGeoFeature
+            const fillColor = district === $d ? Fill.SELECTED : Fill.REGULAR
+            return { fillColor }
         }
-    }, [chosenDistrict])
+    }, [district])
 
-    if (!isSuccess || !currentData?.features) return null
+    if (!isSuccess || !currentData) return null
 
     return (
         <FeatureGroup key={state} ref={geoRef}>
-            {currentData.features.map((feature, i) => (
+            {currentData.map((feature, i) => (
                 <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
     )
+}
+
+enum Fill {
+    REGULAR = "#3388ff",
+    SELECTED = "black",
 }

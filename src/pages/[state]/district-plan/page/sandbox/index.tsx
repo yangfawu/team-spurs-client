@@ -11,7 +11,7 @@ import RefocusButton from "./refocus-button"
 interface Props {
     mapRef: RefObject<Map>
 }
-export default function MapModule({ mapRef }: Props) {
+export default function Sandbox({ mapRef }: Props) {
     const state = useSelectedState()
     const geoRef = useRef<FeatureGroup>(null)
 

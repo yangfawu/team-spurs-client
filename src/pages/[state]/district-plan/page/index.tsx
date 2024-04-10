@@ -2,11 +2,11 @@ import { DistrictPlanLayout } from "@/constants/panel-layout"
 import { Map } from "leaflet"
 import { useMemo, useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
-import EnsembleModule from "./ensemble-module"
-import MapModule from "./map-module"
-import PopulationModule from "./population-module"
-import TableModule from "./table-module"
-import DistrictModule from "./district-module"
+import Ensemble from "./ensemble"
+import Sandbox from "./sandbox"
+import StateDemographic from "./state-demographic"
+import Representatives from "./representatives"
+import DistrictModule from "./district-demographic"
 
 export default function Page() {
     const mapRef = useRef<Map>(null)
@@ -30,11 +30,11 @@ export default function Page() {
                 <Panel minSize={20} defaultSize={70} collapsible onResize={updateMap}>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.LEFT}>
                         <Panel className="relative" minSize={25} collapsible defaultSize={80} onResize={updateMap}>
-                            <MapModule mapRef={mapRef} />
+                            <Sandbox mapRef={mapRef} />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible>
-                            <TableModule mapRef={mapRef}/>
+                            <Representatives mapRef={mapRef}/>
                         </Panel>
                     </PanelGroup>
                 </Panel>
@@ -42,7 +42,7 @@ export default function Page() {
                 <Panel minSize={20} maxSize={40} collapsible>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.RIGHT}>
                         <Panel minSize={25} collapsible defaultSize={33}>
-                            <PopulationModule />
+                            <StateDemographic />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible defaultSize={33}>
@@ -50,7 +50,7 @@ export default function Page() {
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible>
-                            <EnsembleModule />
+                            <Ensemble />
                         </Panel>
                     </PanelGroup>
                 </Panel>

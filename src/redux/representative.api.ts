@@ -1,3 +1,4 @@
+import Group from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
@@ -7,7 +8,7 @@ export interface Representative {
     last_name: string
     district: number
     party: Party
-    race: string[]
+    race: Group[]
     image: string
     state: State
 }
