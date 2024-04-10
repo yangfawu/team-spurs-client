@@ -2,7 +2,7 @@ import useSelectedGroup from "@/hooks/use-selected-group"
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { useGetHeatDistrictMapQuery } from "@/redux/map.api"
+import { fetchHeatMap } from "@/redux/map.api"
 import { FeatureGroup as LeafletFeatureGroup } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -16,7 +16,7 @@ export default function GeoLayer({ geoRef }: Props) {
 
     const state = useSelectedState()
     const group = useSelectedGroup()
-    const { currentData, isSuccess } = useGetHeatDistrictMapQuery({
+    const { currentData, isSuccess } = fetchHeatMap({
         group,
         state,
     })
