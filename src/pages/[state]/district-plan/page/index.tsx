@@ -1,5 +1,4 @@
 import Representatives from "@/components/module/representatives"
-import StateDemographic from "@/components/module/state-demographic"
 import { DistrictPlanLayout } from "@/constants/panel-layout"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { Map } from "leaflet"
@@ -8,6 +7,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 import DistrictDemographic from "./district-demographic"
 import Ensemble from "./ensemble"
 import Sandbox from "./sandbox"
+import StateDemographic from "./state-demographic"
 
 export default function Page() {
     const mapRef = useRef<Map>(null)

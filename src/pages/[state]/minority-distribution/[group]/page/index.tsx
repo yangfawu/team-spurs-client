@@ -1,5 +1,5 @@
 import Representatives from "@/components/module/representatives"
-import StateDemographic from "@/components/module/state-demographic"
+import StateDemographic from "./state-demographic"
 import { DistrictPlanLayout } from "@/constants/panel-layout"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { Map } from "leaflet"
