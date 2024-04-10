@@ -1,5 +1,5 @@
-import { SupportedEthnicityKey } from "@/constants/ethnicities"
-import { SupportedStateKey } from "@/constants/states"
+import Group from "@/constants/group"
+import State from "@/constants/state"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 interface RegularDistrictMapResponse {
@@ -8,8 +8,8 @@ interface RegularDistrictMapResponse {
 }
 
 interface HeatDistrictMapPayload {
-    state: SupportedStateKey
-    group: SupportedEthnicityKey
+    state: State
+    group: Group
 }
 
 interface HeatDistrictMapResponse {
@@ -30,7 +30,7 @@ export const mapApi = createApi({
     reducerPath: "map-api",
     tagTypes: ["Regular", "Heat"],
     endpoints: build => ({
-        getRegularDistrictMap: build.query<RegularDistrictMapResponse, SupportedStateKey>({
+        getRegularDistrictMap: build.query<RegularDistrictMapResponse, State>({
             query: state => `/regular/${state}`,
             providesTags: (_, __, id) => [{ type: "Regular", id }],
         }),

@@ -1,13 +1,13 @@
-import useSelectedMinority from "@/hooks/use-selected-minority"
+import useSelectedGroup from "@/hooks/use-selected-group"
 import useSelectedState from "@/hooks/use-selected-state"
 import { useGetHeatDistrictMapQuery } from "@/redux/map.api"
 
 export default function LegendModule() {
-    const [state_code] = useSelectedState()
-    const group = useSelectedMinority()
+    const state = useSelectedState()
+    const group = useSelectedGroup()
     const { currentData, isSuccess, isFetching } = useGetHeatDistrictMapQuery({
         group,
-        state: state_code,
+        state,
     })
 
     if (isFetching) {

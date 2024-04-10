@@ -1,5 +1,5 @@
 import NamedLogo from "@/components/attribution/named-logo"
-import { SUPPORTED_STATE_ENTRIES } from "@/constants/states"
+import { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
 import { Link } from "react-router-dom"
 import tw from "tailwind-styled-components"
 
@@ -13,11 +13,9 @@ export default function Page() {
                 <div className="space-y-8">
                     <h3 className="text-3xl text-center">Select a State</h3>
                     <ol className="flex gap-8 flex-wrap">
-                        {SUPPORTED_STATE_ENTRIES.map(([key, name]) => (
-                            <li key={key}>
-                                <Option to={key} className="">
-                                    {name}
-                                </Option>
+                        {SUPPORTED_STATES.map($s => (
+                            <li key={$s}>
+                                <Option to={$s}>{STATE_TO_NAME[$s]}</Option>
                             </li>
                         ))}
                     </ol>

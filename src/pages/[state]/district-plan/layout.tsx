@@ -1,18 +1,19 @@
 import NamedLogo from "@/components/attribution/named-logo"
 import ModeSelection from "@/components/control/mode-selection"
 import StateSelection from "@/components/control/state-selection"
+import Mode from "@/constants/mode"
 import useSelectedState from "@/hooks/use-selected-state"
 import { Outlet } from "react-router-dom"
 
 export default function Layout() {
-    const [state_code] = useSelectedState()
+    const state = useSelectedState()
 
     return (
         <div className="h-full flex flex-col divide-black divide-y-2">
             <div className="flex divide-black divide-x-2">
                 <NamedLogo />
-                <StateSelection value={state_code} getPath={v => `/${v}/district-plan`} />
-                <ModeSelection value="district-plan" getPath={v => `/${state_code}/${v}`} />
+                <StateSelection state={state} getPath={v => `/${v}/${Mode.DISTRICT_PLAN}`} />
+                <ModeSelection mode={Mode.DISTRICT_PLAN} getPath={v => `/${state}/${v}`} />
             </div>
             <Outlet />
         </div>

@@ -3,7 +3,7 @@ import { useGetOverallDemographicsByStateQuery } from "@/redux/distribution.api"
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 export default function PopulationModule() {
-    const [state] = useSelectedState()
+    const state = useSelectedState()
     const { currentData, isSuccess, isFetching } = useGetOverallDemographicsByStateQuery(state)
 
     return (

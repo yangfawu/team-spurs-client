@@ -5,14 +5,14 @@ import useSelectedState from "@/hooks/use-selected-state"
 import { Outlet } from "react-router-dom"
 
 export default function Layout() {
-    const [state_code] = useSelectedState()
+    const state = useSelectedState()
 
     return (
         <div className="h-full flex flex-col divide-black divide-y-2">
             <div className="flex divide-black divide-x-2">
                 <NamedLogo />
-                <StateSelection value={state_code} getPath={v => `/${v}/compare`} />
-                <ModeSelection value="compare" getPath={v => `/${state_code}/${v}`} />
+                <StateSelection state={state} getPath={v => `/${v}/compare`} />
+                <ModeSelection mode="compare" getPath={v => `/${state}/${v}`} />
             </div>
             <Outlet />
         </div>
