@@ -1,3 +1,5 @@
+import { GROUP_TO_NAME } from "@/constants/group"
+import { PARTY_TO_NAME } from "@/constants/party"
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
@@ -8,86 +10,45 @@ import L, { Map } from "leaflet"
 import { RefObject, useEffect, useMemo } from "react"
 import tw from "tailwind-styled-components"
 
-const ch = createColumnHelper<Representative>()
-const COLUMNS = [
-    ch.accessor("district", {
-        header: () => "District",
-        cell: c => c.getValue(),
-    }),
-    ch.accessor("image", {
-        header: () => "Photo",
-        cell: c => (
-            <img src={c.getValue()} alt={`rep ${c.row.original.district}`} className="w-16 h-16 object-contain" />
-        ),
-    }),
-    ch.accessor("first_name", {
-        header: () => "First Name",
-        cell: c => c.getValue(),
-    }),
-    ch.accessor("last_name", {
-        header: () => "Last Name",
-        cell: c => c.getValue(),
-    }),
-    ch.accessor("party", {
-        header: () => "Party",
-        cell: c => {
-            switch (c.getValue()) {
-                case "I":
-                    return "Independent"
-                case "R":
-                    return "Republican"
-                case "D":
-                    return "Democrat"
-                default:
-                    return "Unknown"
-            }
-        },
-    }),
-    ch.accessor(r => [r.race, r.race2], {
-        id: "race",
-        header: () => "Race(s)",
-        cell: c => {
-            const val = c.getValue<(string | null)[]>()
-            return val.filter(e => e !== null).join(", ") || "Unknown"
-        },
-    }),
-]
-
 interface Props {
     mapRef: RefObject<Map>
 }
-export default function TableModule({ mapRef }: Props) {
+export default function Representatives({ mapRef }: Props) {
     const dispatch = useAppDispatch()
-    const chosenDistrict = useAppSelector(selectDistrict)
+
+    const district = useAppSelector(selectDistrict)
 
     const state = useSelectedState()
-    const { currentData: mapData, isSuccess: mapSuccess } = fetchRegularDistrictMap(state)
-    const { currentData: tableData, isSuccess: tableSuccess } = fetchRepresentatives(state)
-    const isSuccess = mapSuccess && tableSuccess
+    const { currentData: features } = fetchRegularDistrictMap(state)
+    const { currentData: reps } = fetchRepresentatives(state)
 
     const { getHeaderGroups, getRowModel } = useReactTable({
-        data: tableData || [],
+        data: reps || [],
         columns: COLUMNS,
         getCoreRowModel: getCoreRowModel(),
     })
 
     const select = useMemo(() => {
-        return (id: number) => {
-            dispatch(showcaseDistrict(id))
+        return ($d: number) => {
+            // notify that a district has been selected
+            dispatch(showcaseDistrict($d))
 
-            if (isSuccess && mapData?.features) {
-                const target = mapData.features.find(f => Number(f.properties?.DISTRICT) === id)
+            // if map and geojson data is available, zoom to the district
+            if (mapRef.current && features) {
+                const target = features.find(({ properties }) => properties.district === $d)
                 if (target) {
                     const bounds = L.geoJSON(target).getBounds()
-                    mapRef.current?.fitBounds(bounds)
+                    mapRef.current.fitBounds(bounds)
                 }
             }
         }
-    }, [mapRef, mapData, isSuccess])
+    }, [mapRef, features])
 
     useEffect(() => {
-        if (chosenDistrict === undefined) return
-        const target = document.querySelector(`tr[data-district="${chosenDistrict}"]`)
+        if (district === undefined) return
+
+        // scroll to the closest representative row when a district is selected
+        const target = document.querySelector(`tr[data-district="${district}"]`)
         if (target) {
             target.scrollIntoView({
                 block: "nearest",
@@ -95,7 +56,7 @@ export default function TableModule({ mapRef }: Props) {
                 behavior: "instant",
             })
         }
-    }, [chosenDistrict])
+    }, [district])
 
     return (
         <div className="h-full overflow-auto scroll-pt-7">
@@ -118,7 +79,7 @@ export default function TableModule({ mapRef }: Props) {
                         <InteractiveRow
                             key={row.id}
                             data-district={row.original.district}
-                            className={chosenDistrict === row.original.district ? "bg-green-100" : ""}
+                            className={district === row.original.district ? "bg-green-100" : ""}
                             onClick={() => select(row.original.district)}
                         >
                             {row.getVisibleCells().map(cell => (
@@ -137,3 +98,35 @@ export default function TableModule({ mapRef }: Props) {
 const InteractiveRow = tw.tr`
     active:bg-gray-200
 `
+
+const ch = createColumnHelper<Representative>()
+const COLUMNS = [
+    ch.accessor("district", {
+        header: () => "District",
+        cell: c => c.getValue(),
+    }),
+    ch.accessor("image", {
+        header: () => "Photo",
+        cell: c => <img src={c.getValue()} className="w-16 h-16 object-contain" />,
+    }),
+    ch.accessor("first_name", {
+        header: () => "First Name",
+        cell: c => c.getValue(),
+    }),
+    ch.accessor("last_name", {
+        header: () => "Last Name",
+        cell: c => c.getValue(),
+    }),
+    ch.accessor("party", {
+        header: () => "Party",
+        cell: c => PARTY_TO_NAME[c.getValue()],
+    }),
+    ch.accessor("race", {
+        header: () => "Race(s)",
+        cell: c =>
+            c
+                .getValue()
+                .map($g => GROUP_TO_NAME[$g])
+                .join(", "),
+    }),
+]

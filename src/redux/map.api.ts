@@ -2,26 +2,23 @@ import Group from "@/constants/group"
 import State from "@/constants/state"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-interface GeoJson {
+interface GeoFeature extends GeoJSON.Feature<GeoJSON.Geometry, any> {
     state: State
-    type: string
-    geometry: object
-    properties: Record<string, any>
 }
 
-export interface StateGeoJson extends GeoJson {
+export interface StateGeoFeature extends GeoFeature {
     properties: {
         state: State
     }
 }
 
-export interface RegularDistrictGeoJson extends GeoJson {
+export interface RegularDistrictGeoFeature extends GeoFeature {
     properties: {
         district: number
     }
 }
 
-export interface HeatDistrictGeoJson extends GeoJson {
+export interface HeatDistrictGeoFeature extends GeoFeature {
     properties: {
         district: number
         heat_value: number
@@ -36,7 +33,7 @@ interface HeatMapPayload {
 interface HeatMapResponse {
     min: number
     max: number
-    features: HeatDistrictGeoJson[]
+    features: HeatDistrictGeoFeature[]
 }
 
 // NOTE: caching will not be used for these endpoints due to the size of the GeoJSON data
@@ -47,10 +44,10 @@ export const mapApi = createApi({
     reducerPath: "map-api",
     // tagTypes: ["Regular", "Heat"],
     endpoints: build => ({
-        getAllStates: build.query<StateGeoJson[], void>({
+        getAllStates: build.query<StateGeoFeature[], void>({
             query: () => "/states",
         }),
-        getRegularDistricts: build.query<RegularDistrictGeoJson[], State>({
+        getRegularDistricts: build.query<RegularDistrictGeoFeature[], State>({
             query: state => `/regular/${state}`,
             // providesTags: (_, __, id) => [{ type: "Regular", id }],
         }),

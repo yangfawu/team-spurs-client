@@ -22,4 +22,15 @@ export const GROUP_TO_NAME: Record<Group, string> = {
     [Group.WHITE]: "White",
 }
 
+export const GROUP_TO_ABBREV: Record<Group, string> = {
+    [Group.WHITE]: "WH",
+    [Group.BLACK]: "BL",
+    [Group.ASIAN]: "AS",
+    [Group.HISPANIC_LATINO]: "HL",
+    [Group.AMERICAN_INDIAN_ALASKA_NATIVE]: "AI",
+    [Group.HAWAIIAN_PACIFIC_ISLANDER]: "HP",
+    [Group.MIXED]: "MX",
+    [Group.OTHER]: "OT",
+}
+
 export default Group

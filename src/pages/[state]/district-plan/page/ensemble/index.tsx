@@ -3,7 +3,7 @@ import { useState } from "react"
 import ExploreButton from "./explore-button"
 import SelectGroup from "./select-group"
 
-export default function EnsembleModule() {
+export default function Ensemble() {
     const [group, setGroup] = useState(Group.WHITE)
 
     return (
