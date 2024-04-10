@@ -1,6 +1,6 @@
 import { GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
 import useSelectedState from "@/hooks/use-selected-state"
-import { useGetDistrictDemographicsByStateQuery } from "@/redux/distribution.api"
+import { fetchDistrictsDemographics } from "@/redux/demographic.api"
 import { selectApp } from "@/redux/district-plan.slice"
 import { useAppSelector } from "@/redux/hooks"
 import { useMemo } from "react"
@@ -8,7 +8,7 @@ import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, 
 
 export default function DistrictModule() {
     const state = useSelectedState()
-    const { currentData, isSuccess, isFetching } = useGetDistrictDemographicsByStateQuery(state)
+    const { currentData, isSuccess, isFetching } = fetchDistrictsDemographics(state)
 
     const { district: selectedDistrict } = useAppSelector(selectApp)
 

@@ -1,8 +1,8 @@
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { useGetRegularDistrictMapQuery } from "@/redux/map.api"
-import { Representative, useGetRepresentativesQuery } from "@/redux/reps.api"
+import { fetchRegularDistrictMap } from "@/redux/map.api"
+import { Representative, fetchRepresentatives } from "@/redux/representative.api"
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import L, { Map } from "leaflet"
 import { RefObject, useEffect, useMemo } from "react"
@@ -61,8 +61,8 @@ export default function TableModule({ mapRef }: Props) {
     const chosenDistrict = useAppSelector(selectDistrict)
 
     const state = useSelectedState()
-    const { currentData: mapData, isSuccess: mapSuccess } = useGetRegularDistrictMapQuery(state)
-    const { currentData: tableData, isSuccess: tableSuccess } = useGetRepresentativesQuery(state)
+    const { currentData: mapData, isSuccess: mapSuccess } = fetchRegularDistrictMap(state)
+    const { currentData: tableData, isSuccess: tableSuccess } = fetchRepresentatives(state)
     const isSuccess = mapSuccess && tableSuccess
 
     const { getHeaderGroups, getRowModel } = useReactTable({

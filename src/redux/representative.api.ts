@@ -12,18 +12,18 @@ export interface Representative {
     state: State
 }
 
-export const repsApi = createApi({
+export const representativeApi = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BACKEND_URL}/reps`
+        baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/reps`,
     }),
-    reducerPath: "reps-api",
-    tagTypes: ["Reps"],
+    reducerPath: "representative-api",
+    tagTypes: ["representative"],
     endpoints: build => ({
         getRepresentatives: build.query<Representative[], State>({
             query: state => `/${state}`,
-            providesTags: (_, __, id) => [{ type: "Reps", id }],
+            providesTags: (_, __, id) => [{ type: "representative", id }],
         }),
     }),
 })
 
-export const { useGetRepresentativesQuery, useLazyGetRepresentativesQuery } = repsApi
+export const { useGetRepresentativesQuery: fetchRepresentatives } = representativeApi

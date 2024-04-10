@@ -1,10 +1,10 @@
 import useSelectedState from "@/hooks/use-selected-state"
-import { useGetOverallDemographicsByStateQuery } from "@/redux/distribution.api"
+import { fetchStateDemographic } from "@/redux/demographic.api"
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 export default function PopulationModule() {
     const state = useSelectedState()
-    const { currentData, isSuccess, isFetching } = useGetOverallDemographicsByStateQuery(state)
+    const { currentData, isSuccess, isFetching } = fetchStateDemographic(state)
 
     return (
         <div className="flex flex-col p-2 gap-2 w-full h-full overflow-auto">

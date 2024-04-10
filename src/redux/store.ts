@@ -1,22 +1,16 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { compareSlice } from "./compare.slice"
-import { distributionApi } from "./distribution.api"
+import { demographicApi } from "./demographic.api"
 import { districtPlanSlice } from "./district-plan.slice"
 import { mapApi } from "./map.api"
-import { minorityDistributionSlice } from "./minority-dsitribution.slice"
-import { overviewSlice } from "./overview.slice"
-import { repsApi } from "./reps.api"
+import { representativeApi } from "./representative.api"
 
 const rootReducer = combineSlices(
-    compareSlice,
     districtPlanSlice,
-    minorityDistributionSlice,
-    overviewSlice,
     mapApi,
-    repsApi,
-    distributionApi,
+    representativeApi,
+    demographicApi,
     /* insert more slices later */
 )
 
@@ -31,8 +25,8 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         middleware: builder =>
             builder({ serializableCheck: false }) //
                 .concat(mapApi.middleware)
-                .concat(repsApi.middleware)
-                .concat(distributionApi.middleware),
+                .concat(representativeApi.middleware)
+                .concat(demographicApi.middleware),
     })
     setupListeners(store.dispatch)
     return store
