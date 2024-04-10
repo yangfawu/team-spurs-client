@@ -1,4 +1,3 @@
-import DistrictDemographic from "./district-demographic"
 import Representatives from "@/components/module/representatives"
 import StateDemographic from "@/components/module/state-demographic"
 import { DistrictPlanLayout } from "@/constants/panel-layout"
@@ -6,6 +5,7 @@ import useRedrawMap from "@/hooks/use-redraw-map"
 import { Map } from "leaflet"
 import { useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import DistrictDemographic from "./district-demographic"
 import Legend from "./legend"
 import Sandbox from "./sandbox"
 

@@ -1,5 +1,6 @@
 import NamedLogo from "@/components/attribution/named-logo"
 import StateSelection from "@/components/control/state-selection"
+import Mode from "@/constants/mode"
 import { STATE_TO_NAME } from "@/constants/state"
 import useSelectedState from "@/hooks/use-selected-state"
 import { Link } from "react-router-dom"
@@ -25,20 +26,20 @@ export default function Page() {
                     </div>
                     <ol className="flex gap-8 flex-wrap">
                         <li>
-                            <Option to="district-plan">See the currently enacted district plan of {name}</Option>
+                            <Option to={Mode.DISTRICT_PLAN}>See the currently enacted district plan of {name}</Option>
                         </li>
                         <li>
-                            <Option to="minority-distribution">
+                            <Option to={Mode.MINORITY_DISTRIBUTION}>
                                 Visualize the minority distribution of different groups in {name}
                             </Option>
                         </li>
                         <li>
-                            <Option to="overview">
+                            <Option to={Mode.OVERVIEW}>
                                 Get a breakdown of population distribution, voter behavior, and other analysis in {name}
                             </Option>
                         </li>
                         <li>
-                            <Option to="compare">
+                            <Option to={Mode.COMPARE}>
                                 Compare the currently enacted district plan in {name} with a randomly generated plan.
                             </Option>
                         </li>
