@@ -2,9 +2,9 @@ import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { demographicApi } from "./demographic.api"
-import { showcaseSlice } from "./showcase.slice"
 import { mapApi } from "./map.api"
 import { representativeApi } from "./representative.api"
+import { showcaseSlice } from "./showcase.slice"
 
 const rootReducer = combineSlices(
     showcaseSlice,

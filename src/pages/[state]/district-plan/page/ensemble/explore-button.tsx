@@ -1,3 +1,4 @@
+import Mode from "@/constants/mode"
 import { Link } from "react-router-dom"
 import tw from "tailwind-styled-components"
 
@@ -6,7 +7,7 @@ interface Props {
 }
 export default function ExploreButton({ group }: Props) {
     return (
-        <Wrapper to={`../minority-distribution/${group}`} relative="path">
+        <Wrapper to={`../${Mode.MINORITY_DISTRIBUTION}/${group}`} relative="path">
             See Distribution
         </Wrapper>
     )
