@@ -13,8 +13,8 @@ export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
     const chosenDistrict = useAppSelector(selectDistrict)
 
-    const [state_code] = useSelectedState()
-    const { currentData, isSuccess } = useGetRegularDistrictMapQuery(state_code)
+    const state = useSelectedState()
+    const { currentData, isSuccess } = useGetRegularDistrictMapQuery(state)
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties: p }, layer) => {
@@ -49,7 +49,7 @@ export default function GeoLayer({ geoRef }: Props) {
     if (!isSuccess || !currentData?.features) return null
 
     return (
-        <FeatureGroup key={state_code} ref={geoRef}>
+        <FeatureGroup key={state} ref={geoRef}>
             {currentData.features.map((feature, i) => (
                 <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}

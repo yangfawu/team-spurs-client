@@ -1,4 +1,4 @@
-import { SUPPORTED_ETHNICITY_ENTRIES } from "@/constants/ethnicities"
+import { GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
 import useSelectedState from "@/hooks/use-selected-state"
 import { useGetDistrictDemographicsByStateQuery } from "@/redux/distribution.api"
 import { selectApp } from "@/redux/district-plan.slice"
@@ -7,7 +7,7 @@ import { useMemo } from "react"
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 export default function DistrictModule() {
-    const [state] = useSelectedState()
+    const state = useSelectedState()
     const { currentData, isSuccess, isFetching } = useGetDistrictDemographicsByStateQuery(state)
 
     const { district: selectedDistrict } = useAppSelector(selectApp)
@@ -22,7 +22,8 @@ export default function DistrictModule() {
         const out = []
 
         let max_population = 0
-        for (const [key, long] of SUPPORTED_ETHNICITY_ENTRIES) {
+        for (const key of SUPPORTED_GROUPS) {
+            const long = GROUP_TO_NAME[key]
             const count = target[key] || 0
             max_population = Math.max(max_population, count)
 

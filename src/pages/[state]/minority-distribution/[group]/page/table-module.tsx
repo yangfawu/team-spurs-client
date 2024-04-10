@@ -60,9 +60,9 @@ export default function TableModule({ mapRef }: Props) {
     const dispatch = useAppDispatch()
     const chosenDistrict = useAppSelector(selectDistrict)
 
-    const [state_code] = useSelectedState()
-    const { currentData: mapData, isSuccess: mapSuccess } = useGetRegularDistrictMapQuery(state_code)
-    const { currentData: tableData, isSuccess: tableSuccess } = useGetRepresentativesQuery(state_code)
+    const state = useSelectedState()
+    const { currentData: mapData, isSuccess: mapSuccess } = useGetRegularDistrictMapQuery(state)
+    const { currentData: tableData, isSuccess: tableSuccess } = useGetRepresentativesQuery(state)
     const isSuccess = mapSuccess && tableSuccess
 
     const { getHeaderGroups, getRowModel } = useReactTable({

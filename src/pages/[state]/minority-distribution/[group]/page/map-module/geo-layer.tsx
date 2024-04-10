@@ -1,4 +1,4 @@
-import useSelectedMinority from "@/hooks/use-selected-minority"
+import useSelectedGroup from "@/hooks/use-selected-group"
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/district-plan.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
@@ -14,11 +14,11 @@ export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
     const chosenDistrict = useAppSelector(selectDistrict)
 
-    const [state_code] = useSelectedState()
-    const group = useSelectedMinority()
+    const state = useSelectedState()
+    const group = useSelectedGroup()
     const { currentData, isSuccess } = useGetHeatDistrictMapQuery({
         group,
-        state: state_code,
+        state,
     })
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
@@ -42,16 +42,16 @@ export default function GeoLayer({ geoRef }: Props) {
                 if (!feature?.properties) {
                     return { fillColor: "#3388ff" }
                 }
-    
+
                 const { DISTRICT } = feature?.properties
                 if (chosenDistrict === Number(DISTRICT)) {
                     return { fillColor: "black" }
                 }
-    
+
                 return { fillColor: "#3388ff" }
             }
         }
-        
+
         const { key, min, max, table } = currentData
         return feature => {
             if (!feature?.properties) {
@@ -71,9 +71,9 @@ export default function GeoLayer({ geoRef }: Props) {
             const den = max - min
             const frac = num / den
             const grade = 255 - Math.floor(frac * (255 - 50)) + 50
-            return { 
-                fillColor: `rgb(222, ${grade}, ${grade})`, 
-                fillOpacity: 1
+            return {
+                fillColor: `rgb(222, ${grade}, ${grade})`,
+                fillOpacity: 1,
             }
         }
     }, [currentData, chosenDistrict])
@@ -81,7 +81,7 @@ export default function GeoLayer({ geoRef }: Props) {
     if (!isSuccess || !currentData?.map?.features) return null
 
     return (
-        <FeatureGroup key={state_code} ref={geoRef}>
+        <FeatureGroup key={state} ref={geoRef}>
             {currentData.map.features.map((feature, i) => (
                 <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}

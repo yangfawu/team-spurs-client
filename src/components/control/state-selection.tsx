@@ -1,20 +1,19 @@
-import { SUPPORTED_STATE_DIRECTORY, SUPPORTED_STATE_ENTRIES, SupportedStateKey } from "@/constants/states"
+import State, { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Fragment } from "react"
-import { Link } from "react-router-dom"
 import tw from "tailwind-styled-components"
 
 interface Props {
-    value: SupportedStateKey
+    state: State
     getPath: (value: string) => string
 }
-export default function StateSelection({ value, getPath }: Props) {
+export default function StateSelection({ state, getPath }: Props) {
     return (
         <div className="flex items-center justify-center p-2">
             <Menu as="div" className="relative inline-block text-left">
                 <MyMenuButton>
-                    {SUPPORTED_STATE_DIRECTORY[value]}
+                    {STATE_TO_NAME[state]}
                     <ChevronDownIcon className="h-5 w-5" />
                 </MyMenuButton>
                 <Transition
@@ -26,22 +25,16 @@ export default function StateSelection({ value, getPath }: Props) {
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <MyMenuItems>
-                        {SUPPORTED_STATE_ENTRIES.map(([key, name]) => (
-                            <Menu.Item key={key} as={Fragment}>
+                        {SUPPORTED_STATES.map($s => (
+                            <Menu.Item key={$s} as={Fragment}>
                                 {({ active }) => (
-                                    // <Option
-                                    //     className={`${active && "bg-gray-300"}`}
-                                    //     to={getPath(key)}
-                                    // >
-                                    //     {name}
-                                    // </Option>
                                     <AltOption
                                         className={`${active && "bg-gray-300"}`}
                                         onClick={() => {
-                                            window.location.href = getPath(key)
+                                            window.location.href = getPath($s)
                                         }}
                                     >
-                                        {name}
+                                        {STATE_TO_NAME[$s]}
                                     </AltOption>
                                 )}
                             </Menu.Item>
@@ -70,17 +63,17 @@ const MyMenuItems = tw(Menu.Items)`
     z-[500]
 `
 
-const Option = tw(Link)`
-    block
-    px-2 py-1
-    text-md
-    transition-colors
-    active:bg-gray-600
-    first:rounded-tl-sm
-    first:rounded-tr-sm
-    last:rounded-bl-sm
-    last:rounded-br-sm
-`
+// const Option = tw(Link)`
+//     block
+//     px-2 py-1
+//     text-md
+//     transition-colors
+//     active:bg-gray-600
+//     first:rounded-tl-sm
+//     first:rounded-tr-sm
+//     last:rounded-bl-sm
+//     last:rounded-br-sm
+// `
 
 const AltOption = tw.div`
     block
