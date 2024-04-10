@@ -28,6 +28,7 @@
             "@/constants/*": ["src/constants/*"],
             "@/hooks/*": ["src/hooks/*"],
             "@/redux/*": ["src/redux/*"],
+            "@/util/*": ["src/util/*"],
         }
     },
     "include": ["src"],

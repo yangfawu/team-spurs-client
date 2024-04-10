@@ -1,7 +1,9 @@
+import useSelectedGroup from "@/hooks/use-selected-group"
 import useSelectedState from "@/hooks/use-selected-state"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { RegularDistrictGeoFeature, fetchRegularDistrictMap } from "@/redux/map.api"
+import { HeatDistrictGeoFeature, fetchHeatMap } from "@/redux/map.api"
+import { generateGradientFunction } from "@/util/gradient"
 import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -13,12 +15,16 @@ export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
 
     const state = useSelectedState()
-    const { currentData, isSuccess } = fetchRegularDistrictMap(state)
+    const group = useSelectedGroup()
+    const { currentData, isSuccess } = fetchHeatMap({
+        group,
+        state,
+    })
 
     const district = useAppSelector(selectDistrict)
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
-        return ({ properties }: RegularDistrictGeoFeature, layer) => {
+        return ({ properties }: HeatDistrictGeoFeature, layer) => {
             const { district: $d } = properties
             layer.bindTooltip(`District ${$d}`, { sticky: true })
 
@@ -38,14 +44,20 @@ export default function GeoLayer({ geoRef }: Props) {
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         return feature => {
             if (!feature) {
-                return { fillColor: Fill.REGULAR }
+                return { fillColor: Fill.REGULAR, fillOpacity: 0.7 }
             }
 
             const {
-                properties: { district: $d },
-            } = feature as RegularDistrictGeoFeature
-            const fillColor = district === $d ? Fill.SELECTED : Fill.REGULAR
-            return { fillColor }
+                properties: { district: $d, heat_value },
+            } = feature as HeatDistrictGeoFeature
+            if ($d === district) {
+                return { fillColor: Fill.SELECTED, fillOpacity: 0.7 }
+            }
+
+            return {
+                fillColor: computeColor(heat_value),
+                fillOpacity: 1,
+            }
         }
     }, [district])
 
@@ -53,7 +65,7 @@ export default function GeoLayer({ geoRef }: Props) {
 
     return (
         <FeatureGroup key={state} ref={geoRef}>
-            {currentData.map((feature, i) => (
+            {currentData.features.map((feature, i) => (
                 <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
@@ -61,6 +73,8 @@ export default function GeoLayer({ geoRef }: Props) {
 }
 
 enum Fill {
-    REGULAR = "#3388ff",
+    REGULAR = "white",
     SELECTED = "black",
 }
+
+const computeColor = generateGradientFunction([255, 255, 255], [255, 0, 0])
