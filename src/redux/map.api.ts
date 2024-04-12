@@ -30,10 +30,11 @@ interface HeatMapPayload {
     group: Group
 }
 
-interface HeatMapResponse {
+interface HeatMapLegend {
+    state: State
+    group: Group
     min: number
     max: number
-    features: HeatDistrictGeoFeature[]
 }
 
 // NOTE: caching will not be used for these endpoints due to the size of the GeoJSON data
@@ -49,12 +50,13 @@ export const mapApi = createApi({
         }),
         getRegularDistricts: build.query<RegularDistrictGeoFeature[], State>({
             query: state => `/regular/${state}`,
-            // providesTags: (_, __, id) => [{ type: "Regular", id }],
         }),
-        getHeatDistricts: build.query<HeatMapResponse, HeatMapPayload>({
+        getHeatDistricts: build.query<HeatDistrictGeoFeature[], HeatMapPayload>({
             query: ({ state, group }) => `/heat/${state}/${group}`,
-            // providesTags: (_, __, { state, group }) => [{ type: "Heat", id: `${state}-${group}` }],
         }),
+        getHeatLegend: build.query<HeatMapLegend, HeatMapPayload>({
+            query: ({ state, group }) => `/heat/legend/${state}/${group}`,
+        })
     }),
 })
 
@@ -62,4 +64,5 @@ export const {
     useGetAllStatesQuery: fetchAllStatesMap,
     useGetRegularDistrictsQuery: fetchRegularDistrictMap,
     useGetHeatDistrictsQuery: fetchHeatMap,
+    useGetHeatLegendQuery: fetchHeatLegend,
 } = mapApi
