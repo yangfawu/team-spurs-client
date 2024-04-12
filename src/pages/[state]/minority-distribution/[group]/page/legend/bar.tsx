@@ -1,11 +1,11 @@
 import useSelectedGroup from "@/hooks/use-selected-group"
 import useSelectedState from "@/hooks/use-selected-state"
-import { fetchHeatMap } from "@/redux/map.api"
+import { fetchHeatLegend } from "@/redux/map.api"
 
 export default function Bar() {
     const state = useSelectedState()
     const group = useSelectedGroup()
-    const { currentData, isSuccess, isFetching } = fetchHeatMap({
+    const { currentData, isSuccess, isFetching } = fetchHeatLegend({
         group,
         state,
     })

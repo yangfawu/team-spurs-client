@@ -65,7 +65,7 @@ export default function GeoLayer({ geoRef }: Props) {
 
     return (
         <FeatureGroup key={state} ref={geoRef}>
-            {currentData.features.map((feature, i) => (
+            {currentData.map((feature, i) => (
                 <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
