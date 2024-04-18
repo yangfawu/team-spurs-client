@@ -60,7 +60,7 @@ export default function GeoLayer() {
     }, [district])
 
     return (
-        <FeatureGroup key={state} ref={geoRef}>
+        <FeatureGroup ref={geoRef}>
             {data.map(feature => (
                 <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
