@@ -1,29 +1,22 @@
 import { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import useSelectedGroup from "@/hooks/use-selected-group"
-import useSelectedState from "@/hooks/use-selected-state"
-import { fetchDistrictsDemographics } from "@/redux/demographic.api"
+import { useSafeCurrentGroup } from "@/contexts/current-group"
+import { useSafeCurrentState } from "@/contexts/current-state"
+import { fetchStateDemographic } from "@/redux/demographic.api"
 import { useMemo } from "react"
 import { Bar, BarChart, CartesianGrid, Cell, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
-interface Props {
-    district: number
-}
-export default function Chart({ district }: Props) {
-    const state = useSelectedState()
-    const group = useSelectedGroup()
-    const { currentData, isSuccess, isFetching } = fetchDistrictsDemographics(state)
+export default function Chart() {
+    const group = useSafeCurrentGroup()
+    const state = useSafeCurrentState()
+    const { currentData, isSuccess, isFetching } = fetchStateDemographic(state)
 
     const chartData = useMemo(() => {
         if (!currentData) return undefined
 
-        // find the data for the selected district
-        const target = currentData.find(({ district: $d }) => $d === district)
-        if (!target) return undefined
-
         const out = []
 
         // compute the data for the chart
-        const { count } = target
+        const { count } = currentData
         for (const group of SUPPORTED_GROUPS) {
             if (group in count) {
                 const name = GROUP_TO_NAME[group]
@@ -40,7 +33,7 @@ export default function Chart({ district }: Props) {
         out.sort((a, b) => b.value - a.value)
 
         return out
-    }, [currentData, district])
+    }, [currentData])
 
     if (isFetching) {
         return <div className="flex-1 bg-gray-300 animate-pulse p-4" />

@@ -15,10 +15,15 @@ import { createFileRoute } from "@tanstack/react-router"
 import { Route as rootRoute } from "./routes/__root"
 import { Route as IndexImport } from "./routes/index"
 import { Route as StateLayoutImport } from "./routes/$state/_layout"
+import { Route as StateLayoutMinorityDistributionLayoutImport } from "./routes/$state/_layout/minority-distribution/_layout"
+import { Route as StateLayoutMinorityDistributionLayoutIndexImport } from "./routes/$state/_layout/minority-distribution/_layout/index"
 
 // Create Virtual Routes
 
 const StateImport = createFileRoute("/$state")()
+const StateLayoutMinorityDistributionImport = createFileRoute(
+  "/$state/_layout/minority-distribution",
+)()
 const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
 const StateLayoutOverviewIndexLazyImport = createFileRoute(
   "/$state/_layout/overview/",
@@ -29,6 +34,8 @@ const StateLayoutDistrictPlanIndexLazyImport = createFileRoute(
 const StateLayoutCompareIndexLazyImport = createFileRoute(
   "/$state/_layout/compare/",
 )()
+const StateLayoutMinorityDistributionLayoutGroupIndexLazyImport =
+  createFileRoute("/$state/_layout/minority-distribution/_layout/$group/")()
 
 // Create/Update Routes
 
@@ -46,6 +53,12 @@ const StateLayoutRoute = StateLayoutImport.update({
   id: "/_layout",
   getParentRoute: () => StateRoute,
 } as any)
+
+const StateLayoutMinorityDistributionRoute =
+  StateLayoutMinorityDistributionImport.update({
+    path: "/minority-distribution",
+    getParentRoute: () => StateLayoutRoute,
+  } as any)
 
 const StateLayoutIndexLazyRoute = StateLayoutIndexLazyImport.update({
   path: "/",
@@ -80,6 +93,28 @@ const StateLayoutCompareIndexLazyRoute =
     import("./routes/$state/_layout/compare/index.lazy").then((d) => d.Route),
   )
 
+const StateLayoutMinorityDistributionLayoutRoute =
+  StateLayoutMinorityDistributionLayoutImport.update({
+    id: "/_layout",
+    getParentRoute: () => StateLayoutMinorityDistributionRoute,
+  } as any)
+
+const StateLayoutMinorityDistributionLayoutIndexRoute =
+  StateLayoutMinorityDistributionLayoutIndexImport.update({
+    path: "/",
+    getParentRoute: () => StateLayoutMinorityDistributionLayoutRoute,
+  } as any)
+
+const StateLayoutMinorityDistributionLayoutGroupIndexLazyRoute =
+  StateLayoutMinorityDistributionLayoutGroupIndexLazyImport.update({
+    path: "/$group/",
+    getParentRoute: () => StateLayoutMinorityDistributionLayoutRoute,
+  } as any).lazy(() =>
+    import(
+      "./routes/$state/_layout/minority-distribution/_layout/$group/index.lazy"
+    ).then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
@@ -100,6 +135,14 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
+    "/$state/_layout/minority-distribution": {
+      preLoaderRoute: typeof StateLayoutMinorityDistributionImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/minority-distribution/_layout": {
+      preLoaderRoute: typeof StateLayoutMinorityDistributionLayoutImport
+      parentRoute: typeof StateLayoutMinorityDistributionRoute
+    }
     "/$state/_layout/compare/": {
       preLoaderRoute: typeof StateLayoutCompareIndexLazyImport
       parentRoute: typeof StateLayoutImport
@@ -112,6 +155,14 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutOverviewIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
+    "/$state/_layout/minority-distribution/_layout/": {
+      preLoaderRoute: typeof StateLayoutMinorityDistributionLayoutIndexImport
+      parentRoute: typeof StateLayoutMinorityDistributionLayoutImport
+    }
+    "/$state/_layout/minority-distribution/_layout/$group/": {
+      preLoaderRoute: typeof StateLayoutMinorityDistributionLayoutGroupIndexLazyImport
+      parentRoute: typeof StateLayoutMinorityDistributionLayoutImport
+    }
   }
 }
 
@@ -122,6 +173,12 @@ export const routeTree = rootRoute.addChildren([
   StateRoute.addChildren([
     StateLayoutRoute.addChildren([
       StateLayoutIndexLazyRoute,
+      StateLayoutMinorityDistributionRoute.addChildren([
+        StateLayoutMinorityDistributionLayoutRoute.addChildren([
+          StateLayoutMinorityDistributionLayoutIndexRoute,
+          StateLayoutMinorityDistributionLayoutGroupIndexLazyRoute,
+        ]),
+      ]),
       StateLayoutCompareIndexLazyRoute,
       StateLayoutDistrictPlanIndexLazyRoute,
       StateLayoutOverviewIndexLazyRoute,
