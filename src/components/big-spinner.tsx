@@ -2,11 +2,16 @@ import tw from "tailwind-styled-components"
 
 export default function BigSpinner() {
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <Box>
             <Spinner />
-        </div>
+        </Box>
     )
 }
+
+const Box = tw.div`
+    min-h-screen 
+    flex items-center justify-center
+`
 
 const Spinner = tw.div`
     w-20 h-20

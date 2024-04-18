@@ -1,17 +1,7 @@
-import Group from "@/constants/group"
+import { DistrictDemographic } from "@/api/demographic"
+import { StateDemographic } from "@/api/demographic"
 import State from "@/constants/state"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-
-export interface StateDemographic {
-    count: Record<Group, number>
-    state: State
-}
-
-export interface DistrictDemographic {
-    count: Record<Group, number>
-    district: number
-    state: State
-}
 
 export const demographicApi = createApi({
     baseQuery: fetchBaseQuery({

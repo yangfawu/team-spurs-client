@@ -1,4 +1,4 @@
-import NamedLogo from "@/components/attribution/named-logo"
+import Logo from "@/components/logo"
 import { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import tw from "tailwind-styled-components"
@@ -7,7 +7,7 @@ function Page() {
     return (
         <div className="h-full flex flex-col divide-black divide-y-2">
             <div>
-                <NamedLogo />
+                <Logo />
             </div>
             <div className="flex-1 flex items-center justify-center p-4">
                 <div className="space-y-8">
