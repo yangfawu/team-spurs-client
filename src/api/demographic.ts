@@ -52,6 +52,7 @@ export function fetchStateDemographic(state: State) {
 
             return out
         },
+        staleTime: Infinity,
     })
 }
 
@@ -63,6 +64,7 @@ export function fetchDistrictsDemographics(state: State) {
             const data: DistrictDemographic[] = await res.json()
             return data
         },
+        staleTime: Infinity,
     })
 }
 
@@ -98,5 +100,6 @@ export function fetchOneDistrictDemographic(state: State, district: number) {
 
             return out
         },
+        staleTime: Infinity,
     })
 }

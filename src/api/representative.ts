@@ -26,5 +26,6 @@ export function fetchRepresentatives(state: State) {
 
             return data
         },
+        staleTime: Infinity,
     })
 }
