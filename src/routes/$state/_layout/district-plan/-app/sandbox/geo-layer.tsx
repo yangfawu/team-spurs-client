@@ -1,6 +1,7 @@
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { RegularDistrictGeoFeature, fetchRegularDistrictMap } from "@/redux/map.api"
+import { fetchRegularDistrictMap } from "@/redux/map.api"
+import { AssemblyDistrictGeoFeature } from "@/api/map"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
 import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
@@ -18,7 +19,7 @@ export default function GeoLayer({ geoRef }: Props) {
     const district = useAppSelector(selectDistrict)
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
-        return ({ properties }: RegularDistrictGeoFeature, layer) => {
+        return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
             const { district: $d } = properties
             layer.bindTooltip(`District ${$d}`, { sticky: true })
 
@@ -43,7 +44,7 @@ export default function GeoLayer({ geoRef }: Props) {
 
             const {
                 properties: { district: $d },
-            } = feature as RegularDistrictGeoFeature
+            } = feature as AssemblyDistrictGeoFeature
             const fillColor = district === $d ? Fill.SELECTED : Fill.REGULAR
             return { fillColor }
         }
