@@ -3,18 +3,18 @@ import { Representative, fetchRepresentatives } from "@/api/representative"
 import { GROUP_TO_NAME } from "@/constants/group"
 import { PARTY_TO_NAME } from "@/constants/party"
 import { useSafeCurrentState } from "@/contexts/current-state"
+import { useMapRef } from "@/contexts/map-ref"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import L, { Map } from "leaflet"
-import { RefObject, useEffect, useMemo } from "react"
+import L from "leaflet"
+import { useEffect, useMemo } from "react"
 import tw from "tailwind-styled-components"
 
-interface Props {
-    mapRef: RefObject<Map>
-}
-export default function Representatives({ mapRef }: Props) {
+export default function Table() {
+    const mapRef = useMapRef()
+
     const dispatch = useAppDispatch()
 
     const district = useAppSelector(selectDistrict)
@@ -31,10 +31,10 @@ export default function Representatives({ mapRef }: Props) {
 
     const select = useMemo(() => {
         return ($d: number) => {
-            // notify that a district has been selected
+            // Notify that a district has been selected
             dispatch(showcaseDistrict($d))
 
-            // if map and geojson data is available, zoom to the district
+            // If map and geojson data is available, zoom to the district
             if (mapRef.current && features) {
                 const target = features.find(({ properties }) => properties.district === $d)
                 if (target) {
@@ -48,7 +48,7 @@ export default function Representatives({ mapRef }: Props) {
     useEffect(() => {
         if (district === undefined) return
 
-        // scroll to the closest representative row when a district is selected
+        // Scroll to the closest representative row when a district is selected
         const target = document.querySelector(`tr[data-district="${district}"]`)
         if (target) {
             target.scrollIntoView({
@@ -60,39 +60,37 @@ export default function Representatives({ mapRef }: Props) {
     }, [district])
 
     return (
-        <div className="h-full overflow-auto scroll-pt-7">
-            <table className="relative w-full">
-                <thead className="sticky top-0 bg-white shadow">
-                    {getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(header.column.columnDef.header, header.getContext())}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody className="divide-y-2">
-                    {getRowModel().rows.map(row => (
-                        <InteractiveRow
-                            key={row.id}
-                            data-district={row.original.district}
-                            className={district === row.original.district ? "bg-green-100" : ""}
-                            onClick={() => select(row.original.district)}
-                        >
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} className="py-2" align="center">
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </td>
-                            ))}
-                        </InteractiveRow>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <table className="relative w-full">
+            <thead className="sticky top-0 bg-white shadow">
+                {getHeaderGroups().map(headerGroup => (
+                    <tr key={headerGroup.id}>
+                        {headerGroup.headers.map(header => (
+                            <th key={header.id}>
+                                {header.isPlaceholder
+                                    ? null
+                                    : flexRender(header.column.columnDef.header, header.getContext())}
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+            </thead>
+            <tbody className="divide-y-2">
+                {getRowModel().rows.map(row => (
+                    <InteractiveRow
+                        key={row.id}
+                        data-district={row.original.district}
+                        className={district === row.original.district ? "bg-green-100" : ""}
+                        onClick={() => select(row.original.district)}
+                    >
+                        {row.getVisibleCells().map(cell => (
+                            <td key={cell.id} className="py-2" align="center">
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
+                        ))}
+                    </InteractiveRow>
+                ))}
+            </tbody>
+        </table>
     )
 }
 

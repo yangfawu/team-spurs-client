@@ -2,6 +2,7 @@ import { selectApp } from "@/redux/showcase"
 import { useAppSelector } from "@/redux/hooks"
 import tw from "tailwind-styled-components"
 import Chart from "./chart"
+import { Suspense } from "react"
 
 export default function DistrictDemographic() {
     const { district } = useAppSelector(selectApp)
@@ -20,7 +21,9 @@ export default function DistrictDemographic() {
     return (
         <Container>
             <h3 className="text-lg font-bold">District {district} Demographic</h3>
-            <Chart district={district} />
+            <Suspense fallback="Loading...">
+                <Chart district={district} />
+            </Suspense>
         </Container>
     )
 }
