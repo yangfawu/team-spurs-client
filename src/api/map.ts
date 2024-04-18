@@ -3,6 +3,7 @@ import State from "@/constants/state"
 import { queryOptions } from "@tanstack/react-query"
 
 interface GeoFeature extends GeoJSON.Feature<GeoJSON.Geometry, any> {
+    id: string
     state: State
 }
 

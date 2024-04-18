@@ -1,10 +1,10 @@
+import { HeatDistrictGeoFeature, fetchGroupHeatMap } from "@/api/map"
 import { useSafeCurrentGroup } from "@/contexts/current-group"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { fetchHeatMap } from "@/redux/map.api"
-import { HeatDistrictGeoFeature } from "@/api/map"
-import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
+import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
 import { generateGradientFunction } from "@/util/gradient"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -17,10 +17,7 @@ export default function GeoLayer({ geoRef }: Props) {
 
     const state = useSafeCurrentState()
     const group = useSafeCurrentGroup()
-    const { currentData, isSuccess } = fetchHeatMap({
-        group,
-        state,
-    })
+    const { data } = useSuspenseQuery(fetchGroupHeatMap(state, group))
 
     const district = useAppSelector(selectDistrict)
 
@@ -62,12 +59,10 @@ export default function GeoLayer({ geoRef }: Props) {
         }
     }, [district])
 
-    if (!isSuccess || !currentData) return null
-
     return (
         <FeatureGroup key={state} ref={geoRef}>
-            {currentData.map((feature, i) => (
-                <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
+            {data.map(feature => (
+                <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
     )

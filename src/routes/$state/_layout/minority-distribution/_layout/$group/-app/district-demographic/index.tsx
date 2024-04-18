@@ -1,4 +1,4 @@
-import { selectApp } from "@/redux/showcase.slice"
+import { selectApp } from "@/redux/showcase"
 import { useAppSelector } from "@/redux/hooks"
 import tw from "tailwind-styled-components"
 import Chart from "./chart"

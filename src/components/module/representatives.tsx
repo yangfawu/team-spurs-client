@@ -1,11 +1,11 @@
+import { fetchStateAssemblyMap } from "@/api/map"
+import { Representative, fetchRepresentatives } from "@/api/representative"
 import { GROUP_TO_NAME } from "@/constants/group"
 import { PARTY_TO_NAME } from "@/constants/party"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { fetchRegularDistrictMap } from "@/redux/map.api"
-import { fetchRepresentatives } from "@/redux/representative.api"
-import { Representative } from "@/api/representative"
-import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
+import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import L, { Map } from "leaflet"
 import { RefObject, useEffect, useMemo } from "react"
@@ -20,8 +20,8 @@ export default function Representatives({ mapRef }: Props) {
     const district = useAppSelector(selectDistrict)
 
     const state = useSafeCurrentState()
-    const { currentData: features } = fetchRegularDistrictMap(state)
-    const { currentData: reps } = fetchRepresentatives(state)
+    const { data: features } = useSuspenseQuery(fetchStateAssemblyMap(state))
+    const { data: reps } = useSuspenseQuery(fetchRepresentatives(state))
 
     const { getHeaderGroups, getRowModel } = useReactTable({
         data: reps || [],
