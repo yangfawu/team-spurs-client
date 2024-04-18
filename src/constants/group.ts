@@ -33,4 +33,8 @@ export const GROUP_TO_ABBREV: Record<Group, string> = {
     [Group.OTHER]: "OT",
 }
 
+export function isValidGroup(group: string): group is Group {
+    return group in GROUP_TO_NAME
+}
+
 export default Group

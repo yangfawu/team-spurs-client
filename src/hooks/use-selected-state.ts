@@ -1,7 +1,8 @@
 import State from "@/constants/state"
-import { useParams } from "react-router-dom"
+import { useParams } from "@tanstack/react-router"
 
 export default function useSelectedState() {
-    const { state } = useParams() as { state: State }
+    const params = useParams({ strict: false })
+
     return state
 }

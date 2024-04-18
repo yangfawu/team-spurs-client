@@ -1,9 +1,6 @@
-import BigSpinner from "@/components/big-spinner"
-import { RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
-import ROOT_ROUTER from "./pages/route"
-
-const router = createBrowserRouter(createRoutesFromElements(ROOT_ROUTER))
+import { RouterProvider } from "@tanstack/react-router"
+import router from "./router"
 
 export default function App() {
-    return <RouterProvider router={router} fallbackElement={<BigSpinner />} />
+    return <RouterProvider router={router} />
 }
