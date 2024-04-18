@@ -1,15 +1,12 @@
 import Control from "@/components/control"
 import Mode from "@/constants/mode"
-import { STATE_TO_NAME, isValidState } from "@/constants/state"
+import { STATE_TO_NAME } from "@/constants/state"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { Link, createLazyFileRoute } from "@tanstack/react-router"
 import tw from "tailwind-styled-components"
 
 function Page() {
-    const state = Route.useParams({ select: p => p.state })
-
-    if (!isValidState(state)) {
-        throw new Error(`Invalid state: ${state}`)
-    }
+    const state = useSafeCurrentState()
 
     const name = STATE_TO_NAME[state]
     return (
@@ -61,5 +58,5 @@ const Option = tw(Link)`
 `
 
 export const Route = createLazyFileRoute("/$state/_layout/")({
-    component: Page
+    component: Page,
 })

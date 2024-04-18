@@ -9,7 +9,7 @@ import DistrictDemographic from "./district-demographic"
 import Legend from "./legend"
 import Sandbox from "./sandbox"
 
-export default function Page() {
+export default function App() {
     const mapRef = useRef<Map>(null)
     const redrawMap = useRedrawMap(mapRef)
 

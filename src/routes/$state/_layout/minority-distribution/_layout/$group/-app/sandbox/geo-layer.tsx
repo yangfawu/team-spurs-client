@@ -1,5 +1,5 @@
-import useSelectedGroup from "@/hooks/use-selected-group"
-import useSelectedState from "@/hooks/use-selected-state"
+import { useSafeCurrentGroup } from "@/contexts/current-group"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { HeatDistrictGeoFeature, fetchHeatMap } from "@/redux/map.api"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
@@ -14,8 +14,8 @@ interface Props {
 export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
 
-    const state = useSelectedState()
-    const group = useSelectedGroup()
+    const state = useSafeCurrentState()
+    const group = useSafeCurrentGroup()
     const { currentData, isSuccess } = fetchHeatMap({
         group,
         state,

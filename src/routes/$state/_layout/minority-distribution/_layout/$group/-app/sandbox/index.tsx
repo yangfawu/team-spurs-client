@@ -1,6 +1,6 @@
 import GrayWorldTileLayer from "@/components/leaflet/gray-world-tile-layer"
 import BBOXES from "@/constants/bboxes"
-import useSelectedState from "@/hooks/use-selected-state"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { FeatureGroup, Map } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { RefObject, useRef } from "react"
@@ -12,7 +12,7 @@ interface Props {
     mapRef: RefObject<Map>
 }
 export default function Sandbox({ mapRef }: Props) {
-    const state = useSelectedState()
+    const state = useSafeCurrentState()
     const geoRef = useRef<FeatureGroup>(null)
 
     return (
