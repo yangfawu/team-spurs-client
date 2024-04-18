@@ -43,6 +43,7 @@ export function fetchAllStatesMap() {
             const data: StateGeoFeature[] = await res.json()
             return data
         },
+        staleTime: Infinity,
     })
 }
 
@@ -54,6 +55,7 @@ export function fetchStateAssemblyMap(state: State) {
             const data: AssemblyDistrictGeoFeature[] = await res.json()
             return data
         },
+        staleTime: Infinity,
     })
 }
 
@@ -65,6 +67,7 @@ export function fetchGroupHeatMap(state: State, group: Group) {
             const data: HeatDistrictGeoFeature[] = await res.json()
             return data
         },
+        staleTime: Infinity,
     })
 }
 
@@ -76,5 +79,6 @@ export function fetchGroupHeatMapLegend(state: State, group: Group) {
             const data: HeatMapLegend = await res.json()
             return data
         },
+        staleTime: Infinity,
     })
 }
