@@ -6,13 +6,13 @@ import App from "./-app"
 
 function Layout() {
     return (
-        <CurrentModeProvider value={Mode.COMPARE}>
+        <CurrentModeProvider value={Mode.DISTRICT_PLAN}>
             <Control />
             <App />
         </CurrentModeProvider>
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/compare/")({
+export const Route = createLazyFileRoute("/$state/_layout/district-plan/")({
     component: Layout,
 })

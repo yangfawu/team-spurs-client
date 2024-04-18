@@ -5,7 +5,6 @@ import { Map } from "leaflet"
 import { useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 import DistrictDemographic from "./district-demographic"
-import Ensemble from "./ensemble"
 import Sandbox from "./sandbox"
 import StateDemographic from "./state-demographic"
 
@@ -36,10 +35,6 @@ export default function Page() {
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible defaultSize={33}>
                             <DistrictDemographic />
-                        </Panel>
-                        <PanelResizeHandle className="bg-gray-800 h-0.5" />
-                        <Panel minSize={25} collapsible>
-                            <Ensemble />
                         </Panel>
                     </PanelGroup>
                 </Panel>

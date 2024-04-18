@@ -1,5 +1,5 @@
 import { MODE_TO_NAME, SUPPORTED_MODES } from "@/constants/mode"
-import { useCurrentMode } from "@/contexts/current-mode.context"
+import { useCurrentMode } from "@/contexts/current-mode"
 import { Menu } from "@headlessui/react"
 import { Link } from "@tanstack/react-router"
 import { Fragment } from "react"

@@ -20,6 +20,12 @@ import { Route as StateLayoutImport } from "./routes/$state/_layout"
 
 const StateImport = createFileRoute("/$state")()
 const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
+const StateLayoutOverviewIndexLazyImport = createFileRoute(
+  "/$state/_layout/overview/",
+)()
+const StateLayoutDistrictPlanIndexLazyImport = createFileRoute(
+  "/$state/_layout/district-plan/",
+)()
 const StateLayoutCompareIndexLazyImport = createFileRoute(
   "/$state/_layout/compare/",
 )()
@@ -47,6 +53,24 @@ const StateLayoutIndexLazyRoute = StateLayoutIndexLazyImport.update({
 } as any).lazy(() =>
   import("./routes/$state/_layout/index.lazy").then((d) => d.Route),
 )
+
+const StateLayoutOverviewIndexLazyRoute =
+  StateLayoutOverviewIndexLazyImport.update({
+    path: "/overview/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/overview/index.lazy").then((d) => d.Route),
+  )
+
+const StateLayoutDistrictPlanIndexLazyRoute =
+  StateLayoutDistrictPlanIndexLazyImport.update({
+    path: "/district-plan/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/district-plan/index.lazy").then(
+      (d) => d.Route,
+    ),
+  )
 
 const StateLayoutCompareIndexLazyRoute =
   StateLayoutCompareIndexLazyImport.update({
@@ -80,6 +104,14 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutCompareIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
+    "/$state/_layout/district-plan/": {
+      preLoaderRoute: typeof StateLayoutDistrictPlanIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/overview/": {
+      preLoaderRoute: typeof StateLayoutOverviewIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
   }
 }
 
@@ -91,6 +123,8 @@ export const routeTree = rootRoute.addChildren([
     StateLayoutRoute.addChildren([
       StateLayoutIndexLazyRoute,
       StateLayoutCompareIndexLazyRoute,
+      StateLayoutDistrictPlanIndexLazyRoute,
+      StateLayoutOverviewIndexLazyRoute,
     ]),
   ]),
 ])

@@ -13,6 +13,6 @@ function Layout() {
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/compare/")({
+export const Route = createLazyFileRoute("/$state/_layout/overview/")({
     component: Layout,
 })

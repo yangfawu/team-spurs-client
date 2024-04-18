@@ -1,5 +1,5 @@
 import { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
-import { useCurrentState } from "@/contexts/current-state.context"
+import { useCurrentState } from "@/contexts/current-state"
 import { Menu } from "@headlessui/react"
 import { Link } from "@tanstack/react-router"
 import { Fragment } from "react"

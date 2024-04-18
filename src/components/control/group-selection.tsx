@@ -1,5 +1,5 @@
 import { GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import { useCurrentGroup } from "@/contexts/current-group.context"
+import { useCurrentGroup } from "@/contexts/current-group"
 import { Menu } from "@headlessui/react"
 import { Link } from "@tanstack/react-router"
 import { Fragment } from "react"

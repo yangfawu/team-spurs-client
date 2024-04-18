@@ -14,7 +14,7 @@ function RootLayout() {
                 </div>
             </Provider>
             <Suspense>
-                <MyTanStackRouterDevtools position="bottom-right" />
+                <MyTanStackRouterDevtools panelProps={{ className: "fixed inset-0" }} position="bottom-right" />
             </Suspense>
         </>
     )
@@ -23,5 +23,4 @@ function RootLayout() {
 export const Route = createRootRoute({
     component: RootLayout,
     pendingComponent: BigSpinner,
-    notFoundComponent: () => <div>Not found!!!!</div>,
 })
