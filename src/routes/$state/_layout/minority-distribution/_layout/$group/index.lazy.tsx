@@ -1,8 +1,11 @@
 import Control from "@/components/control"
 import { isValidGroup } from "@/constants/group"
 import { CurrentGroupProvider } from "@/contexts/current-group"
+import { MapRefProvider } from "@/contexts/map-ref"
 import { createLazyFileRoute } from "@tanstack/react-router"
-import App from "./-app"
+import { Suspense, lazy } from "react"
+
+const App = lazy(() => import("./-app"))
 
 function Layout() {
     const group = Route.useParams({ select: p => p.group })
@@ -14,7 +17,11 @@ function Layout() {
     return (
         <CurrentGroupProvider value={group}>
             <Control />
-            <App />
+            <MapRefProvider>
+                <Suspense fallback={<p>Loading...</p>}>
+                    <App key={group} />
+                </Suspense>
+            </MapRefProvider>
         </CurrentGroupProvider>
     )
 }

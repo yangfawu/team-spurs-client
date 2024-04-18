@@ -2,19 +2,17 @@ import GrayWorldTileLayer from "@/components/leaflet/gray-world-tile-layer"
 import BBOXES from "@/constants/bboxes"
 import Mode from "@/constants/mode"
 import { useSafeCurrentState } from "@/contexts/current-state"
-import { FeatureGroup, Map } from "leaflet"
+import { GeoLayerRefProvider } from "@/contexts/geo-layer-ref"
+import { useMapRef } from "@/contexts/map-ref"
 import "leaflet/dist/leaflet.css"
-import { RefObject, useRef } from "react"
 import { MapContainer } from "react-leaflet"
 import GeoLayer from "./geo-layer"
 import RefocusButton from "./refocus-button"
+import { Suspense } from "react"
 
-interface Props {
-    mapRef: RefObject<Map>
-}
-export default function Sandbox({ mapRef }: Props) {
+export default function Sandbox() {
     const state = useSafeCurrentState()
-    const geoRef = useRef<FeatureGroup>(null)
+    const mapRef = useMapRef()
 
     return (
         <MapContainer
@@ -28,8 +26,12 @@ export default function Sandbox({ mapRef }: Props) {
             ref={mapRef}
         >
             <GrayWorldTileLayer />
-            <GeoLayer geoRef={geoRef} />
-            <RefocusButton geoRef={geoRef} />
+            <Suspense>
+                <GeoLayerRefProvider>
+                    <GeoLayer />
+                    <RefocusButton />
+                </GeoLayerRefProvider>
+            </Suspense>
         </MapContainer>
     )
 }

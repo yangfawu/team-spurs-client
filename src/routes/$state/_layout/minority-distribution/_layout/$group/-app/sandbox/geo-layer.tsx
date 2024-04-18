@@ -1,18 +1,18 @@
 import { HeatDistrictGeoFeature, fetchGroupHeatMap } from "@/api/map"
 import { useSafeCurrentGroup } from "@/contexts/current-group"
 import { useSafeCurrentState } from "@/contexts/current-state"
+import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
 import { generateGradientFunction } from "@/util/gradient"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
-import { RefObject, useMemo } from "react"
+import { Map } from "leaflet"
+import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
 
-interface Props {
-    geoRef: RefObject<LeafletFeatureGroup>
-}
-export default function GeoLayer({ geoRef }: Props) {
+export default function GeoLayer() {
+    const geoRef = useGeoLayerRef()
+    
     const dispatch = useAppDispatch()
 
     const state = useSafeCurrentState()

@@ -1,21 +1,20 @@
 import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/map"
 import { useSafeCurrentState } from "@/contexts/current-state"
+import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
-import { RefObject, useMemo } from "react"
-import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
+import { useMemo } from "react"
+import { FeatureGroup, GeoJSON, GeoJSONProps, useMap } from "react-leaflet"
 
-interface Props {
-    geoRef: RefObject<LeafletFeatureGroup>
-}
-export default function GeoLayer({ geoRef }: Props) {
-    const dispatch = useAppDispatch()
+export default function GeoLayer() {
+    const map = useMap()
+    const geoRef = useGeoLayerRef()
 
     const state = useSafeCurrentState()
     const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
+    const dispatch = useAppDispatch()
     const district = useAppSelector(selectDistrict)
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
@@ -24,13 +23,10 @@ export default function GeoLayer({ geoRef }: Props) {
             layer.bindTooltip(`District ${$d}`, { sticky: true })
 
             layer.on("click", ({ target }) => {
-                // make the map zoom to it
-                const map = target._map as Map
-                if (map) {
-                    map.fitBounds(target.getBounds())
-                }
+                // Make the map zoom to it
+                map.fitBounds(target.getBounds())
 
-                // notify the store that this district will be showcased
+                // Notify the store that this district will be showcased
                 dispatch(showcaseDistrict($d))
             })
         }
@@ -51,7 +47,7 @@ export default function GeoLayer({ geoRef }: Props) {
     }, [district])
 
     return (
-        <FeatureGroup key={state} ref={geoRef}>
+        <FeatureGroup ref={geoRef}>
             {data.map(feature => (
                 <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}

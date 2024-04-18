@@ -1,15 +1,14 @@
 import Representatives from "@/components/module/representatives"
 import { DistrictPlanLayout } from "@/constants/panel-layout"
+import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
-import { Map } from "leaflet"
-import { useRef } from "react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 import DistrictDemographic from "./district-demographic"
 import Sandbox from "./sandbox"
 import StateDemographic from "./state-demographic"
 
 export default function Page() {
-    const mapRef = useRef<Map>(null)
+    const mapRef = useMapRef()
     const redrawMap = useRedrawMap(mapRef)
 
     return (
@@ -18,11 +17,11 @@ export default function Page() {
                 <Panel minSize={20} defaultSize={70} collapsible onResize={redrawMap}>
                     <PanelGroup direction="vertical" autoSaveId={DistrictPlanLayout.LEFT}>
                         <Panel className="relative" minSize={25} collapsible defaultSize={80} onResize={redrawMap}>
-                            <Sandbox mapRef={mapRef} />
+                            <Sandbox />
                         </Panel>
                         <PanelResizeHandle className="bg-gray-800 h-0.5" />
                         <Panel minSize={25} collapsible>
-                            <Representatives mapRef={mapRef} />
+                            <Representatives />
                         </Panel>
                     </PanelGroup>
                 </Panel>

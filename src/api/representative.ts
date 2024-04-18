@@ -21,6 +21,9 @@ export function fetchRepresentatives(state: State) {
         queryFn: async () => {
             const res = await fetch(`${BASE_URL}/${state}`)
             const data: Representative[] = await res.json()
+
+            data.sort((a, b) => a.district - b.district)
+
             return data
         },
     })
