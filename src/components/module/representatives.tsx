@@ -1,6 +1,6 @@
 import { GROUP_TO_NAME } from "@/constants/group"
 import { PARTY_TO_NAME } from "@/constants/party"
-import useSelectedState from "@/hooks/use-selected-state"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { fetchRegularDistrictMap } from "@/redux/map.api"
 import { Representative, fetchRepresentatives } from "@/redux/representative.api"
@@ -18,7 +18,7 @@ export default function Representatives({ mapRef }: Props) {
 
     const district = useAppSelector(selectDistrict)
 
-    const state = useSelectedState()
+    const state = useSafeCurrentState()
     const { currentData: features } = fetchRegularDistrictMap(state)
     const { currentData: reps } = fetchRepresentatives(state)
 

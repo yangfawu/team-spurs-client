@@ -4,7 +4,7 @@ import { createRouter } from "@tanstack/react-router"
 import { routeTree } from "./route-tree.gen"
 
 // Create a new router instance
-const router = createRouter({ routeTree, notFoundMode: "fuzzy" })
+const router = createRouter({ routeTree })
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {

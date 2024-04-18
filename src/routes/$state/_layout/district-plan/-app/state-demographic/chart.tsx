@@ -1,11 +1,11 @@
 import { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import useSelectedState from "@/hooks/use-selected-state"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { fetchStateDemographic } from "@/redux/demographic.api"
 import { useMemo } from "react"
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 export default function Chart() {
-    const state = useSelectedState()
+    const state = useSafeCurrentState()
     const { currentData, isSuccess, isFetching } = fetchStateDemographic(state)
 
     const chartData = useMemo(() => {

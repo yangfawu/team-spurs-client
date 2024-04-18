@@ -1,7 +1,7 @@
-import useSelectedState from "@/hooks/use-selected-state"
-import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
+import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { RegularDistrictGeoFeature, fetchRegularDistrictMap } from "@/redux/map.api"
+import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
 import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -12,7 +12,7 @@ interface Props {
 export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
 
-    const state = useSelectedState()
+    const state = useSafeCurrentState()
     const { currentData, isSuccess } = fetchRegularDistrictMap(state)
 
     const district = useAppSelector(selectDistrict)

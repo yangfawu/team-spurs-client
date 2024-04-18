@@ -1,5 +1,5 @@
 import { isValidState } from "@/constants/state"
-import { CurrentStateProvider } from "@/contexts/current-state.context"
+import { CurrentStateProvider } from "@/contexts/current-state"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 
 function Layout() {
