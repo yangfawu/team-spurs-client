@@ -12,4 +12,8 @@ export const PARTY_TO_NAME: Record<Party, string> = {
     [Party.OTHER]: "Other",
 }
 
+export function isValidParty(party: string): party is Party {
+    return party in PARTY_TO_NAME
+}
+
 export default Party

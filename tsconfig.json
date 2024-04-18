@@ -26,9 +26,11 @@
             "@/assets/*": ["src/assets/*"],
             "@/components/*": ["src/components/*"],
             "@/constants/*": ["src/constants/*"],
+            "@/contexts/*": ["src/contexts/*"],
             "@/hooks/*": ["src/hooks/*"],
             "@/redux/*": ["src/redux/*"],
             "@/util/*": ["src/util/*"],
+            "@/router": ["src/router"],
         }
     },
     "include": ["src"],

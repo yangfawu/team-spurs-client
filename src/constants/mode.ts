@@ -14,4 +14,8 @@ export const MODE_TO_NAME: Record<Mode, string> = {
     [Mode.COMPARE]: "Compare",
 }
 
+export function isValidMode(mode: string): mode is Mode {
+    return mode in MODE_TO_NAME
+}
+
 export default Mode
