@@ -1,7 +1,9 @@
-import BigSpinner from "@/components/big-spinner"
-import MyTanStackRouterDevtools from "@/components/my-tan-stack-router-devtools"
+import QueryDevtools from "@/components/query-devtools"
+import RouterDevtools from "@/components/router-devtools"
+import RouterLoader from "@/components/router-loader"
 import { store } from "@/redux/store"
-import { Outlet, createRootRoute } from "@tanstack/react-router"
+import { QueryClient } from "@tanstack/react-query"
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router"
 import { Suspense } from "react"
 import { Provider } from "react-redux"
 
@@ -10,17 +12,21 @@ function RootLayout() {
         <>
             <Provider store={store}>
                 <div className="h-full flex flex-col divide-black divide-y-2">
+                    <RouterLoader />
                     <Outlet />
                 </div>
             </Provider>
             <Suspense>
-                <MyTanStackRouterDevtools panelProps={{ className: "fixed inset-0" }} position="bottom-right" />
+                <QueryDevtools buttonPosition="bottom-left" />
+                <RouterDevtools position="bottom-right" />
             </Suspense>
         </>
     )
 }
 
+const createRootRoute = createRootRouteWithContext<{
+    queryClient: QueryClient
+}>()
 export const Route = createRootRoute({
     component: RootLayout,
-    pendingComponent: BigSpinner,
 })

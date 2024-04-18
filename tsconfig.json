@@ -23,6 +23,7 @@
         /* Aliases */
         "baseUrl": ".",
         "paths": {
+            "@/api/*": ["src/api/*"],
             "@/assets/*": ["src/assets/*"],
             "@/components/*": ["src/components/*"],
             "@/constants/*": ["src/constants/*"],
