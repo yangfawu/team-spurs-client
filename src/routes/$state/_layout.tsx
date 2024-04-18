@@ -11,7 +11,7 @@ function Layout() {
 
     return (
         <CurrentStateProvider value={state}>
-            <Outlet />
+            <Outlet key={state} />
         </CurrentStateProvider>
     )
 }

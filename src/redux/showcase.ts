@@ -9,7 +9,7 @@ const initialState: DistrictPlanSliceState = {
 }
 
 export const showcaseSlice = createSlice({
-    name: "showcase-slice",
+    name: "showcase",
     initialState,
     reducers: create => ({
         showcaseDistrict: create.reducer((state, action: PayloadAction<number>) => {

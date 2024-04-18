@@ -1,28 +1,15 @@
+import { fetchGroupHeatMapLegend } from "@/api/map"
 import { useSafeCurrentGroup } from "@/contexts/current-group"
 import { useSafeCurrentState } from "@/contexts/current-state"
-import { fetchHeatLegend } from "@/redux/map.api"
+import { useSuspenseQuery } from "@tanstack/react-query"
 
 export default function Bar() {
     const state = useSafeCurrentState()
     const group = useSafeCurrentGroup()
-    const { currentData, isSuccess, isFetching } = fetchHeatLegend({
-        group,
-        state,
-    })
+    const {
+        data: { min, max },
+    } = useSuspenseQuery(fetchGroupHeatMapLegend(state, group))
 
-    if (isFetching) {
-        return <div className="flex-1 rounded-md bg-gray-300 animate-pulse" />
-    }
-
-    if (!isSuccess || !currentData) {
-        return (
-            <div className="flex-1 bg-red-300 p-4 flex justify-center items-center">
-                <p className="text-center">Error fetching statistics</p>
-            </div>
-        )
-    }
-
-    const { min, max } = currentData
     return (
         <>
             <div className="relative min-h-8 bg-gray-100 rounded-lg border-gray-300 border-2 overflow-hidden">

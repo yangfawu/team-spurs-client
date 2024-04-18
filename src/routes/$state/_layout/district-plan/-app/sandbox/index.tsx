@@ -1,5 +1,6 @@
 import GrayWorldTileLayer from "@/components/leaflet/gray-world-tile-layer"
 import BBOXES from "@/constants/bboxes"
+import Mode from "@/constants/mode"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { FeatureGroup, Map } from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -17,6 +18,7 @@ export default function Sandbox({ mapRef }: Props) {
 
     return (
         <MapContainer
+            key={Mode.DISTRICT_PLAN}
             className="w-full h-full"
             bounds={BBOXES[state]}
             minZoom={6}

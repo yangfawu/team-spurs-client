@@ -1,8 +1,8 @@
+import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/map"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { fetchRegularDistrictMap } from "@/redux/map.api"
-import { AssemblyDistrictGeoFeature } from "@/api/map"
-import { selectDistrict, showcaseDistrict } from "@/redux/showcase.slice"
+import { selectDistrict, showcaseDistrict } from "@/redux/showcase"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { FeatureGroup as LeafletFeatureGroup, Map } from "leaflet"
 import { RefObject, useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
@@ -14,7 +14,7 @@ export default function GeoLayer({ geoRef }: Props) {
     const dispatch = useAppDispatch()
 
     const state = useSafeCurrentState()
-    const { currentData, isSuccess } = fetchRegularDistrictMap(state)
+    const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
     const district = useAppSelector(selectDistrict)
 
@@ -50,12 +50,10 @@ export default function GeoLayer({ geoRef }: Props) {
         }
     }, [district])
 
-    if (!isSuccess || !currentData) return null
-
     return (
         <FeatureGroup key={state} ref={geoRef}>
-            {currentData.map((feature, i) => (
-                <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={getStyle} />
+            {data.map(feature => (
+                <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
     )
