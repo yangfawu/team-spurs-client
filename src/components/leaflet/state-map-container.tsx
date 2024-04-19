@@ -3,7 +3,8 @@ import { useSafeCurrentState } from "@/contexts/current-state"
 import { useMapRef } from "@/contexts/map-ref"
 import "leaflet/dist/leaflet.css"
 import { ReactNode } from "react"
-import { MapContainer, TileLayer } from "react-leaflet"
+import { MapContainer } from "react-leaflet"
+import GrayTileLayer from "./gray-tile-layer"
 
 interface Props {
     children?: ReactNode
@@ -22,10 +23,7 @@ export default function StateMapContainer({ children }: Props) {
             worldCopyJump
             ref={mapRef}
         >
-            <TileLayer
-                attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-            />
+            <GrayTileLayer />
             {children}
         </MapContainer>
     )
