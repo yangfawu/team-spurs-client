@@ -1,11 +1,19 @@
 import { Switch } from "@headlessui/react"
-import { Suspense, useState } from "react"
+import { Suspense, lazy, useState } from "react"
 import tw from "tailwind-styled-components"
-import Map from "./map"
 import Simple from "./simple"
 
+const Map = lazy(() => import("./map"))
+
 export default function App() {
-    const [isSimple, setSimple] = useState(false)
+    const [isSimple, setSimple] = useState(() => {
+        return localStorage.getItem(IS_SIMPLE_KEY) === "true"
+    })
+
+    const setSimpleWithStorage = (value: boolean) => {
+        localStorage.setItem(IS_SIMPLE_KEY, value.toString())
+        setSimple(value)
+    }
 
     return (
         <div className="flex-1 relative flex flex-col">
@@ -14,7 +22,11 @@ export default function App() {
                 <p>
                     <b>{isSimple ? "Simplified" : "Map"}</b> View
                 </p>
-                <MySwitch checked={isSimple} onChange={setSimple} className={isSimple ? "bg-teal-900" : "bg-teal-700"}>
+                <MySwitch
+                    checked={isSimple}
+                    onChange={setSimpleWithStorage}
+                    className={isSimple ? "bg-teal-900" : "bg-teal-700"}
+                >
                     <Ball aria-hidden="true" className={isSimple ? "translate-x-0" : "translate-x-[16px]"} />
                 </MySwitch>
             </Control>
@@ -52,3 +64,5 @@ const Ball = tw.span`
     shadow-lg ring-0 
     transition duration-200 ease-in-out
 `
+
+const IS_SIMPLE_KEY = "app-root-is-simple"
