@@ -2,6 +2,7 @@ import Logo from "@/components/logo"
 import { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import tw from "tailwind-styled-components"
+import App from "./-app"
 
 function Page() {
     return (
@@ -9,18 +10,8 @@ function Page() {
             <div>
                 <Logo />
             </div>
-            <div className="flex-1 flex items-center justify-center p-4">
-                <div className="space-y-8">
-                    <h3 className="text-3xl text-center">Select a State</h3>
-                    <ol className="flex gap-8 flex-wrap">
-                        {SUPPORTED_STATES.map($s => (
-                            <li key={$s}>
-                                <Option to={$s}>{STATE_TO_NAME[$s]}</Option>
-                            </li>
-                        ))}
-                    </ol>
-                </div>
-            </div>
+            <App />
+            
         </div>
     )
 }
