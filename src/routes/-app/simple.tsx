@@ -4,27 +4,29 @@ import tw from "tailwind-styled-components"
 
 export default function Simple() {
     return (
-        <div className="flex-1 flex items-center justify-center p-4">
-            <div className="space-y-8">
-                <h3 className="text-3xl text-center">Select a State</h3>
-                <ol className="flex gap-8 flex-wrap">
-                    {SUPPORTED_STATES.map($s => (
-                        <li key={$s}>
-                            <Option to={$s}>{STATE_TO_NAME[$s]}</Option>
-                        </li>
-                    ))}
-                </ol>
+        <div className="flex-1 flex justify-center p-4">
+            <div className="w-full max-w-screen-md divide-y divide-black">
+                <div className="mb-4">
+                    <h3 className="text-3xl">Please Select a State</h3>
+                    <p className="italic">we currently support only these states</p>
+                </div>
+                {SUPPORTED_STATES.map($s => (
+                    <Option to={$s}>
+                        <span>{STATE_TO_NAME[$s]}</span>
+                        <span>{`→`}</span>
+                    </Option>
+                ))}
+                <div />
             </div>
         </div>
     )
 }
 
 const Option = tw(Link)`
-    block w-56 h-56
+    block
     transition
-    border-2 border-gray-900 rounded-md
-    shadow-lg hover:shadow-none
-    flex items-center justify-center
+    flex items-center justify-between
+    px-4 py-2
     text-xl
     font-semibold
     hover:bg-gray-200 active:bg-gray-500
