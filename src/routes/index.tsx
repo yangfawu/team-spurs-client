@@ -1,6 +1,6 @@
 import Logo from "@/components/logo"
 import { createFileRoute } from "@tanstack/react-router"
-import App from "./-app"
+import App from "./-components/app"
 
 function Page() {
     return (
