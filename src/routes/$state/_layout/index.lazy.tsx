@@ -1,5 +1,5 @@
 import Control from "@/components/control"
-import Mode, { MODE_TO_NAME, SUPPORTED_MODES } from "@/constants/mode"
+import { MODE_DESCRIPTIONS, MODE_TO_NAME, SUPPORTED_MODES } from "@/constants/mode"
 import { STATE_TO_NAME } from "@/constants/state"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { Link, createLazyFileRoute } from "@tanstack/react-router"
@@ -40,14 +40,6 @@ const Option = tw(Link)`
     flex items-center gap-4
     hover:bg-gray-200 active:bg-gray-500
 `
-
-const MODE_DESCRIPTIONS: Record<Mode, string> = {
-    [Mode.ASSEMBLY]: "View the state assembly districts of this state and summary of its other statistics.",
-    [Mode.HEAT]: "View a heat map of the state based on a selected group.",
-    [Mode.COMPARE]: "Compare the currently enacted district plan in this state with a randomly generated plan.",
-    [Mode.GINGLES]: "View the Gingles 2/3 Analysis of this state.",
-    [Mode.ECOLOGICAL_INFERENCE]: "View the Ecological Inference of this state's elections based on a selected group.",
-}
 
 export const Route = createLazyFileRoute("/$state/_layout/")({
     component: Page,
