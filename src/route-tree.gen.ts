@@ -28,11 +28,21 @@ const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
 const StateLayoutOverviewIndexLazyImport = createFileRoute(
   "/$state/_layout/overview/",
 )()
+const StateLayoutHeatIndexLazyImport = createFileRoute(
+  "/$state/_layout/heat/",
+)()
+const StateLayoutGinglesIndexLazyImport = createFileRoute(
+  "/$state/_layout/gingles/",
+)()
+const StateLayoutEiIndexLazyImport = createFileRoute("/$state/_layout/ei/")()
 const StateLayoutDistrictPlanIndexLazyImport = createFileRoute(
   "/$state/_layout/district-plan/",
 )()
 const StateLayoutCompareIndexLazyImport = createFileRoute(
   "/$state/_layout/compare/",
+)()
+const StateLayoutAssemblyIndexLazyImport = createFileRoute(
+  "/$state/_layout/assembly/",
 )()
 const StateLayoutMinorityDistributionLayoutGroupIndexLazyImport =
   createFileRoute("/$state/_layout/minority-distribution/_layout/$group/")()
@@ -75,6 +85,28 @@ const StateLayoutOverviewIndexLazyRoute =
     import("./routes/$state/_layout/overview/index.lazy").then((d) => d.Route),
   )
 
+const StateLayoutHeatIndexLazyRoute = StateLayoutHeatIndexLazyImport.update({
+  path: "/heat/",
+  getParentRoute: () => StateLayoutRoute,
+} as any).lazy(() =>
+  import("./routes/$state/_layout/heat/index.lazy").then((d) => d.Route),
+)
+
+const StateLayoutGinglesIndexLazyRoute =
+  StateLayoutGinglesIndexLazyImport.update({
+    path: "/gingles/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/gingles/index.lazy").then((d) => d.Route),
+  )
+
+const StateLayoutEiIndexLazyRoute = StateLayoutEiIndexLazyImport.update({
+  path: "/ei/",
+  getParentRoute: () => StateLayoutRoute,
+} as any).lazy(() =>
+  import("./routes/$state/_layout/ei/index.lazy").then((d) => d.Route),
+)
+
 const StateLayoutDistrictPlanIndexLazyRoute =
   StateLayoutDistrictPlanIndexLazyImport.update({
     path: "/district-plan/",
@@ -91,6 +123,14 @@ const StateLayoutCompareIndexLazyRoute =
     getParentRoute: () => StateLayoutRoute,
   } as any).lazy(() =>
     import("./routes/$state/_layout/compare/index.lazy").then((d) => d.Route),
+  )
+
+const StateLayoutAssemblyIndexLazyRoute =
+  StateLayoutAssemblyIndexLazyImport.update({
+    path: "/assembly/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/assembly/index.lazy").then((d) => d.Route),
   )
 
 const StateLayoutMinorityDistributionLayoutRoute =
@@ -143,12 +183,28 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutMinorityDistributionLayoutImport
       parentRoute: typeof StateLayoutMinorityDistributionRoute
     }
+    "/$state/_layout/assembly/": {
+      preLoaderRoute: typeof StateLayoutAssemblyIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
     "/$state/_layout/compare/": {
       preLoaderRoute: typeof StateLayoutCompareIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
     "/$state/_layout/district-plan/": {
       preLoaderRoute: typeof StateLayoutDistrictPlanIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/ei/": {
+      preLoaderRoute: typeof StateLayoutEiIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/gingles/": {
+      preLoaderRoute: typeof StateLayoutGinglesIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/heat/": {
+      preLoaderRoute: typeof StateLayoutHeatIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
     "/$state/_layout/overview/": {
@@ -179,8 +235,12 @@ export const routeTree = rootRoute.addChildren([
           StateLayoutMinorityDistributionLayoutGroupIndexLazyRoute,
         ]),
       ]),
+      StateLayoutAssemblyIndexLazyRoute,
       StateLayoutCompareIndexLazyRoute,
       StateLayoutDistrictPlanIndexLazyRoute,
+      StateLayoutEiIndexLazyRoute,
+      StateLayoutGinglesIndexLazyRoute,
+      StateLayoutHeatIndexLazyRoute,
       StateLayoutOverviewIndexLazyRoute,
     ]),
   ]),

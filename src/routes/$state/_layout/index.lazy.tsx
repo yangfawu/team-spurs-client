@@ -1,5 +1,5 @@
 import Control from "@/components/control"
-import Mode from "@/constants/mode"
+import Mode, { MODE_TO_NAME, SUPPORTED_MODES } from "@/constants/mode"
 import { STATE_TO_NAME } from "@/constants/state"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { Link, createLazyFileRoute } from "@tanstack/react-router"
@@ -8,38 +8,25 @@ import tw from "tailwind-styled-components"
 function Page() {
     const state = useSafeCurrentState()
 
-    const name = STATE_TO_NAME[state]
     return (
         <>
             <Control />
-            <div className="flex-1 flex items-center justify-center p-4">
-                <div className="space-y-8">
-                    <div className="text-3xl text-center">
-                        <h3>
-                            You have selected <code>{JSON.stringify(name)}</code>
-                        </h3>
-                        <p>Please select a mode to further explore this state.</p>
+            <div className="flex-1 flex justify-center p-4">
+                <div className="w-full max-w-screen-md divide-y divide-black">
+                    <div className="mb-4">
+                        <h3 className="text-3xl">Please Select a Mode</h3>
+                        <p className="italic">we currently support only these modes for {STATE_TO_NAME[state]}</p>
                     </div>
-                    <ol className="flex gap-8 flex-wrap">
-                        <li>
-                            <Option to={Mode.DISTRICT_PLAN}>See the currently enacted district plan of {name}</Option>
-                        </li>
-                        <li>
-                            <Option to={Mode.MINORITY_DISTRIBUTION}>
-                                Visualize the minority distribution of different groups in {name}
-                            </Option>
-                        </li>
-                        <li>
-                            <Option to={Mode.OVERVIEW}>
-                                Get a breakdown of population distribution, voter behavior, and other analysis in {name}
-                            </Option>
-                        </li>
-                        <li>
-                            <Option to={Mode.COMPARE}>
-                                Compare the currently enacted district plan in {name} with a randomly generated plan.
-                            </Option>
-                        </li>
-                    </ol>
+                    {SUPPORTED_MODES.map($m => (
+                        <Option to={$m}>
+                            <div className="flex-1">
+                                <h3 className="text-xl font-semibold">{MODE_TO_NAME[$m]}</h3>
+                                <h4>{MODE_DESCRIPTIONS[$m]}</h4>
+                            </div>
+                            <p className="text-lg">{`→`}</p>
+                        </Option>
+                    ))}
+                    <div />
                 </div>
             </div>
         </>
@@ -47,15 +34,20 @@ function Page() {
 }
 
 const Option = tw(Link)`
-    block w-56 h-56
+    block
     transition
-    border-2 border-gray-900 rounded-md
-    shadow-lg hover:shadow-none
-    flex items-center justify-center
-    text-lg text-center
+    px-4 py-2
+    flex items-center gap-4
     hover:bg-gray-200 active:bg-gray-500
-    p-2 box-border
 `
+
+const MODE_DESCRIPTIONS: Record<Mode, string> = {
+    [Mode.ASSEMBLY]: "View the state assembly districts of this state and summary of its other statistics.",
+    [Mode.HEAT]: "View a heat map of the state based on a selected group.",
+    [Mode.COMPARE]: "Compare the currently enacted district plan in this state with a randomly generated plan.",
+    [Mode.GINGLES]: "View the Gingles 2/3 Analysis of this state.",
+    [Mode.ECOLOGICAL_INFERENCE]: "View the Ecological Inference of this state's elections based on a selected group.",
+}
 
 export const Route = createLazyFileRoute("/$state/_layout/")({
     component: Page,
