@@ -12,10 +12,12 @@ export default function Map() {
     return (
         <MapContainer
             className="w-full flex-1"
-            minZoom={4}
-            maxZoom={13}
             attributionControl={false}
+            minZoom={4}
+            maxZoom={10}
             bounds={UNITED_STATES_BBOX}
+            maxBounds={UNITED_STATES_BBOX}
+            maxBoundsViscosity={1.0}
             worldCopyJump
         >
             <GrayTileLayer />
@@ -29,5 +31,5 @@ export default function Map() {
     )
 }
 
-// Numbers sourced from https://gist.github.com/graydon/11198540
+// Numbers sourced from https://github.com/sandstrom/country-bounding-boxes/blob/b3c178f2c992d3380583d0e33736dcc483f5bb80/bounding-boxes.json#L165
 const UNITED_STATES_BBOX = L.latLngBounds(L.latLng(24.396308, -125.0), L.latLng(49.384358, -66.93457))
