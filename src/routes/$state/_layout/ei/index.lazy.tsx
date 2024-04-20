@@ -5,13 +5,13 @@ import { createLazyFileRoute } from "@tanstack/react-router"
 
 function Layout() {
     return (
-        <CurrentModeProvider value={Mode.COMPARE}>
+        <CurrentModeProvider value={Mode.ECOLOGICAL_INFERENCE}>
             <Control />
             <p>TBA</p>
         </CurrentModeProvider>
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/compare/")({
+export const Route = createLazyFileRoute("/$state/_layout/ei/")({
     component: Layout,
 })
