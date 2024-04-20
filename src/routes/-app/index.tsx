@@ -1,9 +1,8 @@
 import { Switch } from "@headlessui/react"
-import { Suspense, lazy, useState } from "react"
+import { Suspense, useState } from "react"
 import tw from "tailwind-styled-components"
+import Complex from "./complex"
 import Simple from "./simple"
-
-const Map = lazy(() => import("./map"))
 
 export default function App() {
     const [isSimple, setSimple] = useState(() => {
@@ -17,7 +16,7 @@ export default function App() {
 
     return (
         <div className="flex-1 relative flex flex-col">
-            <Suspense fallback={<p>Loading...</p>}>{isSimple ? <Simple /> : <Map />}</Suspense>
+            <Suspense fallback={<p>Loading...</p>}>{isSimple ? <Simple /> : <Complex />}</Suspense>
             <Control>
                 <p>
                     <b>{isSimple ? "Simplified" : "Map"}</b> View
