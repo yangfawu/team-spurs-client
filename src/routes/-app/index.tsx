@@ -34,7 +34,7 @@ export default function App() {
 }
 
 const Control = tw.div`
-    absolute z-[500] top-2 right-2
+    absolute z-[1200] top-2 right-2
     flex items-center gap-2
     px-2 py-1 
     rounded-full

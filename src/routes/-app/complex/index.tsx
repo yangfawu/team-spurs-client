@@ -24,7 +24,7 @@ export default function Complex() {
 }
 
 const Overlay = tw.div`
-    absolute inset-0 z-[500]
+    absolute inset-0 z-[1000]
     flex flex-col items-center justify-center gap-4
     bg-black/40
 `
