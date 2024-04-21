@@ -1,3 +1,4 @@
+import AssemblyView from "@/constants/assembly-views"
 import Group from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
@@ -12,6 +13,9 @@ export interface AssemblySliceState {
         parties: Party[]
         groups: Group[]
     }
+    summary: {
+        modules: AssemblyView[]
+    }
 }
 
 const initialState: AssemblySliceState = {
@@ -19,6 +23,9 @@ const initialState: AssemblySliceState = {
     legislature: {
         parties: [],
         groups: [],
+    },
+    summary: {
+        modules: [AssemblyView.STATE_POPULATION, AssemblyView.REPRESENTATION],
     },
 }
 
@@ -38,13 +45,19 @@ export const assemblySlice = createSlice({
         setGroupFilter: create.reducer((state, action: PayloadAction<Group[]>) => {
             state.legislature.groups = action.payload
         }),
+        setActiveModules: create.reducer((state, action: PayloadAction<AssemblyView[]>) => {
+            state.summary.modules = action.payload
+        }),
     }),
     selectors: {
         selectDistrict: root => root.district,
         selectLegislature: root => root.legislature,
+        selectSummary: root => root.summary,
+        selectActiveModules: root => root.summary.modules,
     },
 })
 
-export const { showcaseDistrict, clearDistrict, setGroupFilter, setPartyFilter } = assemblySlice.actions
+export const { showcaseDistrict, clearDistrict, setGroupFilter, setPartyFilter, setActiveModules } =
+    assemblySlice.actions
 
-export const { selectDistrict, selectLegislature } = assemblySlice.selectors
+export const { selectDistrict, selectLegislature, selectActiveModules, selectSummary } = assemblySlice.selectors
