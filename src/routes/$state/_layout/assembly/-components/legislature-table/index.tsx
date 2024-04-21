@@ -5,7 +5,7 @@ import { useAppSelector } from "@/redux/hooks"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import tw from "tailwind-styled-components"
-import Filters from "./filters"
+import Control from "./control"
 import Table from "./table"
 
 export default function LegislatureTable() {
@@ -28,7 +28,7 @@ export default function LegislatureTable() {
         <Container>
             <h3 className="p-2 text-lg font-bold">State Assembly Members</h3>
             <Table data={filteredData} />
-            <Filters />
+            <Control size={filteredData.length} />
         </Container>
     )
 }

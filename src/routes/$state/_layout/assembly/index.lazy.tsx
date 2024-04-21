@@ -1,5 +1,5 @@
 import Control from "@/components/control"
-import GenericMapAppLoader from "@/components/generic-map-app-loader"
+import GenericMapAppLoader from "@/components/loader/generic-map-app-loader"
 import Mode from "@/constants/mode"
 import { CurrentModeProvider } from "@/contexts/current-mode"
 import { MapRefProvider } from "@/contexts/map-ref"
