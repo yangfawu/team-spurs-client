@@ -45,6 +45,10 @@ export const assemblySlice = createSlice({
         setGroupFilter: create.reducer((state, action: PayloadAction<Group[]>) => {
             state.legislature.groups = action.payload
         }),
+        resetFilters: create.reducer(state => {
+            state.legislature.groups = []
+            state.legislature.parties = []
+        }),
         setActiveModules: create.reducer((state, action: PayloadAction<AssemblyView[]>) => {
             state.summary.modules = action.payload
         }),
@@ -57,7 +61,7 @@ export const assemblySlice = createSlice({
     },
 })
 
-export const { showcaseDistrict, clearDistrict, setGroupFilter, setPartyFilter, setActiveModules } =
+export const { showcaseDistrict, clearDistrict, setGroupFilter, setPartyFilter, setActiveModules, resetFilters } =
     assemblySlice.actions
 
 export const { selectDistrict, selectLegislature, selectActiveModules, selectSummary } = assemblySlice.selectors

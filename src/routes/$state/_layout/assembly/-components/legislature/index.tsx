@@ -8,7 +8,7 @@ import tw from "tailwind-styled-components"
 import Control from "./control"
 import Table from "./table"
 
-export default function LegislatureTable() {
+export default function Legislature() {
     const state = useSafeCurrentState()
     const { data } = useSuspenseQuery(fetchRepresentatives(state))
 
