@@ -18,8 +18,8 @@ const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/reps`
 export function fetchRepresentatives(state: State) {
     return queryOptions<Representative[]>({
         queryKey: ["representative", state],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/${state}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/${state}`, { signal })
             const data: Representative[] = await res.json()
 
             data.sort((a, b) => a.district - b.district)

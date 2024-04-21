@@ -38,8 +38,8 @@ const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/map`
 export function fetchAllStatesMap() {
     return queryOptions<StateGeoFeature[]>({
         queryKey: ["map", "states"],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/states`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/states`, { signal })
             const data: StateGeoFeature[] = await res.json()
             return data
         },
@@ -50,8 +50,8 @@ export function fetchAllStatesMap() {
 export function fetchStateAssemblyMap(state: State) {
     return queryOptions<AssemblyDistrictGeoFeature[]>({
         queryKey: ["map", "assembly", state],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/regular/${state}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/regular/${state}`, { signal })
             const data: AssemblyDistrictGeoFeature[] = await res.json()
             return data
         },
@@ -62,8 +62,8 @@ export function fetchStateAssemblyMap(state: State) {
 export function fetchGroupHeatMap(state: State, group: Group) {
     return queryOptions<HeatDistrictGeoFeature[]>({
         queryKey: ["map", "heat", state, group],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/heat/${state}/${group}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/heat/${state}/${group}`, { signal })
             const data: HeatDistrictGeoFeature[] = await res.json()
             return data
         },
@@ -74,8 +74,8 @@ export function fetchGroupHeatMap(state: State, group: Group) {
 export function fetchGroupHeatMapLegend(state: State, group: Group) {
     return queryOptions<HeatMapLegend>({
         queryKey: ["map", "heat", "legend", state, group],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/heat/legend/${state}/${group}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/heat/legend/${state}/${group}`, { signal })
             const data: HeatMapLegend = await res.json()
             return data
         },
