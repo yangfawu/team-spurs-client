@@ -27,8 +27,8 @@ const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/demo`
 export function fetchStateDemographic(state: State) {
     return queryOptions<GroupBar[]>({
         queryKey: ["demographic", "state", state],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/overall/${state}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/overall/${state}`, { signal })
             const data: StateDemographic = await res.json()
 
             const out: GroupBar[] = []
@@ -52,27 +52,25 @@ export function fetchStateDemographic(state: State) {
 
             return out
         },
-        staleTime: Infinity,
     })
 }
 
 export function fetchDistrictsDemographics(state: State) {
     return queryOptions<DistrictDemographic[]>({
         queryKey: ["demographic", "districts", state],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/district/${state}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/district/${state}`, { signal })
             const data: DistrictDemographic[] = await res.json()
             return data
         },
-        staleTime: Infinity,
     })
 }
 
 export function fetchOneDistrictDemographic(state: State, district: number) {
     return queryOptions<GroupBar[]>({
         queryKey: ["demographic", "district", state, district],
-        queryFn: async () => {
-            const res = await fetch(`${BASE_URL}/district/${state}`)
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/district/${state}`, { signal })
             const data: DistrictDemographic[] = await res.json()
 
             // Locate the district data
