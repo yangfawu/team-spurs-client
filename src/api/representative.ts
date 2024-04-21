@@ -13,17 +13,17 @@ export interface Representative {
     state: State
 }
 
+const NAME = "representative"
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/reps`
 
+// TODO: move to assembly.ts
 export function fetchRepresentatives(state: State) {
     return queryOptions<Representative[]>({
-        queryKey: ["representative", state],
+        queryKey: [NAME, "fetchRepresentatives", state],
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/${state}`, { signal })
             const data: Representative[] = await res.json()
-
             data.sort((a, b) => a.district - b.district)
-
             return data
         },
         staleTime: Infinity,

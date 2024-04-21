@@ -1,6 +1,6 @@
-import queryClient from "@/api/client"
 import BigSpinner from "@/components/loader/big-spinner"
 import { ErrorComponent, createRouter } from "@tanstack/react-router"
+import queryClient from "./api"
 
 // Import the generated route tree
 import { routeTree } from "./route-tree.gen"
