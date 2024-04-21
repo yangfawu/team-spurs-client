@@ -1,6 +1,6 @@
 import tw from "tailwind-styled-components"
 
-export default function GenericMapAppLoader() {
+export default function Loader() {
     return (
         <Grid>
             <Panel className="col-span-3 row-span-3" />
