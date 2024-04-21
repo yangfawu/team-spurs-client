@@ -1,27 +1,22 @@
-import AssemblyView, { ASSEMBLY_VIEW_TO_NAME, SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-views"
-import { selectActiveModules, setActiveModules } from "@/redux/assembly"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { Listbox, Transition } from "@headlessui/react"
-import { ChevronUpDownIcon } from "@heroicons/react/20/solid"
-import { Fragment, useMemo } from "react"
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid"
+import { Fragment } from "react"
 import tw from "tailwind-styled-components"
 
-export default function Dropdown() {
-    const dispatch = useAppDispatch()
-    const value = useAppSelector(selectActiveModules)
-
-    const setValue = useMemo(() => {
-        return (value: AssemblyView[]) => dispatch(setActiveModules(value))
-    }, [dispatch])
-
+interface Props<T> {
+    tag: string
+    options: T[]
+    value: T
+    setValue: (value: T) => any
+    format: (value: T) => string
+}
+export default function Dropdown<T>({ tag, options, value, setValue, format }: Props<T>) {
     return (
-        <div className="w-full">
-            <Listbox multiple value={value} onChange={setValue}>
+        <div className="w-60">
+            <Listbox value={value} onChange={setValue}>
                 <div className="relative">
                     <Button>
-                        <span className="block truncate">
-                            {value.length === 0 ? `None Selected` : value.map(format).join(", ")}
-                        </span>
+                        <span className="block truncate">{`${tag}: ${format(value)}`}</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                         </span>
@@ -33,7 +28,7 @@ export default function Dropdown() {
                         leaveTo="opacity-0"
                     >
                         <Options>
-                            {SUPPORTED_ASSEMBLY_VIEWS.map((opt, i) => (
+                            {options.map((opt, i) => (
                                 <Listbox.Option
                                     key={i}
                                     className={({ active }) =>
@@ -52,7 +47,7 @@ export default function Dropdown() {
                                             </span>
                                             {selected ? (
                                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                                    {value.indexOf(opt) + 1}
+                                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
                                                 </span>
                                             ) : null}
                                         </>
@@ -77,16 +72,14 @@ const Button = tw(Listbox.Button)`
 `
 
 const Options = tw(Listbox.Options)`
-    absolute z-[200]
+    absolute -top-2 z-[200]
+    transform -translate-y-full
     max-h-40 w-full 
     overflow-auto 
     rounded-md 
     bg-white 
-    mt-2
     py-1 
     text-base sm:text-sm
     shadow-lg ring-1 ring-black/5 
     focus:outline-none
 `
-
-const format = (view: AssemblyView) => ASSEMBLY_VIEW_TO_NAME[view]

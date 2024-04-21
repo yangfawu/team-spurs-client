@@ -2,14 +2,14 @@ import Party from "@/constants/party"
 import State from "@/constants/state"
 import { queryOptions } from "@tanstack/react-query"
 
-interface RedistricitngInfo {
+export interface RedistricitngInfo {
     state: State
     name: string
     website: string
     comments: string
 }
 
-interface VoterInfo {
+export interface VoterInfo {
     state: State
     breakdown: Record<Party, number>
     facts: string[]

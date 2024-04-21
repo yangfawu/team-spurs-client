@@ -62,7 +62,7 @@ export default function Table({ data }: Props) {
                                     columnDef: { header },
                                 },
                             }) => (
-                                <th key={hid} className="border">
+                                <th key={hid} className="border px-1">
                                     {isPlaceholder ? null : flexRender(header, getContext())}
                                 </th>
                             ),

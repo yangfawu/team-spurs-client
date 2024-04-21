@@ -14,7 +14,7 @@ export default function Map() {
 
     return (
         <MapContainer
-            className="w-full h-full"
+            className="relative flex-1"
             bounds={BBOXES[state]}
             minZoom={6}
             maxZoom={13}

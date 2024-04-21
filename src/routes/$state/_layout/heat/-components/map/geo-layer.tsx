@@ -1,8 +1,8 @@
-import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/map"
+import { HeatMapFeature, fetchHeatMap } from "@/api/heat"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
-import { selectDistrict } from "@/redux/assembly"
-import { useAppSelector } from "@/redux/hooks"
+import { featureDemographic, selectGroup, selectLevel } from "@/redux/heat"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps, useMap } from "react-leaflet"
@@ -12,39 +12,49 @@ export default function GeoLayer() {
     const geoRef = useGeoLayerRef()
 
     const state = useSafeCurrentState()
-    const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
+    const level = useAppSelector(selectLevel)
+    const group = useAppSelector(selectGroup)
+    const {
+        data: { features, legend },
+    } = useSuspenseQuery(fetchHeatMap(state, level, group))
 
-    const district = useAppSelector(selectDistrict)
-
+    const dispatch = useAppDispatch()
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
-        return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
-            const { district: $d } = properties
-            layer.bindTooltip(`District ${$d}`, { sticky: true })
+        return ({ id, title, demographic }: HeatMapFeature, layer) => {
+            const name = title || id
+            layer.bindTooltip(name, { sticky: true })
 
             layer.on("click", ({ target }) => {
                 map.fitBounds(target.getBounds())
+                dispatch(
+                    featureDemographic({
+                        title: name,
+                        breakdown: demographic,
+                    }),
+                )
             })
         }
     }, [])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
+        const { bins } = legend
+        const fillOpacity = 0.7
         return feature => {
             if (!feature) {
-                return { fillColor: Fill.REGULAR }
+                return { fillOpacity, fillColor: Fill.REGULAR }
             }
 
             const {
-                properties: { district: $d },
-            } = feature as AssemblyDistrictGeoFeature
-            const isSelected = state === district?.state && $d === district?.id
-            const fillColor = isSelected ? Fill.SELECTED : Fill.REGULAR
-            return { fillColor }
+                bins: { [group]: id },
+            } = feature as HeatMapFeature
+            const fillColor = bins[id].color
+            return { fillOpacity, fillColor }
         }
-    }, [state, district])
+    }, [legend, group])
 
     return (
         <FeatureGroup ref={geoRef}>
-            {data.map(feature => (
+            {features.map(feature => (
                 <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
         </FeatureGroup>
@@ -53,5 +63,5 @@ export default function GeoLayer() {
 
 enum Fill {
     REGULAR = "#3388ff",
-    SELECTED = "black",
+    // SELECTED = "black",
 }
