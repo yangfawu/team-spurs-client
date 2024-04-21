@@ -6,7 +6,7 @@ import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { ElementType, lazy } from "react"
 import { Panel, PanelGroup } from "react-resizable-panels"
-import LegislatureTable from "./legislature-table"
+import Legislature from "./legislature"
 import Map from "./map"
 import Sidebar from "./sidebar"
 
@@ -37,7 +37,7 @@ export default function App() {
                         </SuspensePanel>
                         <HorizontalDivider />
                         <SuspensePanel minSize={25} collapsible>
-                            <LegislatureTable />
+                            <Legislature />
                         </SuspensePanel>
                     </PanelGroup>
                 </Panel>
