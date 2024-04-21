@@ -25,32 +25,32 @@ export interface GroupBar {
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/demo`
 
 export function fetchStateDemographic(state: State) {
-    return queryOptions<GroupBar[]>({
+    return queryOptions<StateDemographic>({
         queryKey: ["demographic", "state", state],
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/overall/${state}`, { signal })
             const data: StateDemographic = await res.json()
+            return data
+            // const out: GroupBar[] = []
 
-            const out: GroupBar[] = []
+            // // Compute the data for the chart
+            // const { count } = data
+            // for (const group of SUPPORTED_GROUPS) {
+            //     if (group in count) {
+            //         const name = GROUP_TO_NAME[group]
+            //         const short = GROUP_TO_ABBREV[group]
+            //         out.push({
+            //             group,
+            //             label: { long: name, short },
+            //             value: count[group],
+            //         })
+            //     }
+            // }
 
-            // Compute the data for the chart
-            const { count } = data
-            for (const group of SUPPORTED_GROUPS) {
-                if (group in count) {
-                    const name = GROUP_TO_NAME[group]
-                    const short = GROUP_TO_ABBREV[group]
-                    out.push({
-                        group,
-                        label: { long: name, short },
-                        value: count[group],
-                    })
-                }
-            }
+            // // Sort the bars by population
+            // out.sort((a, b) => b.value - a.value)
 
-            // Sort the bars by population
-            out.sort((a, b) => b.value - a.value)
-
-            return out
+            // return out
         },
     })
 }

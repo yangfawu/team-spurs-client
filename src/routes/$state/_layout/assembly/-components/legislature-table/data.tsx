@@ -10,8 +10,8 @@ export const COLUMNS = [
         cell: c => c.getValue(),
     }),
     ch.accessor(({ first_name, last_name, image }) => [first_name, last_name, image] as const, {
-        id: "represenative",
-        header: () => <div className="text-left">Represenative</div>,
+        id: "representative",
+        header: () => <div className="text-left">Representative</div>,
         cell: c => {
             const [fname, lname, src] = c.getValue()
             const name = `${fname} ${lname}`
