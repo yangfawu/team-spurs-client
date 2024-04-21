@@ -1,7 +1,7 @@
 import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
 import SuspensePanel from "@/components/resizable-panels/suspense-panel"
 import VerticalDivider from "@/components/resizable-panels/vertical-divider"
-import AssemblyView from "@/constants/assembly-views"
+import AssemblyView from "@/constants/assembly-view"
 import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { ElementType, lazy } from "react"

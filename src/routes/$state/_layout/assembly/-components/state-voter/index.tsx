@@ -1,4 +1,4 @@
-import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-views"
+import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-view"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Info from "./info"

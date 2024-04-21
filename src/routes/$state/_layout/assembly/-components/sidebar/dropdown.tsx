@@ -1,4 +1,4 @@
-import AssemblyView, { ASSEMBLY_VIEW_TO_NAME, SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-views"
+import AssemblyView, { ASSEMBLY_VIEW_TO_NAME, SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-view"
 import { selectActiveModules, setActiveModules } from "@/redux/assembly"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { Listbox, Transition } from "@headlessui/react"

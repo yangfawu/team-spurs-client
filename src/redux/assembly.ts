@@ -1,4 +1,4 @@
-import AssemblyView from "@/constants/assembly-views"
+import AssemblyView from "@/constants/assembly-view"
 import Group from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
