@@ -25,9 +25,6 @@ const StateLayoutMinorityDistributionImport = createFileRoute(
   "/$state/_layout/minority-distribution",
 )()
 const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
-const StateLayoutOverviewIndexLazyImport = createFileRoute(
-  "/$state/_layout/overview/",
-)()
 const StateLayoutHeatIndexLazyImport = createFileRoute(
   "/$state/_layout/heat/",
 )()
@@ -76,14 +73,6 @@ const StateLayoutIndexLazyRoute = StateLayoutIndexLazyImport.update({
 } as any).lazy(() =>
   import("./routes/$state/_layout/index.lazy").then((d) => d.Route),
 )
-
-const StateLayoutOverviewIndexLazyRoute =
-  StateLayoutOverviewIndexLazyImport.update({
-    path: "/overview/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/overview/index.lazy").then((d) => d.Route),
-  )
 
 const StateLayoutHeatIndexLazyRoute = StateLayoutHeatIndexLazyImport.update({
   path: "/heat/",
@@ -207,10 +196,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutHeatIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
-    "/$state/_layout/overview/": {
-      preLoaderRoute: typeof StateLayoutOverviewIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
     "/$state/_layout/minority-distribution/_layout/": {
       preLoaderRoute: typeof StateLayoutMinorityDistributionLayoutIndexImport
       parentRoute: typeof StateLayoutMinorityDistributionLayoutImport
@@ -241,7 +226,6 @@ export const routeTree = rootRoute.addChildren([
       StateLayoutEiIndexLazyRoute,
       StateLayoutGinglesIndexLazyRoute,
       StateLayoutHeatIndexLazyRoute,
-      StateLayoutOverviewIndexLazyRoute,
     ]),
   ]),
 ])

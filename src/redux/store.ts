@@ -1,11 +1,13 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
+import { assemblySlice } from "./assembly"
 import { showcaseSlice } from "./showcase"
 import { stateSelectionSlice } from "./state-selection"
 
 const rootReducer = combineSlices(
     stateSelectionSlice,
+    assemblySlice,
     showcaseSlice,
     /* insert more slices later */
 )
