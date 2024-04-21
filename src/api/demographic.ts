@@ -22,42 +22,24 @@ export interface GroupBar {
     value: number
 }
 
+const NAME = "demographic"
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/demo`
 
+// TODO: move this to assembly.ts after changes to backend
 export function fetchStateDemographic(state: State) {
     return queryOptions<StateDemographic>({
-        queryKey: ["demographic", "state", state],
+        queryKey: [NAME, "fetchStateDemographic", state],
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/overall/${state}`, { signal })
             const data: StateDemographic = await res.json()
             return data
-            // const out: GroupBar[] = []
-
-            // // Compute the data for the chart
-            // const { count } = data
-            // for (const group of SUPPORTED_GROUPS) {
-            //     if (group in count) {
-            //         const name = GROUP_TO_NAME[group]
-            //         const short = GROUP_TO_ABBREV[group]
-            //         out.push({
-            //             group,
-            //             label: { long: name, short },
-            //             value: count[group],
-            //         })
-            //     }
-            // }
-
-            // // Sort the bars by population
-            // out.sort((a, b) => b.value - a.value)
-
-            // return out
         },
     })
 }
 
 export function fetchDistrictsDemographics(state: State) {
     return queryOptions<DistrictDemographic[]>({
-        queryKey: ["demographic", "districts", state],
+        queryKey: [NAME, "fetchDistrictsDemographics", state],
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/district/${state}`, { signal })
             const data: DistrictDemographic[] = await res.json()
@@ -68,7 +50,7 @@ export function fetchDistrictsDemographics(state: State) {
 
 export function fetchOneDistrictDemographic(state: State, district: number) {
     return queryOptions<GroupBar[]>({
-        queryKey: ["demographic", "district", state, district],
+        queryKey: [NAME, "fetchOneDistrictDemographic", state, district],
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/district/${state}`, { signal })
             const data: DistrictDemographic[] = await res.json()
@@ -98,6 +80,5 @@ export function fetchOneDistrictDemographic(state: State, district: number) {
 
             return out
         },
-        staleTime: Infinity,
     })
 }
