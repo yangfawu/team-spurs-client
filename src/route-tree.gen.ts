@@ -32,9 +32,6 @@ const StateLayoutGinglesIndexLazyImport = createFileRoute(
   "/$state/_layout/gingles/",
 )()
 const StateLayoutEiIndexLazyImport = createFileRoute("/$state/_layout/ei/")()
-const StateLayoutDistrictPlanIndexLazyImport = createFileRoute(
-  "/$state/_layout/district-plan/",
-)()
 const StateLayoutCompareIndexLazyImport = createFileRoute(
   "/$state/_layout/compare/",
 )()
@@ -95,16 +92,6 @@ const StateLayoutEiIndexLazyRoute = StateLayoutEiIndexLazyImport.update({
 } as any).lazy(() =>
   import("./routes/$state/_layout/ei/index.lazy").then((d) => d.Route),
 )
-
-const StateLayoutDistrictPlanIndexLazyRoute =
-  StateLayoutDistrictPlanIndexLazyImport.update({
-    path: "/district-plan/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/district-plan/index.lazy").then(
-      (d) => d.Route,
-    ),
-  )
 
 const StateLayoutCompareIndexLazyRoute =
   StateLayoutCompareIndexLazyImport.update({
@@ -180,10 +167,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutCompareIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
-    "/$state/_layout/district-plan/": {
-      preLoaderRoute: typeof StateLayoutDistrictPlanIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
     "/$state/_layout/ei/": {
       preLoaderRoute: typeof StateLayoutEiIndexLazyImport
       parentRoute: typeof StateLayoutImport
@@ -222,7 +205,6 @@ export const routeTree = rootRoute.addChildren([
       ]),
       StateLayoutAssemblyIndexLazyRoute,
       StateLayoutCompareIndexLazyRoute,
-      StateLayoutDistrictPlanIndexLazyRoute,
       StateLayoutEiIndexLazyRoute,
       StateLayoutGinglesIndexLazyRoute,
       StateLayoutHeatIndexLazyRoute,
