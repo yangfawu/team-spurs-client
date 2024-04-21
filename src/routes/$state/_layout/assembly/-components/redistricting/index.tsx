@@ -2,12 +2,13 @@ import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-views"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Info from "./info"
+import Loader from "./loader"
 
 export default function Redistricting() {
     return (
         <Container>
             <h3 className="text-lg font-bold">{ASSEMBLY_VIEW_TO_NAME[AssemblyView.REDISTRICTING]}</h3>
-            <Suspense>
+            <Suspense fallback={<Loader />}>
                 <Info />
             </Suspense>
         </Container>
