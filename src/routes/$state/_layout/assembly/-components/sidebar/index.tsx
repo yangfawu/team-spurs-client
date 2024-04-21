@@ -1,4 +1,4 @@
-import AssemblyView from "@/constants/assembly-views"
+import AssemblyView from "@/constants/assembly-view"
 import { ElementType } from "react"
 import Dropdown from "./dropdown"
 import Sandbox from "./sandbox"

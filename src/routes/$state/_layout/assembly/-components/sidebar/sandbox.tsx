@@ -1,6 +1,6 @@
 import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
 import SuspensePanel from "@/components/resizable-panels/suspense-panel"
-import AssemblyView, { SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-views"
+import AssemblyView, { SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-view"
 import { selectActiveModules } from "@/redux/assembly"
 import { useAppSelector } from "@/redux/hooks"
 import { ElementType, Fragment, useMemo } from "react"
