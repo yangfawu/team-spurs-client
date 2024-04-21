@@ -18,7 +18,7 @@ function Page() {
                         <p className="italic">we currently support only these modes for {STATE_TO_NAME[state]}</p>
                     </div>
                     {SUPPORTED_MODES.map($m => (
-                        <Option to={$m}>
+                        <Option key={$m} to={$m}>
                             <div className="flex-1">
                                 <h3 className="text-xl font-semibold">{MODE_TO_NAME[$m]}</h3>
                                 <h4>{MODE_DESCRIPTIONS[$m]}</h4>

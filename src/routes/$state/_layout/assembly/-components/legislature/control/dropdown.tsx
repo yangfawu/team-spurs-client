@@ -17,7 +17,7 @@ export default function Dropdown<T>({ tag, options, value, setValue, format, for
     return (
         <div className="w-60">
             <Listbox multiple value={value} onChange={setValue}>
-                <div className="relative mt-1">
+                <div className="relative">
                     <Button>
                         <span className="block truncate">
                             {value.length === 0 ? `All ${tag}` : `${tag}: ${value.map(formatShort).join(", ")}`}

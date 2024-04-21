@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 export default function Loader() {
     return (
         <Box>
-            <p>Loading assembly districts...</p>
+            <p>Loading heat map...</p>
         </Box>
     )
 }

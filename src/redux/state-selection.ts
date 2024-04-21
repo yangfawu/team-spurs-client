@@ -4,9 +4,9 @@ export interface StateSelectionSliceState {
     useSimpleInterface: boolean
 }
 
-const USE_SIMPLE_INTERFACE_SAVE_KEY = "state-selection:useSimpleInterface"
+const SAVE_KEY = "state-selection:useSimpleInterface"
 const initialState: StateSelectionSliceState = {
-    useSimpleInterface: localStorage.getItem(USE_SIMPLE_INTERFACE_SAVE_KEY) === "true",
+    useSimpleInterface: localStorage.getItem(SAVE_KEY) === "true",
 }
 
 export const stateSelectionSlice = createSlice({
@@ -16,7 +16,7 @@ export const stateSelectionSlice = createSlice({
         updateConfig: create.reducer((state, action: PayloadAction<boolean>) => {
             const newValue = action.payload
             state.useSimpleInterface = newValue
-            localStorage.setItem(USE_SIMPLE_INTERFACE_SAVE_KEY, newValue.toString())
+            localStorage.setItem(SAVE_KEY, newValue.toString())
         }),
     }),
     selectors: {
