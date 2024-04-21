@@ -1,10 +1,11 @@
 import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
+import SuspensePanel from "@/components/resizable-panels/suspense-panel"
 import VerticalDivider from "@/components/resizable-panels/vertical-divider"
 import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { Panel, PanelGroup } from "react-resizable-panels"
-import Map from "./map"
 import LegislatureTable from "./legislature-table"
+import Map from "./map"
 
 export default function App() {
     const mapRef = useMapRef()
@@ -15,25 +16,31 @@ export default function App() {
             <PanelGroup direction="horizontal" autoSaveId={AssemblySaveKey.ROOT}>
                 <Panel minSize={20} defaultSize={70} collapsible onResize={redrawMap}>
                     <PanelGroup direction="vertical" autoSaveId={AssemblySaveKey.LEFT}>
-                        <Panel className="relative" minSize={25} collapsible defaultSize={80} onResize={redrawMap}>
+                        <SuspensePanel
+                            className="relative"
+                            minSize={25}
+                            collapsible
+                            defaultSize={80}
+                            onResize={redrawMap}
+                        >
                             <Map />
-                        </Panel>
+                        </SuspensePanel>
                         <HorizontalDivider />
-                        <Panel minSize={25} collapsible>
+                        <SuspensePanel minSize={25} collapsible>
                             <LegislatureTable />
-                        </Panel>
+                        </SuspensePanel>
                     </PanelGroup>
                 </Panel>
                 <VerticalDivider />
                 <Panel minSize={20} maxSize={40} collapsible>
                     <PanelGroup direction="vertical" autoSaveId={AssemblySaveKey.RIGHT}>
-                        <Panel minSize={25} collapsible defaultSize={33}>
+                        <SuspensePanel minSize={25} collapsible defaultSize={33}>
                             {/* <StateDemographic /> */}
-                        </Panel>
+                        </SuspensePanel>
                         <HorizontalDivider />
-                        <Panel minSize={25} collapsible defaultSize={33}>
+                        <SuspensePanel minSize={25} collapsible defaultSize={33}>
                             {/* <DistrictDemographic /> */}
-                        </Panel>
+                        </SuspensePanel>
                     </PanelGroup>
                 </Panel>
             </PanelGroup>
