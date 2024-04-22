@@ -1,6 +1,7 @@
 import Control from "@/components/control"
 import Mode from "@/constants/mode"
 import { CurrentModeProvider } from "@/contexts/current-mode"
+import { MapRefProvider } from "@/contexts/map-ref"
 import { createLazyFileRoute } from "@tanstack/react-router"
 import { Suspense } from "react"
 import App from "./-components/app"
@@ -11,7 +12,9 @@ function Layout() {
         <CurrentModeProvider value={Mode.HEAT}>
             <Control />
             <Suspense fallback={<Loader />}>
-                <App />
+                <MapRefProvider>
+                    <App />
+                </MapRefProvider>
             </Suspense>
         </CurrentModeProvider>
     )

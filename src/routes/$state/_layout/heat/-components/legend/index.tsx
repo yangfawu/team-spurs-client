@@ -2,11 +2,12 @@ import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Bins from "./bins"
 import Loader from "./loader"
+import Title from "./title"
 
 export default function Legend() {
     return (
         <Container>
-            <h3 className="text-lg font-bold">Legend</h3>
+            <Title />
             <Suspense fallback={<Loader />}>
                 <Bins />
             </Suspense>
@@ -15,7 +16,9 @@ export default function Legend() {
 }
 
 const Container = tw.div`
-    flex-1
+    h-full
     p-2
+    flex flex-col items-stretch gap-2
+    overflow-y-auto
     flex flex-col items-stretch gap-2
 `

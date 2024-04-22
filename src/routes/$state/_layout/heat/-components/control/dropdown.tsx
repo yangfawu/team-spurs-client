@@ -12,7 +12,7 @@ interface Props<T> {
 }
 export default function Dropdown<T>({ tag, options, value, setValue, format }: Props<T>) {
     return (
-        <div className="w-60">
+        <div className="flex-1 min-w-40">
             <Listbox value={value} onChange={setValue}>
                 <div className="relative">
                     <Button>

@@ -15,7 +15,7 @@ export default function StateMapContainer({ children }: Props) {
 
     return (
         <MapContainer
-            className="w-full h-full"
+            className="relative w-full h-full"
             bounds={BBOXES[state]}
             minZoom={6}
             maxZoom={13}

@@ -4,7 +4,7 @@ import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
 import { PanelGroup } from "react-resizable-panels"
 import Map from "./map"
-import Precincts from "./precincts"
+import Districts from "./districts"
 
 export default function App() {
     const mapRef = useMapRef()
@@ -18,7 +18,7 @@ export default function App() {
                 </SuspensePanel>
                 <HorizontalDivider />
                 <SuspensePanel minSize={25} collapsible>
-                    <Precincts />
+                    <Districts />
                 </SuspensePanel>
             </PanelGroup>
         </div>

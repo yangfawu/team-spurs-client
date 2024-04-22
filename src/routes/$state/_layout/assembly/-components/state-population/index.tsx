@@ -1,4 +1,4 @@
-import TableLoader from "@/components/loader/table-loader"
+import BarChartLoader from "@/components/loader/bar-chart-loader"
 import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-view"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
@@ -9,7 +9,7 @@ export default function StatePopulation() {
     return (
         <Container>
             <h3 className="text-lg font-bold">{ASSEMBLY_VIEW_TO_NAME[AssemblyView.STATE_POPULATION]}</h3>
-            <Suspense fallback={<TableLoader />}>
+            <Suspense fallback={<BarChartLoader />}>
                 <Aggregate />
                 <Chart />
             </Suspense>

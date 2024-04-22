@@ -6,15 +6,23 @@ export default function Control() {
     return (
         <Container>
             <h3 className="text-lg font-bold">Control</h3>
-            <div className="relative z-[1000] flex flex-wrap gap-2 items-center">
+            <ActionBox>
                 <GroupSelection />
                 <LevelSelection />
-            </div>
+            </ActionBox>
         </Container>
     )
 }
 
 const Container = tw.div`
+    relative z-[9000]
+    h-full
     p-2
+    overflow-y-auto
     flex flex-col items-stretch gap-2
+`
+
+const ActionBox = tw.div`
+    relative z-[2000]
+    flex items-center gap-2 flex-wrap
 `

@@ -1,9 +1,10 @@
 import { fetchRepresentatives } from "@/api/representative"
+import TableLoader from "@/components/loader/table-loader"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { selectLegislature } from "@/redux/assembly"
 import { useAppSelector } from "@/redux/hooks"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { useMemo } from "react"
+import { Suspense, useMemo } from "react"
 import tw from "tailwind-styled-components"
 import Control from "./control"
 import Table from "./table"
@@ -27,8 +28,10 @@ export default function Legislature() {
     return (
         <Container>
             <h3 className="p-2 text-lg font-bold">State Assembly Members</h3>
-            <Table data={filteredData} />
-            <Control size={filteredData.length} />
+            <Suspense fallback={<TableLoader />}>
+                <Table data={filteredData} />
+                <Control size={filteredData.length} />
+            </Suspense>
         </Container>
     )
 }
