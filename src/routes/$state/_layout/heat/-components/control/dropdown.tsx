@@ -72,8 +72,8 @@ const Button = tw(Listbox.Button)`
 `
 
 const Options = tw(Listbox.Options)`
-    absolute -top-2 z-[200]
-    transform -translate-y-full
+    absolute -bottom-2 z-[200]
+    transform translate-y-full
     max-h-40 w-full 
     overflow-auto 
     rounded-md 

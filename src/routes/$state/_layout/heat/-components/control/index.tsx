@@ -15,14 +15,13 @@ export default function Control() {
 }
 
 const Container = tw.div`
-    relative z-[9000]
+    relative
     h-full
     p-2
-    overflow-y-auto
+    overflow-auto
     flex flex-col items-stretch gap-2
 `
 
 const ActionBox = tw.div`
-    relative z-[2000]
     flex items-center gap-2 flex-wrap
 `
