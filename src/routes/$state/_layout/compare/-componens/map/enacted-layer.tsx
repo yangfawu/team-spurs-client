@@ -14,12 +14,15 @@ export default function EnactedLayer() {
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
             const { district: $d } = properties
-            layer.bindTooltip(`District ${$d}`, { sticky: true })
+            layer.bindTooltip(`Enacted District ${$d}`, { sticky: true })
         }
     }, [])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
-        return () => ({ fillColor: Fill.REGULAR })
+        return () => ({
+            fillOpacity: 0,
+            color: Fill.REGULAR
+        })
     }, [])
 
     return (
