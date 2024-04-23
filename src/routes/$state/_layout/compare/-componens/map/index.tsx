@@ -10,21 +10,19 @@ import SeawulfLayer from "./seawulf-layer"
 export default function Map() {
     return (
         <StateMapContainer>
-            <LayersControl position="topright">
-                <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Loader />}>
+                <LayersControl position="topright">
                     <LayersControl.Overlay name="Currently Enacted Plan" checked>
                         <GeoLayerRefProvider>
                             <EnactedLayer />
                             <RefocusButton />
                         </GeoLayerRefProvider>
                     </LayersControl.Overlay>
-                </Suspense>
-                <Suspense fallback={<Loader />}>
                     <LayersControl.Overlay name="Selected Seawulf Plan" checked>
                         <SeawulfLayer />
                     </LayersControl.Overlay>
-                </Suspense>
-            </LayersControl>
+                </LayersControl>
+            </Suspense>
         </StateMapContainer>
     )
 }

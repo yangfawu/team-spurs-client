@@ -1,11 +1,15 @@
 import TableLoader from "@/components/loader/table-loader"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
+import Control from "./control"
 
 export default function Districts() {
     return (
         <Container>
-            <h3 className="text-lg font-bold p-2">Districts</h3>
+            <div className="p-2 space-y-2">
+                <h3 className="text-lg font-bold">Districts</h3>
+                <Control />
+            </div>
             <Suspense fallback={<TableLoader />}>
                 <TableLoader />
             </Suspense>
