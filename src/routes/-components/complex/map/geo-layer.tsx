@@ -1,4 +1,5 @@
-import { StateGeoFeature, fetchAllStatesMap } from "@/api/map"
+import { fetchAllStatesMap } from "@/api/misc"
+import { StateGeoFeature } from "@/api/misc"
 import { STATE_TO_NAME } from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useSuspenseQuery } from "@tanstack/react-query"

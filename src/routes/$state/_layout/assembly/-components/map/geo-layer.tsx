@@ -1,4 +1,5 @@
-import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/map"
+import { AssemblyDistrictGeoFeature } from "@/api/assembly"
+import { fetchStateAssemblyMap } from "@/api/assembly"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { selectDistrict } from "@/redux/assembly"

@@ -1,4 +1,4 @@
-import { fetchStateDemographic } from "@/api/demographic"
+import { fetchStateDemographic } from "@/api/assembly"
 import { SUPPORTED_GROUPS } from "@/constants/group"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useSuspenseQuery } from "@tanstack/react-query"

@@ -38,7 +38,9 @@ export default function GeoLayer() {
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         const { bins } = legend
-        const fillOpacity = 0.7
+        const fillOpacity = 0.8
+        const color = bins[bins.length >> 1].color
+
         return feature => {
             if (!feature) {
                 return { fillOpacity, fillColor: Fill.REGULAR }
@@ -48,7 +50,7 @@ export default function GeoLayer() {
                 bins: { [group]: id },
             } = feature as HeatMapFeature
             const fillColor = bins[id].color
-            return { fillOpacity, fillColor }
+            return { fillOpacity, fillColor, color, weight: 0.5 }
         }
     }, [legend, group])
 
