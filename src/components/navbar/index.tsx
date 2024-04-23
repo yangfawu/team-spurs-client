@@ -3,7 +3,7 @@ import Logo from "../logo"
 import ModeSelection from "./mode-selection"
 import StateSelection from "./state-selection"
 
-export default function Control() {
+export default function Navbar() {
     return (
         <div className="flex divide-black divide-x-2">
             <Logo />
