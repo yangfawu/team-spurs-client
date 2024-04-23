@@ -1,4 +1,4 @@
-import { fetchRepresentatives } from "@/api/representative"
+import { fetchRepresentatives } from "@/api/assembly"
 import TableLoader from "@/components/loader/table-loader"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { selectLegislature } from "@/redux/assembly"

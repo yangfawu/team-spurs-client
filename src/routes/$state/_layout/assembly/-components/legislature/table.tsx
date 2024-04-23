@@ -1,5 +1,5 @@
-import { fetchStateAssemblyMap } from "@/api/map"
-import { Representative } from "@/api/representative"
+import { fetchStateAssemblyMap } from "@/api/assembly"
+import { Representative } from "@/api/assembly"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useMapRef } from "@/contexts/map-ref"
 import { selectDistrict, showcaseDistrict } from "@/redux/assembly"

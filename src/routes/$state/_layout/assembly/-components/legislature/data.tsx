@@ -1,4 +1,4 @@
-import { Representative } from "@/api/representative"
+import { Representative } from "@/api/assembly"
 import { GROUP_TO_NAME } from "@/constants/group"
 import { PARTY_TO_NAME } from "@/constants/party"
 import { createColumnHelper } from "@tanstack/react-table"
