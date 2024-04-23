@@ -1,4 +1,4 @@
-import Control from "@/components/control"
+import Navbar from "@/components/navbar"
 import Mode from "@/constants/mode"
 import { CurrentModeProvider } from "@/contexts/current-mode"
 import { MapRefProvider } from "@/contexts/map-ref"
@@ -10,7 +10,7 @@ import Loader from "./-components/loader"
 function Page() {
     return (
         <CurrentModeProvider value={Mode.ASSEMBLY}>
-            <Control />
+            <Navbar />
             <Suspense fallback={<Loader />}>
                 <MapRefProvider>
                     <App />

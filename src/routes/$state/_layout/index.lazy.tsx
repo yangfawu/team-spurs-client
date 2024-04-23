@@ -1,4 +1,4 @@
-import Control from "@/components/control"
+import Navbar from "@/components/navbar"
 import { MODE_DESCRIPTIONS, MODE_TO_NAME, SUPPORTED_MODES } from "@/constants/mode"
 import { STATE_TO_NAME } from "@/constants/state"
 import { useSafeCurrentState } from "@/contexts/current-state"
@@ -10,7 +10,7 @@ function Page() {
 
     return (
         <>
-            <Control />
+            <Navbar />
             <div className="flex-1 flex justify-center p-4">
                 <div className="w-full max-w-screen-md divide-y divide-black">
                     <div className="mb-4">
