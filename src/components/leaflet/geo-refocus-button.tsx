@@ -1,11 +1,11 @@
-import ControlButton from "@/components/leaflet/control-button"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { ViewfinderCircleIcon } from "@heroicons/react/20/solid"
 import { useCallback } from "react"
 import { useMap } from "react-leaflet"
 import Control from "react-leaflet-custom-control"
+import ControlButton from "./control-button"
 
-export default function RefocusButton() {
+export default function GeoRefocusButton() {
     const geoRef = useGeoLayerRef()
     const map = useMap()
 
