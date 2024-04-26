@@ -26,7 +26,7 @@ export default function Chart({ data }: Props) {
         for (const group of SUPPORTED_GROUPS) {
             const long = GROUP_TO_NAME[group]
             const short = GROUP_TO_ABBREV[group]
-            const value = data[group]
+            const value = Math.floor(data[group])
             out.push({
                 group,
                 label: { long, short },
@@ -40,9 +40,13 @@ export default function Chart({ data }: Props) {
         return out
     }, [data])
 
+    const filteredBars = useMemo(() => {
+        return bars.filter(({ value }) => value > 0)
+    }, [bars])
+
     return (
         <ResponsiveContainer className="flex-1 overflow-clip">
-            <BarChart data={bars}>
+            <BarChart data={filteredBars}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="category" dataKey="label.short" interval={0} />
                 <YAxis type="number" tickFormatter={format} />
@@ -58,7 +62,7 @@ export default function Chart({ data }: Props) {
                     }}
                 />
                 <Bar dataKey="value" activeBar={<Rectangle fill="pink" stroke="blue" />}>
-                    {bars.map(({ group: $g }) => (
+                    {filteredBars.map(({ group: $g }) => (
                         <Cell key={$g} fill={$g === group ? "red" : "#8884d8"} />
                     ))}
                 </Bar>

@@ -50,12 +50,16 @@ export default function Chart() {
         out.sort((a, b) => b.value - a.value)
 
         // Filter out bars with no representation
-        return out.filter(({ value }) => value > 0) 
+        return out.filter(({ value }) => value > 0)
     }, [data])
+
+    const filteredBars = useMemo(() => {
+        return bars.filter(({ value }) => value > 0)
+    }, [bars])
 
     return (
         <ResponsiveContainer className="flex-1 overflow-clip">
-            <BarChart data={bars}>
+            <BarChart data={filteredBars}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="category" dataKey="label.short" interval={0} />
                 <YAxis type="number" />
