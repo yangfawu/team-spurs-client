@@ -9,7 +9,7 @@ export default function Loader() {
 }
 
 const Box = tw.div`
-    absolute
+    absolute z-[1000]
     inset-0
     bg-black/20
     flex items-center justify-center
