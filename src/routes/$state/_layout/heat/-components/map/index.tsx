@@ -1,18 +1,18 @@
+import GeoRefocusButton from "@/components/leaflet/geo-refocus-button"
 import StateMapContainer from "@/components/leaflet/state-map-container"
+import MapLoader from "@/components/loader/map-loader"
 import { GeoLayerRefProvider } from "@/contexts/geo-layer-ref"
 import "leaflet/dist/leaflet.css"
 import { Suspense } from "react"
 import GeoLayer from "./geo-layer"
-import Loader from "./loader"
-import RefocusButton from "./refocus-button"
 
 export default function Map() {
     return (
-        <StateMapContainer>
-            <Suspense fallback={<Loader />}>
+        <StateMapContainer preferCanvas>
+            <Suspense fallback={<MapLoader />}>
                 <GeoLayerRefProvider>
                     <GeoLayer />
-                    <RefocusButton />
+                    <GeoRefocusButton />
                 </GeoLayerRefProvider>
             </Suspense>
         </StateMapContainer>
