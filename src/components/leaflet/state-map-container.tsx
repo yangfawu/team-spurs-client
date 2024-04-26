@@ -22,6 +22,7 @@ export default function StateMapContainer({ children }: Props) {
             attributionControl={false}
             worldCopyJump
             ref={mapRef}
+            preferCanvas
         >
             <GrayTileLayer />
             {children}
