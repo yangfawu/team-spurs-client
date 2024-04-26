@@ -1,12 +1,12 @@
+import GeoRefocusButton from "@/components/leaflet/geo-refocus-button"
 import GrayTileLayer from "@/components/leaflet/gray-tile-layer"
+import MapLoader from "@/components/loader/map-loader"
 import { GeoLayerRefProvider } from "@/contexts/geo-layer-ref"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { Suspense } from "react"
 import { MapContainer } from "react-leaflet"
 import GeoLayer from "./geo-layer"
-import Loader from "./loader"
-import RefocusButton from "./refocus-button"
 
 export default function Map() {
     return (
@@ -21,10 +21,10 @@ export default function Map() {
             worldCopyJump
         >
             <GrayTileLayer />
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<MapLoader />}>
                 <GeoLayerRefProvider>
                     <GeoLayer />
-                    <RefocusButton />
+                    <GeoRefocusButton />
                 </GeoLayerRefProvider>
             </Suspense>
         </MapContainer>
