@@ -48,7 +48,7 @@ export default function Chart() {
             <BarChart data={bars}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="category" dataKey="label.short" interval={0} />
-                <YAxis type="number" tickFormatter={format} />
+                <YAxis type="number" tickFormatter={axisFormatter} />
                 <Tooltip
                     content={({ active, payload }) => {
                         if (!active || !payload?.[0]) return null
@@ -57,7 +57,7 @@ export default function Chart() {
                             label: { long },
                             value,
                         } = payload[0].payload as BarData
-                        return <TooltipContent title={long} value={value} format={format} />
+                        return <TooltipContent title={long} value={value} format={tooltipFormatter} />
                     }}
                 />
                 <Bar dataKey="value" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
@@ -66,4 +66,5 @@ export default function Chart() {
     )
 }
 
-const format = (value: any) => Number(value).toPrecision(3)
+const axisFormatter = (value: any) => Number(value).toPrecision(3)
+const tooltipFormatter = (value: any) => Number(value).toLocaleString()
