@@ -7,9 +7,10 @@ import { MapContainer } from "react-leaflet"
 import GrayTileLayer from "./gray-tile-layer"
 
 interface Props {
+    preferCanvas?: boolean
     children?: ReactNode
 }
-export default function StateMapContainer({ children }: Props) {
+export default function StateMapContainer({ preferCanvas = false, children }: Props) {
     const mapRef = useMapRef()
     const state = useSafeCurrentState()
 
@@ -22,7 +23,7 @@ export default function StateMapContainer({ children }: Props) {
             attributionControl={false}
             worldCopyJump
             ref={mapRef}
-            preferCanvas
+            preferCanvas={preferCanvas}
         >
             <GrayTileLayer />
             {children}
