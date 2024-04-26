@@ -49,7 +49,8 @@ export default function Chart() {
         // Sort the bars by count
         out.sort((a, b) => b.value - a.value)
 
-        return out
+        // Filter out bars with no representation
+        return out.filter(({ value }) => value > 0) 
     }, [data])
 
     return (
