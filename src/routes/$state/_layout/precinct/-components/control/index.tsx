@@ -1,27 +1,23 @@
 import tw from "tailwind-styled-components"
-import ClearPrecinctAction from "./clear-precinct-action"
+import ElectionSelection from "./election-selection"
 import GroupSelection from "./group-selection"
-import LevelSelection from "./level-selection"
 
 export default function Control() {
     return (
         <Container>
             <h3 className="text-lg font-bold">Control</h3>
-            <ActionBox>
+            <div className="flex flex-wrap gap-2 items-start">
+                <ElectionSelection />
                 <GroupSelection />
-                <LevelSelection />
-                <ClearPrecinctAction />
-            </ActionBox>
+            </div>
         </Container>
     )
 }
 
 const Container = tw.div`
     relative
-    h-full
     p-2
-    overflow-auto
-    flex flex-col items-stretch gap-2
+    space-y-2
 `
 
 const ActionBox = tw.div`
