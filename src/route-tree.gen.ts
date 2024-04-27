@@ -20,11 +20,11 @@ import { Route as StateLayoutImport } from "./routes/$state/_layout"
 
 const StateImport = createFileRoute("/$state")()
 const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
+const StateLayoutPrecinctIndexLazyImport = createFileRoute(
+  "/$state/_layout/precinct/",
+)()
 const StateLayoutHeatIndexLazyImport = createFileRoute(
   "/$state/_layout/heat/",
-)()
-const StateLayoutGinglesIndexLazyImport = createFileRoute(
-  "/$state/_layout/gingles/",
 )()
 const StateLayoutEiIndexLazyImport = createFileRoute("/$state/_layout/ei/")()
 const StateLayoutCompareIndexLazyImport = createFileRoute(
@@ -58,20 +58,20 @@ const StateLayoutIndexLazyRoute = StateLayoutIndexLazyImport.update({
   import("./routes/$state/_layout/index.lazy").then((d) => d.Route),
 )
 
+const StateLayoutPrecinctIndexLazyRoute =
+  StateLayoutPrecinctIndexLazyImport.update({
+    path: "/precinct/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/precinct/index.lazy").then((d) => d.Route),
+  )
+
 const StateLayoutHeatIndexLazyRoute = StateLayoutHeatIndexLazyImport.update({
   path: "/heat/",
   getParentRoute: () => StateLayoutRoute,
 } as any).lazy(() =>
   import("./routes/$state/_layout/heat/index.lazy").then((d) => d.Route),
 )
-
-const StateLayoutGinglesIndexLazyRoute =
-  StateLayoutGinglesIndexLazyImport.update({
-    path: "/gingles/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/gingles/index.lazy").then((d) => d.Route),
-  )
 
 const StateLayoutEiIndexLazyRoute = StateLayoutEiIndexLazyImport.update({
   path: "/ei/",
@@ -128,12 +128,12 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutEiIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
-    "/$state/_layout/gingles/": {
-      preLoaderRoute: typeof StateLayoutGinglesIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
     "/$state/_layout/heat/": {
       preLoaderRoute: typeof StateLayoutHeatIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/precinct/": {
+      preLoaderRoute: typeof StateLayoutPrecinctIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
   }
@@ -149,8 +149,8 @@ export const routeTree = rootRoute.addChildren([
       StateLayoutAssemblyIndexLazyRoute,
       StateLayoutCompareIndexLazyRoute,
       StateLayoutEiIndexLazyRoute,
-      StateLayoutGinglesIndexLazyRoute,
       StateLayoutHeatIndexLazyRoute,
+      StateLayoutPrecinctIndexLazyRoute,
     ]),
   ]),
 ])

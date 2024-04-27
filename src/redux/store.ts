@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import { assemblySlice } from "./assembly"
 import { compareSlice } from "./compare"
 import { heatSlice } from "./heat"
+import { precinctSlice } from "./precinct"
 import { stateSelectionSlice } from "./state-selection"
 
 const rootReducer = combineSlices(
@@ -11,6 +12,7 @@ const rootReducer = combineSlices(
     assemblySlice,
     heatSlice,
     compareSlice,
+    precinctSlice,
     /* insert more slices later */
 )
 
