@@ -36,7 +36,7 @@ export interface RedistricitngInfo {
 export interface VoterInfo {
     state: State
     breakdown: Record<Party, number>
-    facts: string[]
+    // facts: string[]
 }
 
 const NAME = "assembly"
@@ -95,27 +95,13 @@ export function fetchRedistrictingInfo(state: State) {
     })
 }
 
-export function fetchVoterInfo(state: State) {
+export function fetchStateVoterDistribution(state: State) {
     return queryOptions<VoterInfo>({
         queryKey: [NAME, "fetchVoterInfo", state],
         queryFn: async ({ signal }) => {
-            return {
-                state,
-                breakdown: {
-                    [Party.DEMOCRAT]: 45,
-                    [Party.REPUBLICAN]: 55,
-                    [Party.OTHER]: 0,
-                },
-                facts: [
-                    "Virginia has 11 electoral votes.",
-                    "Virginia has 11 congressional districts.",
-                    "Virginia has 100 state legislative districts.",
-                ],
-            }
-            // TODO: uncomment when endpoint is ready
-            // const res = await fetch(`${BASE_URL}/${state}/voter`, { signal })
-            // const data: VoterInfo = await res.json()
-            // return data
+            const res = await fetch(`${BASE_URL}/${state}/voter`, { signal })
+            const data: VoterInfo = await res.json()
+            return data
         },
     })
 }

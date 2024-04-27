@@ -1,4 +1,4 @@
-import { fetchVoterInfo } from "@/api/assembly"
+import { fetchStateVoterDistribution } from "@/api/assembly"
 import { PARTY_TO_NAME, SUPPORTED_PARTIES } from "@/constants/party"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -8,14 +8,14 @@ export default function Info() {
     const state = useSafeCurrentState()
     const {
         data: { breakdown },
-    } = useSuspenseQuery(fetchVoterInfo(state))
+    } = useSuspenseQuery(fetchStateVoterDistribution(state))
 
     return (
         <div className="flex gap-2 flex-wrap">
             {SUPPORTED_PARTIES.map(party => (
-                <Stat>
+                <Stat key={party}>
                     <h4 className="text-sm font-semibold text-gray-600 uppercase">% {PARTY_TO_NAME[party]}</h4>
-                    <p className="text-2xl py-2 font-bold">{breakdown[party]}</p>
+                    <p className="text-2xl py-2 font-bold">{(breakdown[party] * 100).toFixed(3)}</p>
                 </Stat>
             ))}
         </div>
