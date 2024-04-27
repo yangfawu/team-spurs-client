@@ -1,16 +1,19 @@
 import Group from "@/constants/group"
+import PrecinctView from "@/constants/precinct-view"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export interface PrecinctSliceState {
     group: Group
     election: string
     precinct: string | null
+    view: PrecinctView
 }
 
 const initialState: PrecinctSliceState = {
     group: Group.WHITE,
     election: "2020-presidential",
     precinct: null,
+    view: PrecinctView.CHART,
 }
 
 export const precinctSlice = createSlice({
@@ -29,14 +32,18 @@ export const precinctSlice = createSlice({
         clearPrecinct: create.reducer(state => {
             state.precinct = null
         }),
+        setView: create.reducer((state, action: PayloadAction<PrecinctView>) => {
+            state.view = action.payload
+        }),
     }),
     selectors: {
         selectGroup: root => root.group,
         selectElection: root => root.election,
         selectPrecinct: root => root.precinct,
+        selectView: root => root.view,
     },
 })
 
-export const { setGroup, setElection, setPrecinct, clearPrecinct } = precinctSlice.actions
+export const { setGroup, setElection, setPrecinct, clearPrecinct, setView } = precinctSlice.actions
 
-export const { selectGroup, selectElection, selectPrecinct } = precinctSlice.selectors
+export const { selectGroup, selectElection, selectPrecinct, selectView } = precinctSlice.selectors

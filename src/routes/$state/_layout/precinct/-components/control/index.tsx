@@ -1,15 +1,17 @@
 import tw from "tailwind-styled-components"
 import ElectionSelection from "./election-selection"
 import GroupSelection from "./group-selection"
+import ViewSelection from "./view-selection"
 
 export default function Control() {
     return (
         <Container>
             <h3 className="text-lg font-bold">Control</h3>
-            <div className="flex flex-wrap gap-2 items-start">
+            <ActionBox>
                 <ElectionSelection />
                 <GroupSelection />
-            </div>
+                <ViewSelection />
+            </ActionBox>
         </Container>
     )
 }
@@ -21,5 +23,7 @@ const Container = tw.div`
 `
 
 const ActionBox = tw.div`
-    flex items-center gap-2 flex-wrap
+    flex flex-wrap
+    items-start
+    gap-2
 `
