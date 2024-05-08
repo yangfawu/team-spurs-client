@@ -13,7 +13,6 @@ import Sidebar from "./sidebar"
 const MODULE_TEMPLATE: Record<AssemblyView, ElementType> = {
     [AssemblyView.REDISTRICTING]: lazy(() => import("./redistricting")),
     [AssemblyView.REPRESENTATION]: lazy(() => import("./representation")),
-    [AssemblyView.STATE_POPULATION]: lazy(() => import("./state-population")),
     [AssemblyView.STATE_VOTER]: lazy(() => import("./state-voter")),
 }
 

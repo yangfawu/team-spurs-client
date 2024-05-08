@@ -25,7 +25,7 @@ const initialState: AssemblySliceState = {
         groups: [],
     },
     summary: {
-        modules: [AssemblyView.STATE_POPULATION, AssemblyView.REPRESENTATION],
+        modules: [AssemblyView.REPRESENTATION],
     },
 }
 
