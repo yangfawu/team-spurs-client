@@ -11,6 +11,13 @@ enum Group {
 
 export const SUPPORTED_GROUPS = Object.values(Group)
 
+export const OPPORTUNITY_GROUPS: Group[] = [
+    Group.WHITE,
+    Group.BLACK,
+    Group.HISPANIC_LATINO,
+    Group.ASIAN,
+]
+
 export const GROUP_TO_NAME: Record<Group, string> = {
     [Group.AMERICAN_INDIAN_ALASKA_NATIVE]: "American Indian/Alaska Native",
     [Group.ASIAN]: "Asian",

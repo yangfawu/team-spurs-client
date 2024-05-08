@@ -1,4 +1,4 @@
-import Group, { GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
+import Group, { GROUP_TO_NAME, OPPORTUNITY_GROUPS } from "@/constants/group"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectGroup, setGroup } from "@/redux/precinct"
 import { useMemo } from "react"
@@ -14,7 +14,7 @@ export default function GroupSelection() {
         }
     }, [])
 
-    return <Dropdown value={group} setValue={updateGroup} options={SUPPORTED_GROUPS} tag="Group" format={formatter} />
+    return <Dropdown value={group} setValue={updateGroup} options={OPPORTUNITY_GROUPS} tag="Group" format={formatter} />
 }
 
 const formatter = (group: Group) => GROUP_TO_NAME[group]

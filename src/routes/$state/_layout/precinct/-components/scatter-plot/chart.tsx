@@ -8,6 +8,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { Chart as ChartJS } from "chart.js"
 import "chart.js/auto"
 import annotationPlugin from "chartjs-plugin-annotation"
+import _ from "lodash"
 import { useMemo } from "react"
 import { Scatter } from "react-chartjs-2"
 
@@ -15,48 +16,47 @@ ChartJS.register(annotationPlugin)
 export default function Chart() {
     const state = useSafeCurrentState()
     const group = useAppSelector(selectGroup)
-    const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
+    const {
+        data: { rows, lines },
+    } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
+
+    const filteredRows = useMemo(() => {
+        return _.sampleSize(rows, Math.min(200, rows.length))
+    }, [rows])
 
     const democratPrecinctPoints = useMemo(() => {
-        return data.rows.map(({ percent_group, percent_democrat }) => [percent_group, percent_democrat] as const)
-    }, [data])
+        return filteredRows.map(({ percent_group, percent_democrat }) => [percent_group, percent_democrat] as const)
+    }, [filteredRows])
 
     const republicanPrecinctPoints = useMemo(() => {
-        return data.rows.map(({ percent_group, percent_republican }) => [percent_group, percent_republican] as const)
-    }, [data])
+        return filteredRows.map(({ percent_group, percent_republican }) => [percent_group, percent_republican] as const)
+    }, [filteredRows])
 
-    const REGRESSION_LINE_STEPS = useMemo(() => {
-        return Math.ceil(Math.max(...data.rows.map(({ percent_group }) => percent_group)) / 1e-2)
-    }, [data])
+    const dx = useMemo(() => {
+        const max = filteredRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0)
+        return max / 1e2
+    }, [filteredRows])
 
     const democratRegressionPoints = useMemo(() => {
-        const config = data.lines.find(({ party }) => party === Party.DEMOCRAT)
+        const config = lines.find(({ party }) => party === Party.DEMOCRAT)
         if (!config) return []
 
-        const [a, b, c] = config.coefficients
-        const f = (x: number) => a * Math.exp(-b * x) + c
-        return Array.from({ length: REGRESSION_LINE_STEPS }, (_, i) => {
-            const x = 1e-2 * i
-            return [x, f(x)] as const
-        })
-    }, [data, REGRESSION_LINE_STEPS])
+        const f = createExponentialDecayFunction(config.coefficients)
+        return computeRegressionPoints(f, REGRESSION_STEPS, dx)
+    }, [lines, dx])
 
     const republicanRegressionPoints = useMemo(() => {
-        const config = data.lines.find(({ party }) => party === Party.REPUBLICAN)
+        const config = lines.find(({ party }) => party === Party.REPUBLICAN)
         if (!config) return []
 
-        const [a, b, c] = config.coefficients
-        const f = (x: number) => a * Math.exp(-b * x) + c
-        return Array.from({ length: REGRESSION_LINE_STEPS }, (_, i) => {
-            const x = 1e-2 * i
-            return [x, f(x)] as const
-        })
-    }, [data, REGRESSION_LINE_STEPS])
+        const f = createExponentialDecayFunction(config.coefficients)
+        return computeRegressionPoints(f, REGRESSION_STEPS, dx)
+    }, [lines, dx])
 
     const composedData = {
         datasets: [
             {
-                label: "Democrat Vote Share",
+                label: "Democratic Vote Share",
                 data: democratPrecinctPoints,
                 backgroundColor: "#00f5",
             },
@@ -64,9 +64,10 @@ export default function Chart() {
                 label: "Republican Vote Share",
                 data: republicanPrecinctPoints,
                 backgroundColor: "#f005",
+                // formatter: (value: number) => `${value.toFixed(2)}%`,
             },
             {
-                label: "Democrat Line",
+                label: "Democratic Line",
                 data: democratRegressionPoints,
                 type: "line",
                 borderColor: "#00f",
@@ -100,12 +101,17 @@ export default function Chart() {
                     display: true,
                     text: xAxisLabel,
                 },
+                ticks: {
+                    min: 0,
+                    callback: (value: number) => `${value * 100}%`,
+                },
             },
             y: {
                 beginAtZero: true,
                 ticks: {
                     min: 0,
                     max: 1,
+                    callback: (value: number) => `${value * 100}%`,
                 },
                 title: {
                     display: true,
@@ -117,8 +123,17 @@ export default function Chart() {
             legend: {
                 position: "bottom",
             },
+            tooltip: {
+                callbacks: {
+                    label: (context: any) => {
+                        const [x, y] = context.raw as [number, number]
+                        const label = context.dataset.label as string
+                        return `${label}: (${(x * 100).toPrecision(3)}%, ${(y * 100).toPrecision(3)}%)`
+                    },
+                },
+            },
         },
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
     }
 
     return (
@@ -127,4 +142,17 @@ export default function Chart() {
             <Scatter data={composedData} options={options} width="100%" />
         </div>
     )
+}
+
+const REGRESSION_STEPS = 1e2
+
+const createExponentialDecayFunction = ([a, b, c]: number[]) => {
+    return (x: number) => a * Math.exp(-b * x) + c
+}
+
+const computeRegressionPoints = (f: (x: number) => number, steps: number, dx: number) => {
+    return Array.from({ length: steps + 1 }, (_, i) => {
+        const x = dx * i
+        return [x, f(x)] as const
+    })
 }

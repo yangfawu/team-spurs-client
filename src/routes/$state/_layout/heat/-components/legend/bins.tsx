@@ -33,4 +33,4 @@ const Bin = tw.div`
     border rounded-sm
 `
 
-const format = (value: number) => `≤ ${value.toPrecision(2)}`
+const format = (value: number) => `≤ ${value.toFixed(2)}%`
