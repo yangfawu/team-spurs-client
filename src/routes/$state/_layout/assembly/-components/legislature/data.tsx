@@ -2,6 +2,7 @@ import { Representative } from "@/api/assembly"
 import { GROUP_TO_NAME } from "@/constants/group"
 import { PARTY_TO_NAME } from "@/constants/party"
 import { createColumnHelper } from "@tanstack/react-table"
+import tw from "tailwind-styled-components"
 
 const ch = createColumnHelper<Representative>()
 export const COLUMNS = [
@@ -16,8 +17,8 @@ export const COLUMNS = [
             const [fname, lname, src] = c.getValue()
             const name = `${fname} ${lname}`
             return (
-                <div className="flex items-center gap-2">
-                    <img className="w-12 h-12 p-1 object-cover rounded-full" src={src} alt={name} />
+                <div className="px-1 flex items-center gap-2 group">
+                    <ProfileImg src={src} alt={name} />
                     <p>{name}</p>
                 </div>
             )
@@ -44,3 +45,12 @@ export const COLUMNS = [
         },
     }),
 ]
+
+const ProfileImg = tw.img`
+    w-12 h-12
+    object-contain
+    bg-gray-400
+    rounded-full
+    hover:scale-[3]
+    hover:shadow-lg
+`
