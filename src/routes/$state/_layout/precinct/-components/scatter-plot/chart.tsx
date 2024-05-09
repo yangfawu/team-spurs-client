@@ -41,7 +41,7 @@ export default function Chart() {
         const config = lines.find(({ party }) => party === Party.DEMOCRAT)
         if (!config) return []
 
-        const f = createExponentialDecayFunction(config.coefficients)
+        const f = createPolynomialFunction(config.coefficients)
         return computeRegressionPoints(f, REGRESSION_STEPS, dx)
     }, [lines, dx])
 
@@ -49,7 +49,7 @@ export default function Chart() {
         const config = lines.find(({ party }) => party === Party.REPUBLICAN)
         if (!config) return []
 
-        const f = createExponentialDecayFunction(config.coefficients)
+        const f = createPolynomialFunction(config.coefficients)
         return computeRegressionPoints(f, REGRESSION_STEPS, dx)
     }, [lines, dx])
 
@@ -146,8 +146,15 @@ export default function Chart() {
 
 const REGRESSION_STEPS = 1e2
 
-const createExponentialDecayFunction = ([a, b, c]: number[]) => {
-    return (x: number) => a * Math.exp(-b * x) + c
+const createPolynomialFunction = (coeffs: number[]) => {
+    return (x: number) => {
+        let x_i = 1
+        return coeffs.reduce((acc, c) => {
+            acc += c * x_i
+            x_i *= x
+            return acc
+        }, 0)
+    }
 }
 
 const computeRegressionPoints = (f: (x: number) => number, steps: number, dx: number) => {
