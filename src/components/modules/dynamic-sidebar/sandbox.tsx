@@ -10,7 +10,7 @@ interface Props {
 export default function Sandbox({ name }: Props) {
     const { modules, map, options } = useSidebarContext()
 
-    const minSize = useMemo(() => (100 / options.length) * 0.9, [options])
+    const minSize = useMemo(() => (100 / options.length) * 0.5, [options])
 
     const defaultSize = useMemo(() => 100 / modules.length, [modules])
 

@@ -5,7 +5,7 @@ import { Navigate, createLazyFileRoute } from "@tanstack/react-router"
 function Page() {
     const state = useSafeCurrentState()
 
-    return <Navigate to={`/$state/${Mode.ASSEMBLY}`} params={{ state }} />
+    return <Navigate to={`/$state/${Mode.SUMMARY}`} params={{ state }} />
 }
 
 export const Route = createLazyFileRoute("/$state/_layout/")({

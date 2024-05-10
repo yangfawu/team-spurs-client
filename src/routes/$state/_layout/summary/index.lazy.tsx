@@ -7,9 +7,9 @@ import { Suspense } from "react"
 import App from "./-components/app"
 import Loader from "./-components/loader"
 
-function Layout() {
+function Page() {
     return (
-        <CurrentModeProvider value={Mode.HEAT}>
+        <CurrentModeProvider value={Mode.SUMMARY}>
             <Navbar />
             <Suspense fallback={<Loader />}>
                 <MapRefProvider>
@@ -20,6 +20,6 @@ function Layout() {
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/heat/")({
-    component: Layout,
+export const Route = createLazyFileRoute("/$state/_layout/summary/")({
+    component: Page,
 })

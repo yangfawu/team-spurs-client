@@ -12,7 +12,7 @@ export default function Simple() {
                     <p className="italic">we currently support only these states</p>
                 </div>
                 {SUPPORTED_STATES.map($s => (
-                    <Option to={`/$state/${Mode.ASSEMBLY}`} params={{ state: $s }}>
+                    <Option to={`/$state/${Mode.SUMMARY}`} params={{ state: $s }}>
                         <span>{STATE_TO_NAME[$s]}</span>
                         <span>{`→`}</span>
                     </Option>

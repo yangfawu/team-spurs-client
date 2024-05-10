@@ -9,7 +9,7 @@ import Loader from "./-componens/loader"
 
 function Layout() {
     return (
-        <CurrentModeProvider value={Mode.COMPARE}>
+        <CurrentModeProvider value={Mode.PLAN}>
             <Navbar />
             <Suspense fallback={<Loader />}>
                 <MapRefProvider>
@@ -20,6 +20,6 @@ function Layout() {
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/compare/")({
+export const Route = createLazyFileRoute("/$state/_layout/plan/")({
     component: Layout,
 })

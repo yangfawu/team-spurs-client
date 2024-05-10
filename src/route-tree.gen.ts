@@ -20,18 +20,17 @@ import { Route as StateLayoutImport } from "./routes/$state/_layout"
 
 const StateImport = createFileRoute("/$state")()
 const StateLayoutIndexLazyImport = createFileRoute("/$state/_layout/")()
+const StateLayoutSummaryIndexLazyImport = createFileRoute(
+  "/$state/_layout/summary/",
+)()
+const StateLayoutRacialIndexLazyImport = createFileRoute(
+  "/$state/_layout/racial/",
+)()
 const StateLayoutPrecinctIndexLazyImport = createFileRoute(
   "/$state/_layout/precinct/",
 )()
-const StateLayoutHeatIndexLazyImport = createFileRoute(
-  "/$state/_layout/heat/",
-)()
-const StateLayoutEiIndexLazyImport = createFileRoute("/$state/_layout/ei/")()
-const StateLayoutCompareIndexLazyImport = createFileRoute(
-  "/$state/_layout/compare/",
-)()
-const StateLayoutAssemblyIndexLazyImport = createFileRoute(
-  "/$state/_layout/assembly/",
+const StateLayoutPlanIndexLazyImport = createFileRoute(
+  "/$state/_layout/plan/",
 )()
 
 // Create/Update Routes
@@ -58,6 +57,23 @@ const StateLayoutIndexLazyRoute = StateLayoutIndexLazyImport.update({
   import("./routes/$state/_layout/index.lazy").then((d) => d.Route),
 )
 
+const StateLayoutSummaryIndexLazyRoute =
+  StateLayoutSummaryIndexLazyImport.update({
+    path: "/summary/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any).lazy(() =>
+    import("./routes/$state/_layout/summary/index.lazy").then((d) => d.Route),
+  )
+
+const StateLayoutRacialIndexLazyRoute = StateLayoutRacialIndexLazyImport.update(
+  {
+    path: "/racial/",
+    getParentRoute: () => StateLayoutRoute,
+  } as any,
+).lazy(() =>
+  import("./routes/$state/_layout/racial/index.lazy").then((d) => d.Route),
+)
+
 const StateLayoutPrecinctIndexLazyRoute =
   StateLayoutPrecinctIndexLazyImport.update({
     path: "/precinct/",
@@ -66,35 +82,12 @@ const StateLayoutPrecinctIndexLazyRoute =
     import("./routes/$state/_layout/precinct/index.lazy").then((d) => d.Route),
   )
 
-const StateLayoutHeatIndexLazyRoute = StateLayoutHeatIndexLazyImport.update({
-  path: "/heat/",
+const StateLayoutPlanIndexLazyRoute = StateLayoutPlanIndexLazyImport.update({
+  path: "/plan/",
   getParentRoute: () => StateLayoutRoute,
 } as any).lazy(() =>
-  import("./routes/$state/_layout/heat/index.lazy").then((d) => d.Route),
+  import("./routes/$state/_layout/plan/index.lazy").then((d) => d.Route),
 )
-
-const StateLayoutEiIndexLazyRoute = StateLayoutEiIndexLazyImport.update({
-  path: "/ei/",
-  getParentRoute: () => StateLayoutRoute,
-} as any).lazy(() =>
-  import("./routes/$state/_layout/ei/index.lazy").then((d) => d.Route),
-)
-
-const StateLayoutCompareIndexLazyRoute =
-  StateLayoutCompareIndexLazyImport.update({
-    path: "/compare/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/compare/index.lazy").then((d) => d.Route),
-  )
-
-const StateLayoutAssemblyIndexLazyRoute =
-  StateLayoutAssemblyIndexLazyImport.update({
-    path: "/assembly/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/assembly/index.lazy").then((d) => d.Route),
-  )
 
 // Populate the FileRoutesByPath interface
 
@@ -116,24 +109,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
-    "/$state/_layout/assembly/": {
-      preLoaderRoute: typeof StateLayoutAssemblyIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
-    "/$state/_layout/compare/": {
-      preLoaderRoute: typeof StateLayoutCompareIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
-    "/$state/_layout/ei/": {
-      preLoaderRoute: typeof StateLayoutEiIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
-    "/$state/_layout/heat/": {
-      preLoaderRoute: typeof StateLayoutHeatIndexLazyImport
+    "/$state/_layout/plan/": {
+      preLoaderRoute: typeof StateLayoutPlanIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
     "/$state/_layout/precinct/": {
       preLoaderRoute: typeof StateLayoutPrecinctIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/racial/": {
+      preLoaderRoute: typeof StateLayoutRacialIndexLazyImport
+      parentRoute: typeof StateLayoutImport
+    }
+    "/$state/_layout/summary/": {
+      preLoaderRoute: typeof StateLayoutSummaryIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
   }
@@ -146,11 +135,10 @@ export const routeTree = rootRoute.addChildren([
   StateRoute.addChildren([
     StateLayoutRoute.addChildren([
       StateLayoutIndexLazyRoute,
-      StateLayoutAssemblyIndexLazyRoute,
-      StateLayoutCompareIndexLazyRoute,
-      StateLayoutEiIndexLazyRoute,
-      StateLayoutHeatIndexLazyRoute,
+      StateLayoutPlanIndexLazyRoute,
       StateLayoutPrecinctIndexLazyRoute,
+      StateLayoutRacialIndexLazyRoute,
+      StateLayoutSummaryIndexLazyRoute,
     ]),
   ]),
 ])

@@ -7,9 +7,9 @@ import { Suspense } from "react"
 import App from "./-components/app"
 import Loader from "./-components/loader"
 
-function Page() {
+function Layout() {
     return (
-        <CurrentModeProvider value={Mode.ASSEMBLY}>
+        <CurrentModeProvider value={Mode.RACIAL}>
             <Navbar />
             <Suspense fallback={<Loader />}>
                 <MapRefProvider>
@@ -20,6 +20,6 @@ function Page() {
     )
 }
 
-export const Route = createLazyFileRoute("/$state/_layout/assembly/")({
-    component: Page,
+export const Route = createLazyFileRoute("/$state/_layout/racial/")({
+    component: Layout,
 })

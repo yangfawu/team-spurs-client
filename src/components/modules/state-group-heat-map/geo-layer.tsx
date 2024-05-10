@@ -1,19 +1,23 @@
 import { HeatMapFeature, fetchHeatMap } from "@/api/heat"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import Group from "@/constants/group"
+import HeatLevel from "@/constants/heat-level"
+import State from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
-import { featureDemographic, selectGroup, selectLevel } from "@/redux/heat"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { featureDemographic } from "@/redux/heat"
+import { useAppDispatch } from "@/redux/hooks"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps, useMap } from "react-leaflet"
 
-export default function GeoLayer() {
+interface Props {
+    state: State
+    group: Group
+    level: HeatLevel
+}
+export default function GeoLayer({ state, group, level }: Props) {
     const map = useMap()
     const geoRef = useGeoLayerRef()
 
-    const state = useSafeCurrentState()
-    const level = useAppSelector(selectLevel)
-    const group = useAppSelector(selectGroup)
     const {
         data: { features, legend },
     } = useSuspenseQuery(fetchHeatMap(state, level, group))

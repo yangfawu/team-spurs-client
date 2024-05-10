@@ -5,13 +5,21 @@ import { GeoLayerRefProvider } from "@/contexts/geo-layer-ref"
 import "leaflet/dist/leaflet.css"
 import { Suspense } from "react"
 import GeoLayer from "./geo-layer"
+import State from "@/constants/state"
+import Group from "@/constants/group"
+import HeatLevel from "@/constants/heat-level"
 
-export default function Map() {
+interface Props {
+    state: State
+    group: Group
+    level: HeatLevel
+}
+export default function StateGroupHeatMap({ state, group, level }: Props) {
     return (
         <StateMapContainer preferCanvas>
             <Suspense fallback={<MapLoader />}>
                 <GeoLayerRefProvider>
-                    <GeoLayer />
+                    <GeoLayer state={state} group={group} level={level} />
                     <GeoRefocusButton />
                 </GeoLayerRefProvider>
             </Suspense>

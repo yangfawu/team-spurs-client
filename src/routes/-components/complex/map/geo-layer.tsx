@@ -21,7 +21,7 @@ export default function GeoLayer() {
 
             // On click, navigate to the state's page
             layer.on("click", () => {
-                navigate({ to: `/$state/${Mode.ASSEMBLY}`, params: { state } })
+                navigate({ to: `/$state/${Mode.SUMMARY}`, params: { state } })
             })
         }
     }, [])
