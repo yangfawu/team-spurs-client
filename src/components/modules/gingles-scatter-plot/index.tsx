@@ -1,14 +1,20 @@
 import BarChartLoader from "@/components/loader/bar-chart-loader"
+import Group from "@/constants/group"
+import State from "@/constants/state"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Chart from "./chart"
 
-export default function ScatterPlot() {
+interface Props {
+    state: State
+    group: Group
+}
+export default function GinglesScatterPlot({ state, group }: Props) {
     return (
         <Container>
-            <h3 className="text-lg font-bold">Scatter Plot View</h3>
+            <h3 className="text-lg font-bold">Gingles Analysis [2020 Presidential]</h3>
             <Suspense fallback={<BarChartLoader />}>
-                <Chart />
+                <Chart state={state} group={group} />
             </Suspense>
         </Container>
     )

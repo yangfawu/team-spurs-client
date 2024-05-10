@@ -1,10 +1,14 @@
 import BarChartLoader from "@/components/loader/bar-chart-loader"
+import Group from "@/constants/group"
 import { useRegionDemographicShowcase } from "@/contexts/region-demographic-showcase"
 import { Suspense, useCallback, useMemo } from "react"
 import tw from "tailwind-styled-components"
 import Chart from "./chart"
 
-export default function RegionDemographicBarChart() {
+interface Props {
+    group: Group
+}
+export default function RegionDemographicBarChart({ group }: Props) {
     const context = useRegionDemographicShowcase()
 
     const title = useMemo(() => context?.modal?.title, [context])
@@ -25,7 +29,7 @@ export default function RegionDemographicBarChart() {
             )}
             <Suspense fallback={<BarChartLoader />}>
                 {context?.modal ? (
-                    <Chart />
+                    <Chart group={group} />
                 ) : (
                     <div className="flex items-center justify-center p-2">
                         <em className="text-center">No data available</em>

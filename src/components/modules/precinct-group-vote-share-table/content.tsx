@@ -1,17 +1,18 @@
 import { PrecinctPoint, fetchPrecinctAnalysis } from "@/api/precinct"
-import { useSafeCurrentState } from "@/contexts/current-state"
-import { useAppSelector } from "@/redux/hooks"
-import { selectGroup, selectPrecinct } from "@/redux/precinct"
+import Group from "@/constants/group"
+import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Row, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import tw from "tailwind-styled-components"
 import { COLUMNS } from "./data"
 
-export default function Content() {
-    const state = useSafeCurrentState()
-    const group = useAppSelector(selectGroup)
+interface Props {
+    state: State
+    group: Group
+}
+export default function Content({ state, group }: Props) {
     // const election = useAppSelector(selectElection)
     const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
@@ -35,23 +36,10 @@ export default function Content() {
         overscan: 5,
     })
 
-    const precinct = useAppSelector(selectPrecinct)
-    useEffect(() => {
-        if (!precinct) return
-
-        const index = rows.findIndex(({ original }) => original.id === precinct)
-        if (index < 0) return
-
-        const ref = document.querySelector(`tr[data-index="${index}"]`)
-        if (!ref) return
-
-        ref.scrollIntoView({ behavior: "smooth", block: "center" })
-    }, [rows, precinct])
-    
     const items = getVirtualItems()
     return (
         <Container>
-            <table ref={tableRef} className="w-full h-full table-auto border border-collapse">
+            <table ref={tableRef} className="w-full table-auto border border-collapse">
                 <thead className="sticky top-0 bg-white shadow">
                     {getHeaderGroups().map(({ id, headers }) => (
                         <tr key={id}>
@@ -81,16 +69,11 @@ export default function Content() {
                         </tr>
                     ) : (
                         items.map(virtualRow => {
-                            const { index, id, getVisibleCells, original } = rows[
+                            const { index, id, getVisibleCells } = rows[
                                 virtualRow.index
                             ] as Row<PrecinctPoint>
                             return (
-                                <tr
-                                    key={id}
-                                    ref={node => measureElement(node)}
-                                    data-index={index}
-                                    className={`${precinct === original.id ? "bg-yellow-100" : ""}`}
-                                >
+                                <tr key={id} ref={node => measureElement(node)} data-index={index}>
                                     {getVisibleCells().map(
                                         ({
                                             id: cid,
@@ -99,7 +82,7 @@ export default function Content() {
                                                 columnDef: { cell },
                                             },
                                         }) => (
-                                            <td key={cid} className="p-2 border text-nowrap" align="center">
+                                            <td key={cid} className="p-2 border text-nowrap">
                                                 {flexRender(cell, getContext())}
                                             </td>
                                         ),

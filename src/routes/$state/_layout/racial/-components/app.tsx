@@ -16,6 +16,16 @@ const MODULE_OPTIONS: ModuleOption[] = [
         name: "Region Demographic Breakdown",
         Component: lazy(() => import("./region-breakdown")),
     },
+    {
+        id: "scatter",
+        name: "Gingles Analysis",
+        Component: lazy(() => import("./scatter-plot")),
+    },
+    {
+        id: "table",
+        name: "Precinct Vote Share",
+        Component: lazy(() => import("./table")),
+    },
 ]
 
 export default function App() {

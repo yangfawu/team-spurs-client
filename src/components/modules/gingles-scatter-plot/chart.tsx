@@ -1,9 +1,7 @@
 import { fetchPrecinctAnalysis } from "@/api/precinct"
-import { GROUP_TO_NAME } from "@/constants/group"
+import Group, { GROUP_TO_NAME } from "@/constants/group"
 import Party from "@/constants/party"
-import { useSafeCurrentState } from "@/contexts/current-state"
-import { useAppSelector } from "@/redux/hooks"
-import { selectGroup } from "@/redux/precinct"
+import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Chart as ChartJS } from "chart.js"
 import "chart.js/auto"
@@ -13,9 +11,12 @@ import { useMemo } from "react"
 import { Scatter } from "react-chartjs-2"
 
 ChartJS.register(annotationPlugin)
-export default function Chart() {
-    const state = useSafeCurrentState()
-    const group = useAppSelector(selectGroup)
+
+interface Props {
+    state: State
+    group: Group
+}
+export default function Chart({ state, group }: Props) {
     const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
     const composedData = useMemo(() => {
@@ -49,7 +50,7 @@ export default function Chart() {
         return {
             datasets: [
                 {
-                    label: "Democratic Vote Share",
+                    label: "Democratic",
                     data: democratPrecinctPoints,
                     backgroundColor: "#00f5",
                 },
@@ -64,7 +65,7 @@ export default function Chart() {
                     pointRadius: 0,
                 },
                 {
-                    label: "Republican Vote Share",
+                    label: "Republican",
                     data: republicanPrecinctPoints,
                     backgroundColor: "#f005",
                 },

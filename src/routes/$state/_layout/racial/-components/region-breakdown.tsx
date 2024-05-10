@@ -1,5 +1,7 @@
 import RegionDemographicBarChart from "@/components/modules/region-demographic-bar-chart"
+import { useHeatSettings } from "@/contexts/heat-settings"
 
 export default function RegionBreakdown() {
-    return <RegionDemographicBarChart />
+    const { group } = useHeatSettings()
+    return <RegionDemographicBarChart group={group} />
 }

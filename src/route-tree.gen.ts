@@ -26,9 +26,6 @@ const StateLayoutSummaryIndexLazyImport = createFileRoute(
 const StateLayoutRacialIndexLazyImport = createFileRoute(
   "/$state/_layout/racial/",
 )()
-const StateLayoutPrecinctIndexLazyImport = createFileRoute(
-  "/$state/_layout/precinct/",
-)()
 const StateLayoutPlanIndexLazyImport = createFileRoute(
   "/$state/_layout/plan/",
 )()
@@ -74,14 +71,6 @@ const StateLayoutRacialIndexLazyRoute = StateLayoutRacialIndexLazyImport.update(
   import("./routes/$state/_layout/racial/index.lazy").then((d) => d.Route),
 )
 
-const StateLayoutPrecinctIndexLazyRoute =
-  StateLayoutPrecinctIndexLazyImport.update({
-    path: "/precinct/",
-    getParentRoute: () => StateLayoutRoute,
-  } as any).lazy(() =>
-    import("./routes/$state/_layout/precinct/index.lazy").then((d) => d.Route),
-  )
-
 const StateLayoutPlanIndexLazyRoute = StateLayoutPlanIndexLazyImport.update({
   path: "/plan/",
   getParentRoute: () => StateLayoutRoute,
@@ -113,10 +102,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof StateLayoutPlanIndexLazyImport
       parentRoute: typeof StateLayoutImport
     }
-    "/$state/_layout/precinct/": {
-      preLoaderRoute: typeof StateLayoutPrecinctIndexLazyImport
-      parentRoute: typeof StateLayoutImport
-    }
     "/$state/_layout/racial/": {
       preLoaderRoute: typeof StateLayoutRacialIndexLazyImport
       parentRoute: typeof StateLayoutImport
@@ -136,7 +121,6 @@ export const routeTree = rootRoute.addChildren([
     StateLayoutRoute.addChildren([
       StateLayoutIndexLazyRoute,
       StateLayoutPlanIndexLazyRoute,
-      StateLayoutPrecinctIndexLazyRoute,
       StateLayoutRacialIndexLazyRoute,
       StateLayoutSummaryIndexLazyRoute,
     ]),

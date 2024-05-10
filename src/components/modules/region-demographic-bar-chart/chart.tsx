@@ -1,5 +1,4 @@
 import Group, { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import { useHeatSettings } from "@/contexts/heat-settings"
 import { useRegionDemographicShowcase } from "@/contexts/region-demographic-showcase"
 import { useMemo } from "react"
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
@@ -15,10 +14,11 @@ export interface BarData {
     display: number
 }
 
-export default function Chart() {
+interface Props {
+    group: Group
+}
+export default function Chart({ group }: Props) {
     const context = useRegionDemographicShowcase()
-    const { group } = useHeatSettings()
-    console.log(group)
 
     const bars = useMemo(() => {
         const out: BarData[] = []
