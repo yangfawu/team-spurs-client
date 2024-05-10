@@ -1,15 +1,18 @@
 import BarChartLoader from "@/components/loader/bar-chart-loader"
-import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-view"
+import State from "@/constants/state"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Chart from "./chart"
 
-export default function Representation() {
+interface Props {
+    state: State
+}
+export default function StateRepresentationBarChart({ state }: Props) {
     return (
         <Container>
-            <h3 className="text-lg font-bold">{ASSEMBLY_VIEW_TO_NAME[AssemblyView.REPRESENTATION]}</h3>
+            <h3 className="text-lg font-bold">State Representation</h3>
             <Suspense fallback={<BarChartLoader />}>
-                <Chart />
+                <Chart state={state} />
             </Suspense>
         </Container>
     )

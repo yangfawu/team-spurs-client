@@ -1,11 +1,13 @@
 import { fetchRedistrictingInfo } from "@/api/assembly"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import State from "@/constants/state"
 import { LinkIcon } from "@heroicons/react/20/solid"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import tw from "tailwind-styled-components"
 
-export default function Info() {
-    const state = useSafeCurrentState()
+interface Props {
+    state: State
+}
+export default function Info({ state }: Props) {
     const {
         data: { name, website, comments },
     } = useSuspenseQuery(fetchRedistrictingInfo(state))

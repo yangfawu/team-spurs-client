@@ -1,15 +1,18 @@
-import AssemblyView, { ASSEMBLY_VIEW_TO_NAME } from "@/constants/assembly-view"
+import State from "@/constants/state"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
 import Info from "./info"
 import Loader from "./loader"
 
-export default function Redistricting() {
+interface Props {
+    state: State
+}
+export default function StateRedistrictingPower({ state }: Props) {
     return (
         <Container>
-            <h3 className="text-lg font-bold">{ASSEMBLY_VIEW_TO_NAME[AssemblyView.REDISTRICTING]}</h3>
+            <h3 className="text-lg font-bold">State Redistricting</h3>
             <Suspense fallback={<Loader />}>
-                <Info />
+                <Info state={state} />
             </Suspense>
         </Container>
     )

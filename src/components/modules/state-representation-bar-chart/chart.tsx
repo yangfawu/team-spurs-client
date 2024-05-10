@@ -1,6 +1,6 @@
 import { fetchRepresentatives, fetchStateDemographic } from "@/api/assembly"
 import Group, { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
@@ -22,8 +22,10 @@ export interface BarData {
     }
 }
 
-export default function Chart() {
-    const state = useSafeCurrentState()
+interface Props {
+    state: State
+}
+export default function Chart({ state }: Props) {
     const { data: repsData } = useSuspenseQuery(fetchRepresentatives(state))
     const { data: demoData } = useSuspenseQuery(fetchStateDemographic(state))
 
@@ -96,7 +98,7 @@ export default function Chart() {
                 />
                 <Bar dataKey="display.pop" fill="#8884d8" name="Population" />
                 <Bar dataKey="display.reps" fill="#82ca9d" name="Representatives" />
-                <Legend verticalAlign="bottom" height={36}/>
+                <Legend verticalAlign="bottom" height={36} />
             </BarChart>
         </ResponsiveContainer>
     )

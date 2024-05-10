@@ -1,11 +1,13 @@
 import { fetchStateVoterDistribution } from "@/api/assembly"
 import { PARTY_TO_NAME, SUPPORTED_PARTIES } from "@/constants/party"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import tw from "tailwind-styled-components"
 
-export default function Info() {
-    const state = useSafeCurrentState()
+interface Props {
+    state: State
+}
+export default function Info({ state }: Props) {
     const {
         data: { breakdown },
     } = useSuspenseQuery(fetchStateVoterDistribution(state))

@@ -1,21 +1,21 @@
-import { AssemblyDistrictGeoFeature } from "@/api/assembly"
-import { fetchStateAssemblyMap } from "@/api/assembly"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/assembly"
+import State from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
-import { selectDistrict } from "@/redux/assembly"
-import { useAppSelector } from "@/redux/hooks"
+import { useMapFocus } from "@/contexts/map-focus"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps, useMap } from "react-leaflet"
 
-export default function GeoLayer() {
+interface Props {
+    state: State
+}
+export default function GeoLayer({ state }: Props) {
     const map = useMap()
     const geoRef = useGeoLayerRef()
 
-    const state = useSafeCurrentState()
     const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
-    const district = useAppSelector(selectDistrict)
+    const context = useMapFocus()
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
@@ -37,11 +37,11 @@ export default function GeoLayer() {
             const {
                 properties: { district: $d },
             } = feature as AssemblyDistrictGeoFeature
-            const isSelected = state === district?.state && $d === district?.id
-            const fillColor = isSelected ? Fill.SELECTED : Fill.REGULAR
+
+            const fillColor = `${state}-${$d}` === context?.focus ? Fill.SELECTED : Fill.REGULAR
             return { fillColor }
         }
-    }, [state, district])
+    }, [state, context])
 
     return (
         <FeatureGroup ref={geoRef}>

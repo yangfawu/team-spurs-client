@@ -1,9 +1,7 @@
-import { fetchStateAssemblyMap } from "@/api/assembly"
-import { Representative } from "@/api/assembly"
-import { useSafeCurrentState } from "@/contexts/current-state"
+import { Representative, fetchStateAssemblyMap } from "@/api/assembly"
+import State from "@/constants/state"
+import { useMapFocus } from "@/contexts/map-focus"
 import { useMapRef } from "@/contexts/map-ref"
-import { selectDistrict, showcaseDistrict } from "@/redux/assembly"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import L from "leaflet"
@@ -12,10 +10,10 @@ import tw from "tailwind-styled-components"
 import { COLUMNS } from "./data"
 
 interface Props {
+    state: State
     data: Representative[]
 }
-export default function Table({ data }: Props) {
-    const state = useSafeCurrentState()
+export default function Table({ state, data }: Props) {
     const { data: features } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
     const { getHeaderGroups, getRowModel } = useReactTable({
@@ -25,7 +23,7 @@ export default function Table({ data }: Props) {
     })
 
     const mapRef = useMapRef()
-    const zoomIn = useMemo(() => {
+    const zoomInFeature = useMemo(() => {
         return (id: number) => {
             if (mapRef.current && features) {
                 const target = features.find(({ properties }) => properties.district === id)
@@ -37,16 +35,16 @@ export default function Table({ data }: Props) {
         }
     }, [mapRef, features])
 
-    const dispatch = useAppDispatch()
+    const context = useMapFocus()
     const select = useMemo(() => {
-        return (id: number) => {
-            dispatch(showcaseDistrict({ state, id }))
-            zoomIn(id)
+        return (district: number) => {
+            const id = `${state}-${district}`
+            context?.setFocus(id)
+            zoomInFeature(district)
         }
-    }, [state, zoomIn])
+    }, [state, context, zoomInFeature])
 
-    const district = useAppSelector(selectDistrict)
-    const isFeatured = (d: number) => state === district?.state && d === district?.id
+    const isFeatured = (d: number) => `${state}-${d}` === context?.focus
 
     return (
         <Container>

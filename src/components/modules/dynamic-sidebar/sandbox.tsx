@@ -1,32 +1,29 @@
 import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
 import SuspensePanel from "@/components/resizable-panels/suspense-panel"
-import AssemblyView, { SUPPORTED_ASSEMBLY_VIEWS } from "@/constants/assembly-view"
-import { selectActiveModules } from "@/redux/assembly"
-import { useAppSelector } from "@/redux/hooks"
 import { ElementType, Fragment, useMemo } from "react"
 import { Panel, PanelGroup } from "react-resizable-panels"
+import { useSidebarContext } from "./context"
 
 interface Props {
-    template: Record<AssemblyView, ElementType>
+    name: string
 }
-export default function Sandbox({ template }: Props) {
-    const activeModules = useAppSelector(selectActiveModules)
+export default function Sandbox({ name }: Props) {
+    const { modules, map, options } = useSidebarContext()
 
-    const minSize = useMemo(() => {
-        return (100 / SUPPORTED_ASSEMBLY_VIEWS.length) * 0.9
-    }, [SUPPORTED_ASSEMBLY_VIEWS])
+    const minSize = useMemo(() => (100 / options.length) * 0.9, [options])
 
-    const defaultSize = useMemo(() => {
-        return 100 / activeModules.length
-    }, [activeModules])
+    const defaultSize = useMemo(() => 100 / modules.length, [modules])
 
-    const saveKey = useMemo(() => {
-        return `assembly:sidebar:${activeModules.join("-")}`
-    }, [activeModules])
+    const saveKey = useMemo(() => `${name}:sidebar:${modules.join("-")}`, [name, modules])
 
-    const activeComponents = useMemo(() => {
-        return activeModules.map(opt => template[opt])
-    }, [activeModules, template])
+    const activeComponents = useMemo(
+        () =>
+            modules
+                .map(map.get, map)
+                .map(opt => opt?.Component)
+                .filter(Boolean) as ElementType[],
+        [modules, map],
+    )
 
     return (
         <div className="flex-1">
