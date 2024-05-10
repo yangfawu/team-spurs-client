@@ -1,3 +1,4 @@
+import Mode from "@/constants/mode"
 import { STATE_TO_NAME, SUPPORTED_STATES } from "@/constants/state"
 import { Link } from "@tanstack/react-router"
 import tw from "tailwind-styled-components"
@@ -11,7 +12,7 @@ export default function Simple() {
                     <p className="italic">we currently support only these states</p>
                 </div>
                 {SUPPORTED_STATES.map($s => (
-                    <Option to={$s}>
+                    <Option to={`/$state/${Mode.ASSEMBLY}`} params={{ state: $s }}>
                         <span>{STATE_TO_NAME[$s]}</span>
                         <span>{`→`}</span>
                     </Option>

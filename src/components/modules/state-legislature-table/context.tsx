@@ -1,6 +1,6 @@
 import Group from "@/constants/group"
 import Party from "@/constants/party"
-import { ReactNode, createContext, useContext, useMemo, useState } from "react"
+import { ReactNode, createContext, useContext, useState } from "react"
 
 interface ContextObject {
     groupFilter: Group[]

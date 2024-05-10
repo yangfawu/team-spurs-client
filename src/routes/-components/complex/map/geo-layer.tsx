@@ -1,5 +1,6 @@
 import { fetchAllStatesMap } from "@/api/misc"
 import { StateGeoFeature } from "@/api/misc"
+import Mode from "@/constants/mode"
 import { STATE_TO_NAME } from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -20,7 +21,7 @@ export default function GeoLayer() {
 
             // On click, navigate to the state's page
             layer.on("click", () => {
-                navigate({ to: "/$state/", params: { state } })
+                navigate({ to: `/$state/${Mode.ASSEMBLY}`, params: { state } })
             })
         }
     }, [])
