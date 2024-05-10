@@ -16,6 +16,7 @@ export interface Representative {
     race: Group[]
     image: string
     state: State
+    vote_margin: number
 }
 
 export interface AssemblyDistrictGeoFeature extends GeoJSON.Feature<GeoJSON.Geometry, any> {

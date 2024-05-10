@@ -36,12 +36,10 @@ export const COLUMNS = [
         header: () => "Party",
         cell: c => PARTY_TO_NAME[c.getValue()],
     }),
-    ch.accessor(({}) => [33.21312312] as const, {
-        id: "vote_margin",
+    ch.accessor("vote_margin", {
         header: () => "Vote Margin",
         cell: c => {
-            const [vote_margin] = c.getValue()
-            return `${vote_margin.toFixed(3)}%`
+            return `${(c.getValue() * 100).toFixed(3)}%`
         },
     }),
 ]
