@@ -16,125 +16,120 @@ ChartJS.register(annotationPlugin)
 export default function Chart() {
     const state = useSafeCurrentState()
     const group = useAppSelector(selectGroup)
-    const {
-        data: { rows, lines },
-    } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
+    const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
-    const filteredRows = useMemo(() => {
-        return _.sampleSize(rows, Math.min(200, rows.length))
-    }, [rows])
+    const composedData = useMemo(() => {
+        const { rows, lines } = data
 
-    const democratPrecinctPoints = useMemo(() => {
-        return filteredRows.map(({ percent_group, percent_democrat }) => [percent_group, percent_democrat] as const)
-    }, [filteredRows])
+        const sampleRows = _.sampleSize(rows, Math.min(200, rows.length))
 
-    const republicanPrecinctPoints = useMemo(() => {
-        return filteredRows.map(({ percent_group, percent_republican }) => [percent_group, percent_republican] as const)
-    }, [filteredRows])
+        const democratPrecinctPoints = sampleRows.map(
+            ({ percent_group, percent_democrat }) => [percent_group, percent_democrat] as const,
+        )
+        const republicanPrecinctPoints = sampleRows.map(
+            ({ percent_group, percent_republican }) => [percent_group, percent_republican] as const,
+        )
 
-    const dx = useMemo(() => {
-        const max = filteredRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0)
-        return max / 1e2
-    }, [filteredRows])
+        const dx = sampleRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0) / 1e2
 
-    const democratRegressionPoints = useMemo(() => {
-        const config = lines.find(({ party }) => party === Party.DEMOCRAT)
-        if (!config) return []
+        const democratRegressionLine = lines.find(({ party }) => party === Party.DEMOCRAT)!
+        const democratRegressionPoints = computeRegressionPoints(
+            createPolynomialFunction(democratRegressionLine.coefficients),
+            REGRESSION_STEPS,
+            dx,
+        )
 
-        const f = createPolynomialFunction(config.coefficients)
-        return computeRegressionPoints(f, REGRESSION_STEPS, dx)
-    }, [lines, dx])
+        const republicanRegressionLine = lines.find(({ party }) => party === Party.REPUBLICAN)!
+        const republicanRegressionPoints = computeRegressionPoints(
+            createPolynomialFunction(republicanRegressionLine.coefficients),
+            REGRESSION_STEPS,
+            dx,
+        )
 
-    const republicanRegressionPoints = useMemo(() => {
-        const config = lines.find(({ party }) => party === Party.REPUBLICAN)
-        if (!config) return []
-
-        const f = createPolynomialFunction(config.coefficients)
-        return computeRegressionPoints(f, REGRESSION_STEPS, dx)
-    }, [lines, dx])
-
-    const composedData = {
-        datasets: [
-            {
-                label: "Democratic Vote Share",
-                data: democratPrecinctPoints,
-                backgroundColor: "#00f5",
-            },
-            {
-                label: "Republican Vote Share",
-                data: republicanPrecinctPoints,
-                backgroundColor: "#f005",
-                // formatter: (value: number) => `${value.toFixed(2)}%`,
-            },
-            {
-                label: "Democratic Line",
-                data: democratRegressionPoints,
-                type: "line",
-                borderColor: "#00f",
-                borderWidth: 4,
-                fill: false,
-                showLine: true,
-                pointRadius: 0,
-            },
-            {
-                label: "Republican Line",
-                data: republicanRegressionPoints,
-                type: "line",
-                borderColor: "#f00",
-                borderWidth: 4,
-                fill: false,
-                showLine: true,
-                pointRadius: 0,
-            },
-        ],
-    }
-
-    const xAxisLabel = `% ${GROUP_TO_NAME[group]}`
-    const yAxisLabel = "Vote Share"
-    const options = {
-        responsive: true,
-        scales: {
-            x: {
-                type: "linear",
-                position: "bottom",
-                title: {
-                    display: true,
-                    text: xAxisLabel,
+        return {
+            datasets: [
+                {
+                    label: "Democratic Vote Share",
+                    data: democratPrecinctPoints,
+                    backgroundColor: "#00f5",
                 },
-                ticks: {
-                    min: 0,
-                    callback: (value: number) => `${value * 100}%`,
+                {
+                    label: "Democratic Line",
+                    data: democratRegressionPoints,
+                    type: "line",
+                    borderColor: "#00f",
+                    borderWidth: 4,
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 0,
                 },
-            },
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    min: 0,
-                    max: 1,
-                    callback: (value: number) => `${value * 100}%`,
+                {
+                    label: "Republican Vote Share",
+                    data: republicanPrecinctPoints,
+                    backgroundColor: "#f005",
                 },
-                title: {
-                    display: true,
-                    text: yAxisLabel,
+                {
+                    label: "Republican Line",
+                    data: republicanRegressionPoints,
+                    type: "line",
+                    borderColor: "#f00",
+                    borderWidth: 4,
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 0,
                 },
-            },
-        },
-        plugins: {
-            legend: {
-                position: "bottom",
-            },
-            tooltip: {
-                callbacks: {
-                    label: (context: any) => {
-                        const [x, y] = context.raw as [number, number]
-                        const label = context.dataset.label as string
-                        return `${label}: (${(x * 100).toPrecision(3)}%, ${(y * 100).toPrecision(3)}%)`
+            ],
+        }
+    }, [data])
+
+    const options = useMemo(() => {
+        const xAxisLabel = `% ${GROUP_TO_NAME[group]}`
+        const yAxisLabel = "Vote Share"
+        return {
+            responsive: true,
+            scales: {
+                x: {
+                    type: "linear",
+                    position: "bottom",
+                    title: {
+                        display: true,
+                        text: xAxisLabel,
+                    },
+                    ticks: {
+                        min: 0,
+                        callback: (value: number) => `${value * 100}%`,
+                    },
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        min: 0,
+                        max: 1,
+                        callback: (value: number) => `${value * 100}%`,
+                    },
+                    title: {
+                        display: true,
+                        text: yAxisLabel,
                     },
                 },
             },
-        },
-        maintainAspectRatio: false,
-    }
+            plugins: {
+                legend: {
+                    position: "bottom",
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context: any) => {
+                            const [x, y] = context.raw as [number, number]
+                            const label = context.dataset.label as string
+                            return `${label}: (${(x * 100).toPrecision(3)}%, ${(y * 100).toPrecision(3)}%)`
+                        },
+                    },
+                },
+            },
+            maintainAspectRatio: false,
+        }
+    }, [group])
 
     return (
         <div className="flex-1 overflow-hidden">
