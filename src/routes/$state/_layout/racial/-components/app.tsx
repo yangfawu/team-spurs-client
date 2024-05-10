@@ -26,6 +26,11 @@ const MODULE_OPTIONS: ModuleOption[] = [
         name: "Precinct Vote Share",
         Component: lazy(() => import("./table")),
     },
+    {
+        id: "box",
+        name: "Box & Whisker Analysis",
+        Component: lazy(() => import("./box-plot")),
+    }
 ]
 
 export default function App() {
