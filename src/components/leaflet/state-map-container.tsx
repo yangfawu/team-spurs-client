@@ -4,7 +4,6 @@ import { useMapRef } from "@/contexts/map-ref"
 import "leaflet/dist/leaflet.css"
 import { ReactNode } from "react"
 import { MapContainer } from "react-leaflet"
-import GrayTileLayer from "./gray-tile-layer"
 
 interface Props {
     preferCanvas?: boolean
@@ -25,7 +24,6 @@ export default function StateMapContainer({ preferCanvas = false, children }: Pr
             ref={mapRef}
             preferCanvas={preferCanvas}
         >
-            <GrayTileLayer />
             {children}
         </MapContainer>
     )

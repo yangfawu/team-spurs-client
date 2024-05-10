@@ -57,7 +57,7 @@ export default function App() {
                 </Panel>
                 <VerticalDivider />
                 <Panel minSize={20} maxSize={40} collapsible>
-                    <DynamicSidebar name="assembly" options={MODULE_OPTIONS} initialModules={["state-rep"]} />
+                    <DynamicSidebar name="summary" options={MODULE_OPTIONS} initialModules={["state-rep"]} />
                 </Panel>
             </PanelGroup>
         </div>

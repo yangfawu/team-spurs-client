@@ -3,9 +3,8 @@ import { ReactNode } from "@tanstack/react-router"
 interface Props {
     title: ReactNode
     value: number
-    format: (value: number) => string
 }
-export default function TooltipContent({ title, value, format }: Props) {
+export default function TooltipContent({ title, value }: Props) {
     return (
         <div className="bg-white shadow p-2">
             <p>{title}</p>
@@ -15,3 +14,5 @@ export default function TooltipContent({ title, value, format }: Props) {
         </div>
     )
 }
+
+const format = (value: number) => value.toLocaleString()

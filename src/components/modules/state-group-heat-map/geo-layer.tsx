@@ -1,28 +1,26 @@
 import { HeatMapFeature, fetchHeatMap } from "@/api/heat"
-import Group from "@/constants/group"
-import HeatLevel from "@/constants/heat-level"
 import State from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
-import { featureDemographic } from "@/redux/heat"
-import { useAppDispatch } from "@/redux/hooks"
+import { useRegionDemographicShowcase } from "@/contexts/region-demographic-showcase"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps, useMap } from "react-leaflet"
+import { useHeatSettings } from "@/contexts/heat-settings"
 
 interface Props {
     state: State
-    group: Group
-    level: HeatLevel
 }
-export default function GeoLayer({ state, group, level }: Props) {
+export default function GeoLayer({ state }: Props) {
     const map = useMap()
     const geoRef = useGeoLayerRef()
 
+    const { group, level } = useHeatSettings()
     const {
         data: { features, legend },
     } = useSuspenseQuery(fetchHeatMap(state, level, group))
 
-    const dispatch = useAppDispatch()
+    const context = useRegionDemographicShowcase()
+
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ id, title, demographic }: HeatMapFeature, layer) => {
             const name = title || id
@@ -30,15 +28,14 @@ export default function GeoLayer({ state, group, level }: Props) {
 
             layer.on("click", ({ target }) => {
                 map.fitBounds(target.getBounds())
-                dispatch(
-                    featureDemographic({
-                        title: name,
-                        breakdown: demographic,
-                    }),
-                )
+                context?.setModal({
+                    id,
+                    title: name,
+                    breakdown: demographic,
+                })
             })
         }
-    }, [])
+    }, [context])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         const { bins } = legend
@@ -51,12 +48,18 @@ export default function GeoLayer({ state, group, level }: Props) {
             }
 
             const {
-                bins: { [group]: id },
+                id,
+                bins: { [group]: bin_index },
             } = feature as HeatMapFeature
-            const fillColor = bins[id].color
+            const fillColor = bins[bin_index].color
+
+            if (context.modal?.id === id) {
+                return { fillColor: "black", fillOpacity: 0.5, weight: 1 }
+            }
+
             return { fillOpacity, fillColor, color, weight: 0.5 }
         }
-    }, [legend, group])
+    }, [legend, group, context])
 
     return (
         <FeatureGroup ref={geoRef}>

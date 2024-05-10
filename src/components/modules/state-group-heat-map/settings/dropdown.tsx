@@ -68,7 +68,8 @@ const Button = tw(Listbox.Button)`
     py-2 pl-3 pr-10 
     text-left sm:text-sm
     border rounded-sm
-    bg-white 
+    bg-white
+    shadow
 `
 
 const Options = tw(Listbox.Options)`

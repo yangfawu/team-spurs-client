@@ -1,26 +1,27 @@
+import DefaultTileLayer from "@/components/leaflet/default-tile-layer"
 import GeoRefocusButton from "@/components/leaflet/geo-refocus-button"
 import StateMapContainer from "@/components/leaflet/state-map-container"
 import MapLoader from "@/components/loader/map-loader"
+import State from "@/constants/state"
 import { GeoLayerRefProvider } from "@/contexts/geo-layer-ref"
-import "leaflet/dist/leaflet.css"
 import { Suspense } from "react"
 import GeoLayer from "./geo-layer"
-import State from "@/constants/state"
-import Group from "@/constants/group"
-import HeatLevel from "@/constants/heat-level"
+import Legend from "./legend"
+import Settings from "./settings"
 
 interface Props {
     state: State
-    group: Group
-    level: HeatLevel
 }
-export default function StateGroupHeatMap({ state, group, level }: Props) {
+export default function StateGroupHeatMap({ state }: Props) {
     return (
         <StateMapContainer preferCanvas>
+            <DefaultTileLayer />
+            <Settings />
             <Suspense fallback={<MapLoader />}>
                 <GeoLayerRefProvider>
-                    <GeoLayer state={state} group={group} level={level} />
+                    <GeoLayer state={state} />
                     <GeoRefocusButton />
+                    <Legend state={state} />
                 </GeoLayerRefProvider>
             </Suspense>
         </StateMapContainer>

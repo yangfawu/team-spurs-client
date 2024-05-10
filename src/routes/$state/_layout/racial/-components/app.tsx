@@ -1,41 +1,49 @@
-import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
+import DynamicSidebar from "@/components/modules/dynamic-sidebar"
+import { ModuleOption } from "@/components/modules/dynamic-sidebar/types"
 import SuspensePanel from "@/components/resizable-panels/suspense-panel"
 import VerticalDivider from "@/components/resizable-panels/vertical-divider"
+import { HeatSettingsProvider } from "@/contexts/heat-settings"
 import { useMapRef } from "@/contexts/map-ref"
+import { RegionDemographicShowcaseProvider } from "@/contexts/region-demographic-showcase"
 import useRedrawMap from "@/hooks/use-redraw-map"
+import { lazy } from "react"
 import { Panel, PanelGroup } from "react-resizable-panels"
-import Control from "./control"
-import Legend from "./legend"
 import Map from "./map"
-import Modal from "./modal"
+
+const MODULE_OPTIONS: ModuleOption[] = [
+    {
+        id: "breakdown",
+        name: "Region Demographic Breakdown",
+        Component: lazy(() => import("./region-breakdown")),
+    },
+]
 
 export default function App() {
     const mapRef = useMapRef()
     const redrawMap = useRedrawMap(mapRef)
 
     return (
-        <>
-            <div className="flex-1">
-                <PanelGroup direction="vertical" autoSaveId={HeatSaveKey.ROOT}>
-                    <SuspensePanel className="relative" minSize={50} collapsible defaultSize={85} onResize={redrawMap}>
-                        <Map />
-                    </SuspensePanel>
-                    <HorizontalDivider />
-                    <Panel minSize={10} defaultSize={15} collapsible onResize={redrawMap}>
-                        <PanelGroup direction="horizontal" autoSaveId={HeatSaveKey.FOOTER}>
-                            <SuspensePanel minSize={25} collapsible>
-                                <Control />
-                            </SuspensePanel>
-                            <VerticalDivider />
-                            <SuspensePanel minSize={25} collapsible defaultSize={75}>
-                                <Legend />
-                            </SuspensePanel>
-                        </PanelGroup>
-                    </Panel>
-                </PanelGroup>
-            </div>
-            <Modal />
-        </>
+        <div className="flex-1">
+            <HeatSettingsProvider>
+                <RegionDemographicShowcaseProvider>
+                    <PanelGroup direction="horizontal" autoSaveId={HeatSaveKey.ROOT}>
+                        <SuspensePanel
+                            className="relative"
+                            minSize={25}
+                            collapsible
+                            defaultSize={80}
+                            onResize={redrawMap}
+                        >
+                            <Map />
+                        </SuspensePanel>
+                        <VerticalDivider />
+                        <Panel minSize={20} maxSize={40} collapsible>
+                            <DynamicSidebar name="racial" options={MODULE_OPTIONS} initialModules={["breakdown"]} />
+                        </Panel>
+                    </PanelGroup>
+                </RegionDemographicShowcaseProvider>
+            </HeatSettingsProvider>
+        </div>
     )
 }
 

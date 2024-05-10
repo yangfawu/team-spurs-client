@@ -1,8 +1,8 @@
 import Group, { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
-import { selectGroup } from "@/redux/heat"
-import { useAppSelector } from "@/redux/hooks"
+import { useHeatSettings } from "@/contexts/heat-settings"
+import { useRegionDemographicShowcase } from "@/contexts/region-demographic-showcase"
 import { useMemo } from "react"
-import { Bar, BarChart, CartesianGrid, Cell, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import TooltipContent from "./tooltip-content"
 
 export interface BarData {
@@ -12,24 +12,33 @@ export interface BarData {
         short: string
     }
     value: number
+    display: number
 }
 
-interface Props {
-    data: Record<Group, number>
-}
-export default function Chart({ data }: Props) {
-    const group = useAppSelector(selectGroup)
+export default function Chart() {
+    const context = useRegionDemographicShowcase()
+    const { group } = useHeatSettings()
+    console.log(group)
 
     const bars = useMemo(() => {
-        // Compute the data for the chart
         const out: BarData[] = []
+
+        if (!context?.modal?.breakdown) return out
+
+        const data = context.modal.breakdown
+
+        const maxPop = Object.values(data).reduce((a, b) => a + b, 0)
+
+        // Compute the data for the chart
         for (const group of SUPPORTED_GROUPS) {
             const long = GROUP_TO_NAME[group]
             const short = GROUP_TO_ABBREV[group]
             const value = Math.floor(data[group])
+            const display = value / maxPop
             out.push({
                 group,
                 label: { long, short },
+                display,
                 value,
             })
         }
@@ -37,19 +46,15 @@ export default function Chart({ data }: Props) {
         // Sort the bars by count
         out.sort((a, b) => b.value - a.value)
 
-        return out
-    }, [data])
-
-    const filteredBars = useMemo(() => {
-        return bars.filter(({ value }) => value > 0)
-    }, [bars])
+        return out.filter(({ display }) => display > 0.05)
+    }, [context])
 
     return (
         <ResponsiveContainer className="flex-1 overflow-clip">
-            <BarChart data={filteredBars}>
+            <BarChart data={bars}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="category" dataKey="label.short" interval={0} />
-                <YAxis type="number" tickFormatter={format} />
+                <XAxis type="category" dataKey="label.long" interval={0} />
+                <YAxis type="number" min={0} max={1} tickFormatter={yFormatter} />
                 <Tooltip
                     content={({ active, payload }) => {
                         if (!active || !payload?.[0]) return null
@@ -58,11 +63,11 @@ export default function Chart({ data }: Props) {
                             label: { long },
                             value,
                         } = payload[0].payload as BarData
-                        return <TooltipContent title={long} value={value} format={format} />
+                        return <TooltipContent title={long} value={value} />
                     }}
                 />
-                <Bar dataKey="value" activeBar={<Rectangle fill="pink" stroke="blue" />}>
-                    {filteredBars.map(({ group: $g }) => (
+                <Bar dataKey="display">
+                    {bars.map(({ group: $g }) => (
                         <Cell key={$g} fill={$g === group ? "red" : "#8884d8"} />
                     ))}
                 </Bar>
@@ -71,4 +76,4 @@ export default function Chart({ data }: Props) {
     )
 }
 
-const format = (value: any) => Number(value).toPrecision(3)
+const yFormatter = (v: any) => `${(Number(v) * 100).toFixed(0)}%`
