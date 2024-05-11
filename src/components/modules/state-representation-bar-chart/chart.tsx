@@ -109,4 +109,4 @@ export default function Chart({ state }: Props) {
     )
 }
 
-const yFormatter = (v: any) => `${(Number(v) * 100).toFixed(0)}%`
+const yFormatter = (v: any) => `${+(Number(v) * 100).toFixed(0)}%`

@@ -25,7 +25,7 @@ export default function Info({ state }: Props) {
         return (
             <div className="rounded-full border-2 overflow-hidden flex items-stretch h-5">
                 {head.map(([party, percent, color]) => (
-                    <div key={party} className={color} style={{ width: `${(percent * 100).toFixed(2)}%` }} />
+                    <div key={party} className={color} style={{ width: `${+(percent * 100).toFixed(2)}%` }} />
                 ))}
                 <div className={`bg-${tail[2]} flex-1`} />
             </div>
@@ -40,7 +40,7 @@ export default function Info({ state }: Props) {
                     <Stat key={party} className="relative">
                         <div className={`${PARTY_TO_COLOR[party]} absolute inset-0 -z-10 opacity-10`}></div>
                         <h4 className="text-xs font-semibold text-gray-600 uppercase">{PARTY_TO_NAME[party]}</h4>
-                        <p className="text-lg py-2 font-bold">{(breakdown[party] * 100).toFixed(1)} %</p>
+                        <p className="text-lg py-2 font-bold">{+(breakdown[party] * 100).toFixed(1)} %</p>
                     </Stat>
                 ))}
             </div>

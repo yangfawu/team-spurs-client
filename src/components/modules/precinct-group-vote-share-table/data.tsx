@@ -17,10 +17,10 @@ export const COLUMNS = [
     }),
     ch.accessor("percent_democrat", {
         header: () => "% Democrat Votes",
-        cell: c => (c.getValue() * 100).toFixed(1),
+        cell: c => +(c.getValue() * 100).toFixed(1),
     }),
     ch.accessor("percent_republican", {
         header: () => "% Republican Votes",
-        cell: c => (c.getValue() * 100).toFixed(1),
+        cell: c => +(c.getValue() * 100).toFixed(1),
     }),
 ]

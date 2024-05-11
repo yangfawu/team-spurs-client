@@ -14,7 +14,7 @@ import Map from "./map"
 const MODULE_OPTIONS: ModuleOption[] = [
     {
         id: "redistricting",
-        name: "Redistricting",
+        name: "State Redistricting",
         Component: lazy(() => import("./redistricting")),
     },
     {
@@ -24,7 +24,7 @@ const MODULE_OPTIONS: ModuleOption[] = [
     },
     {
         id: "state-voter",
-        name: "State Voter",
+        name: "State Voter Breakdown",
         Component: lazy(() => import("./state-voter")),
     },
 ]
