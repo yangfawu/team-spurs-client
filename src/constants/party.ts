@@ -1,5 +1,5 @@
 enum Party {
-    DEMOCRAT = "d",
+    DEMOCRATIC = "d",
     REPUBLICAN = "r",
     OTHER = "o",
 }
@@ -7,7 +7,7 @@ enum Party {
 export const SUPPORTED_PARTIES = Object.values(Party)
 
 export const PARTY_TO_NAME: Record<Party, string> = {
-    [Party.DEMOCRAT]: "Democratic",
+    [Party.DEMOCRATIC]: "Democratic",
     [Party.REPUBLICAN]: "Republican",
     [Party.OTHER]: "Other",
 }

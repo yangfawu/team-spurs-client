@@ -39,7 +39,7 @@ export const COLUMNS = [
     ch.accessor("vote_margin", {
         header: () => "Vote Margin",
         cell: c => {
-            return `${(c.getValue() * 100).toFixed(3)}%`
+            return `${(c.getValue() * 100).toFixed(1)}%`
         },
     }),
 ]

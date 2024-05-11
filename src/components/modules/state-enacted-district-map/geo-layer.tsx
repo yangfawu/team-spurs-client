@@ -29,17 +29,18 @@ export default function GeoLayer({ state }: Props) {
     }, [])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
+        const defaultStyle = { fillOpacity: 0, weight: 0.9 }
         return feature => {
-            if (!feature) {
-                return { fillColor: Fill.REGULAR }
-            }
+            if (!feature) return defaultStyle
 
             const {
                 properties: { district: $d },
             } = feature as AssemblyDistrictGeoFeature
 
-            const fillColor = `${state}-${$d}` === context?.focus ? Fill.SELECTED : Fill.REGULAR
-            return { fillColor }
+            if (`${state}-${$d}` === context?.focus) {
+                return { ...defaultStyle, fillOpacity: 0.5, fillColor: Fill.SELECTED }
+            }
+            return defaultStyle
         }
     }, [state, context])
 

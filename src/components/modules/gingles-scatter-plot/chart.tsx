@@ -3,14 +3,9 @@ import Group, { GROUP_TO_NAME } from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Chart as ChartJS } from "chart.js"
-import "chart.js/auto"
-import annotationPlugin from "chartjs-plugin-annotation"
 import _ from "lodash"
 import { useMemo } from "react"
-import { Scatter } from "react-chartjs-2"
-
-ChartJS.register(annotationPlugin)
+import ApexCharts from "react-apexcharts"
 
 interface Props {
     state: State
@@ -19,21 +14,19 @@ interface Props {
 export default function Chart({ state, group }: Props) {
     const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
-    const composedData = useMemo(() => {
+    const [demScatterPoints, repScatterPoints, demLinePoints, repLinePoints] = useMemo(() => {
         const { rows, lines } = data
 
         const sampleRows = _.sampleSize(rows, Math.min(200, rows.length))
 
-        const democratPrecinctPoints = sampleRows.map(
-            ({ percent_group, percent_democrat }) => [percent_group, percent_democrat] as const,
-        )
-        const republicanPrecinctPoints = sampleRows.map(
-            ({ percent_group, percent_republican }) => [percent_group, percent_republican] as const,
-        )
+        const democratPrecinctPoints = sampleRows.map(({ percent_group: x, percent_democrat: y }) => ({ x, y }))
+        const republicanPrecinctPoints = sampleRows.map(({ percent_group: x, percent_republican: y }) => ({ x, y }))
+        console.log(republicanPrecinctPoints)
 
-        const dx = sampleRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0) / 1e2
+        const dx =
+            sampleRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0) / REGRESSION_STEPS
 
-        const democratRegressionLine = lines.find(({ party }) => party === Party.DEMOCRAT)!
+        const democratRegressionLine = lines.find(({ party }) => party === Party.DEMOCRATIC)!
         const democratRegressionPoints = computeRegressionPoints(
             createPolynomialFunction(democratRegressionLine.coefficients),
             REGRESSION_STEPS,
@@ -47,100 +40,108 @@ export default function Chart({ state, group }: Props) {
             dx,
         )
 
-        return {
-            datasets: [
-                {
-                    label: "Democratic",
-                    data: democratPrecinctPoints,
-                    backgroundColor: "#00f5",
-                },
-                {
-                    label: "Democratic Line",
-                    data: democratRegressionPoints,
-                    type: "line",
-                    borderColor: "#00f",
-                    borderWidth: 4,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                },
-                {
-                    label: "Republican",
-                    data: republicanPrecinctPoints,
-                    backgroundColor: "#f005",
-                },
-                {
-                    label: "Republican Line",
-                    data: republicanRegressionPoints,
-                    type: "line",
-                    borderColor: "#f00",
-                    borderWidth: 4,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                },
-            ],
-        }
-    }, [data])
-
-    const options = useMemo(() => {
-        const xAxisLabel = `% ${GROUP_TO_NAME[group]}`
-        const yAxisLabel = "Vote Share"
-        return {
-            responsive: true,
-            scales: {
-                x: {
-                    type: "linear",
-                    position: "bottom",
-                    title: {
-                        display: true,
-                        text: xAxisLabel,
-                    },
-                    ticks: {
-                        min: 0,
-                        callback: (value: number) => `${value * 100}%`,
-                    },
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        min: 0,
-                        max: 1,
-                        callback: (value: number) => `${value * 100}%`,
-                    },
-                    title: {
-                        display: true,
-                        text: yAxisLabel,
-                    },
-                },
-            },
-            plugins: {
-                legend: {
-                    position: "bottom",
-                },
-                tooltip: {
-                    callbacks: {
-                        label: (context: any) => {
-                            const [x, y] = context.raw as [number, number]
-                            const label = context.dataset.label as string
-                            return `${label}: (${(x * 100).toPrecision(3)}%, ${(y * 100).toPrecision(3)}%)`
-                        },
-                    },
-                },
-            },
-            maintainAspectRatio: false,
-        }
-    }, [group])
+        return [
+            democratPrecinctPoints,
+            republicanPrecinctPoints,
+            democratRegressionPoints,
+            republicanRegressionPoints,
+        ] as const
+    }, [data, REGRESSION_STEPS])
 
     return (
-        <div className="flex-1 overflow-hidden">
-            {/* @ts-ignore */}
-            <Scatter data={composedData} options={options} width="100%" />
+        <div className="flex-1">
+            <ApexCharts
+                height="100%"
+                type="line"
+                options={{
+                    chart: {
+                        animations: {
+                            enabled: false,
+                        },
+                        zoom: {
+                            enabled: false,
+                        },
+                        toolbar: {
+                            show: false,
+                        },
+                        background: "transparent",
+                    },
+                    theme: {
+                        mode: "light",
+                    },
+                    fill: {
+                        type: "solid",
+                    },
+                    stroke: {
+                        width: 2,
+                        curve: "straight",
+                    },
+                    markers: {
+                        size: [4, 4, 0, 0],
+                    },
+                    tooltip: {
+                        shared: false,
+                        intersect: true,
+                    },
+                    xaxis: {
+                        type: "numeric",
+                        min: 0,
+                        title: {
+                            text: `% ${GROUP_TO_NAME[group]}`,
+                        },
+                        labels: {
+                            formatter: value => `${Math.ceil(Number(value) * 100)}%`,
+                        },
+                    },
+                    yaxis: {
+                        min: 0,
+                        title: {
+                            text: "% Vote Share",
+                        },
+                        labels: {
+                            formatter: (value: number) => `${(value * 100).toFixed(0)}%`,
+                        },
+                    },
+                    legend: {
+                        position: "top",
+                        horizontalAlign: "center",
+                        labels: {
+                            useSeriesColors: false,
+                        },
+                    },
+                }}
+                series={[
+                    {
+                        name: "Democratic",
+                        type: "scatter",
+                        data: demScatterPoints,
+                        color: "#00f",
+                    },
+                    {
+                        name: "Republican",
+                        type: "scatter",
+                        data: repScatterPoints,
+                        color: "#f00",
+                    },
+                    {
+                        name: "Democratic Curve",
+                        type: "line",
+                        data: demLinePoints,
+                        color: "#00f",
+                    },
+                    {
+                        name: "Republican Curve",
+                        type: "line",
+                        data: repLinePoints,
+                        color: "#f00",
+                    },
+                ]}
+            />
         </div>
     )
 }
 
-const REGRESSION_STEPS = 1e2
+const REGRESSION_STEPS = 5e1
 
 const createPolynomialFunction = (coeffs: number[]) => {
     return (x: number) => {
@@ -156,6 +157,7 @@ const createPolynomialFunction = (coeffs: number[]) => {
 const computeRegressionPoints = (f: (x: number) => number, steps: number, dx: number) => {
     return Array.from({ length: steps + 1 }, (_, i) => {
         const x = dx * i
-        return [x, f(x)] as const
+        const y = f(x)
+        return { x, y }
     })
 }

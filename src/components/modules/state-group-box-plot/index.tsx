@@ -12,7 +12,7 @@ interface Props {
 export default function StateGroupBoxPlot({ state, group }: Props) {
     return (
         <Container>
-            <h3 className="text-lg font-bold">Demographic Breakdown</h3>
+            <h3 className="text-lg font-bold">Box & Whisker Analysis</h3>
             <Suspense fallback={<BarChartLoader />}>
                 <Chart state={state} group={group} />
             </Suspense>

@@ -86,6 +86,7 @@ export default function Chart({ state }: Props) {
                 <XAxis type="category" dataKey="label.long" interval={0} />
                 <YAxis type="number" min={0} max={1} tickFormatter={yFormatter} />
                 <Tooltip
+                    cursor={{ fill: "transparent" }}
                     content={({ active, payload }) => {
                         if (!active || !payload?.[0]) return null
 
@@ -98,7 +99,11 @@ export default function Chart({ state }: Props) {
                 />
                 <Bar dataKey="display.pop" fill="#8884d8" name="Population" />
                 <Bar dataKey="display.reps" fill="#82ca9d" name="Representatives" />
-                <Legend verticalAlign="bottom" height={36} />
+                <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    formatter={value => <span className="text-black">{value}</span>}
+                />
             </BarChart>
         </ResponsiveContainer>
     )

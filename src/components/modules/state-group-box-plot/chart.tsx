@@ -23,7 +23,7 @@ export default function BoxPlotAnalysis({ state, group }: Props) {
         return source.map(({ id }) => id)
     }, [source])
 
-    const boxData = useMemo(() => {
+    const boxPlotData = useMemo(() => {
         return source.map(({ id, simulation }) => ({
             x: id,
             y: simulation,
@@ -38,56 +38,71 @@ export default function BoxPlotAnalysis({ state, group }: Props) {
     }, [source])
 
     return (
-        <ApexCharts
-            // height={350}
-            height="90%"
-            type="boxPlot"
-            options={{
-                chart: {
-                    type: "boxPlot",
-                    zoom: {
-                        enabled: false,
+        <div className="flex-1">
+            <ApexCharts
+                height="100%"
+                type="boxPlot"
+                options={{
+                    chart: {
+                        type: "boxPlot",
+                        animations: {
+                            enabled: false,
+                        },
+                        zoom: {
+                            enabled: false,
+                        },
+                        toolbar: {
+                            show: false,
+                        },
+                        background: "transparent",
                     },
-                    toolbar: {
-                        show: false,
+                    theme: {
+                        mode: "light",
                     },
-                    background: "transparent",
-                },
-                theme: {
-                    mode: "light",
-                },
-                plotOptions: {
-                    boxPlot: {
-                        // colors: {
-                        //     upper: "#8884d8",
-                        //     lower: "#82ca9d",
-                        // },
+                    plotOptions: {
+                        boxPlot: {
+                            colors: {
+                                upper: "#e9ecef",
+                                lower: "#f8f9fa",
+                            },
+                        },
                     },
-                },
-                xaxis: {
-                    title: {
-                        text: "Indexed Districts",
+                    xaxis: {
+                        title: {
+                            text: "Indexed Districts",
+                        },
+                        categories,
                     },
-                    categories,
-                },
-                yaxis: {
-                    title: {
-                        text: `% ${GROUP_TO_NAME[group]}`,
+                    yaxis: {
+                        title: {
+                            text: `% ${GROUP_TO_NAME[group]}`,
+                        },
+                        labels: {
+                            formatter: (value: number) => `${value * 100}%`,
+                        },
                     },
-                },
-            }}
-            series={[
-                {
-                    type: "boxPlot",
-                    name: "ReCom Ensemble",
-                    data: boxData,
-                },
-                {
-                    type: "scatter",
-                    name: "Enacted",
-                    data: enactedScatterData,
-                },
-            ]}
-        />
+                    legend: {
+                        position: "top",
+                        horizontalAlign: "right",
+                        labels: {
+                            useSeriesColors: false,
+                        },
+                    },
+                }}
+                series={[
+                    {
+                        type: "boxPlot",
+                        name: "Ensemble",
+                        data: boxPlotData,
+                        color: "#000",
+                    },
+                    {
+                        type: "scatter",
+                        name: "Enacted",
+                        data: enactedScatterData,
+                    },
+                ]}
+            />
+        </div>
     )
 }

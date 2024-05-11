@@ -39,7 +39,7 @@ export default function GeoLayer({ state }: Props) {
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         const { bins } = legend
-        const fillOpacity = 0.8
+        const fillOpacity = 0.5
         const color = bins[bins.length >> 1].color
 
         return feature => {

@@ -56,6 +56,7 @@ export default function Chart({ group }: Props) {
                 <XAxis type="category" dataKey="label.long" interval={0} />
                 <YAxis type="number" min={0} max={1} tickFormatter={yFormatter} />
                 <Tooltip
+                    cursor={{ fill: "transparent" }}
                     content={({ active, payload }) => {
                         if (!active || !payload?.[0]) return null
 

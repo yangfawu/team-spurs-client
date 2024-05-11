@@ -26,7 +26,7 @@ export default function Legend({ state }: Props) {
             <div className="divide-y group shadow">
                 {reversedBins.map(({ color, max }, i) => (
                     <Bin key={i}>
-                        <div className="w-8 h-8 border rounded-sm opacity-80" style={{ backgroundColor: color }} />
+                        <div className="w-8 h-8 border rounded-sm opacity-50" style={{ backgroundColor: color }} />
                         <p className="p-1.5 text-sm">
                             <b>{format((max / maxPop) * 100)}</b>
                         </p>
@@ -39,9 +39,9 @@ export default function Legend({ state }: Props) {
 
 const Bin = tw.div`
     flex items-center gap-1
-    bg-white/50
+    bg-white/0
     group-hover:bg-white
     transition-colors
 `
 
-const format = (value: number) => `≤ ${value.toFixed(2)}%`
+const format = (value: number) => `≤ ${value.toFixed(0)}%`

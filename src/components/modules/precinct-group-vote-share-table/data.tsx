@@ -9,18 +9,18 @@ export const COLUMNS = [
     }),
     ch.accessor("total_population", {
         header: () => "Total Population",
-        cell: c => c.getValue(),
+        cell: c => c.getValue().toLocaleString(),
     }),
     ch.accessor("group_population", {
         header: () => "Minority Population",
-        cell: c => c.getValue(),
+        cell: c => c.getValue().toLocaleString(),
     }),
     ch.accessor("percent_democrat", {
         header: () => "% Democrat Votes",
-        cell: c => (c.getValue() * 100).toFixed(3),
+        cell: c => (c.getValue() * 100).toFixed(1),
     }),
     ch.accessor("percent_republican", {
         header: () => "% Republican Votes",
-        cell: c => (c.getValue() * 100).toFixed(3),
+        cell: c => (c.getValue() * 100).toFixed(1),
     }),
 ]
