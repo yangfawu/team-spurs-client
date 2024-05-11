@@ -17,18 +17,23 @@ export default function Legend({ state }: Props) {
         },
     } = useSuspenseQuery(fetchHeatMap(state, level, group))
 
-    const reversedBins = useMemo(() => bins.slice().reverse(), [bins])
-
-    const maxPop = useMemo(() => bins.reduce((acc, { max }) => Math.max(acc, max), 0), [bins])
+    const data = useMemo(() => {
+        const min = bins[0].min
+        const max = bins[bins.length - 1].max
+        return bins.map(({ color, max: v }) => ({
+            color,
+            value: ((v - min) / (max - min)) * 100,
+        }))
+    }, [bins])
 
     return (
         <Control key="legend" position="bottomleft">
-            <div className="divide-y group shadow">
-                {reversedBins.map(({ color, max }, i) => (
+            <div className="divide-y group shadow flex flex-col-reverse">
+                {data.map(({ color, value }, i) => (
                     <Bin key={i}>
                         <div className="w-8 h-8 border rounded-sm opacity-50" style={{ backgroundColor: color }} />
                         <p className="p-1.5 text-sm">
-                            <b>{format((max / maxPop) * 100)}</b>
+                            <b>{format(value)}</b>
                         </p>
                     </Bin>
                 ))}
@@ -44,4 +49,4 @@ const Bin = tw.div`
     transition-colors
 `
 
-const format = (value: number) => `≤ ${value.toFixed(0)}%`
+const format = (value: number) => `≤ ${+value.toFixed(0)}%`
