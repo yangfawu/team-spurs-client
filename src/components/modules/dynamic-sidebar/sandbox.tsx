@@ -16,12 +16,12 @@ export default function Sandbox({ name }: Props) {
 
     const saveKey = useMemo(() => `${name}:sidebar:${modules.join("-")}`, [name, modules])
 
-    const activeComponents = useMemo(
+    const activeComponents: [string, ElementType][] = useMemo(
         () =>
-            modules
-                .map(map.get, map)
-                .map(opt => opt?.Component)
-                .filter(Boolean) as ElementType[],
+            modules.map(tag => [tag, map.get(tag)?.Component] as const).filter(([, Component]) => !!Component) as [
+                string,
+                ElementType,
+            ][],
         [modules, map],
     )
 
@@ -29,16 +29,22 @@ export default function Sandbox({ name }: Props) {
         <div className="flex-1">
             <PanelGroup direction="vertical" autoSaveId={saveKey}>
                 {activeComponents.length < 1 ? (
-                    <Panel>
+                    <Panel id={`${name}-???`} order={1}>
                         <div className="h-full flex items-center justify-center p-2">
                             <p className="text-gray-400 italic">no active views</p>
                         </div>
                     </Panel>
                 ) : (
-                    activeComponents.map((Component, i) => (
+                    activeComponents.map(([tag, Component], i) => (
                         <Fragment key={i}>
                             {i > 0 && <HorizontalDivider />}
-                            <SuspensePanel minSize={minSize} collapsible defaultSize={defaultSize}>
+                            <SuspensePanel
+                                id={`${name}-${tag}`}
+                                order={i + 1}
+                                minSize={minSize}
+                                collapsible
+                                defaultSize={defaultSize}
+                            >
                                 <Component />
                             </SuspensePanel>
                         </Fragment>

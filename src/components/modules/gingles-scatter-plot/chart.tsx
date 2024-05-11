@@ -90,7 +90,7 @@ export default function Chart({ state, group }: Props) {
                             text: `% ${GROUP_TO_NAME[group]}`,
                         },
                         labels: {
-                            formatter: value => `${Math.ceil(Number(value) * 100)}%`,
+                            formatter: value => `${+(Number(value) * 100).toFixed(2)}%`,
                         },
                     },
                     yaxis: {
