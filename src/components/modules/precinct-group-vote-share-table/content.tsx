@@ -1,4 +1,5 @@
-import { PrecinctPoint, fetchPrecinctAnalysis } from "@/api/precinct"
+import { PrecinctPoint } from "@/api/racial"
+import { fetchPrecinctAnalysis } from "@/api/racial"
 import Group from "@/constants/group"
 import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"

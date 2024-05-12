@@ -1,4 +1,4 @@
-import { fetchPrecinctAnalysis } from "@/api/precinct"
+import { fetchPrecinctAnalysis } from "@/api/racial"
 import Group, { GROUP_TO_NAME } from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
@@ -21,7 +21,6 @@ export default function Chart({ state, group }: Props) {
 
         const democratPrecinctPoints = sampleRows.map(({ percent_group: x, percent_democrat: y }) => ({ x, y }))
         const republicanPrecinctPoints = sampleRows.map(({ percent_group: x, percent_republican: y }) => ({ x, y }))
-        console.log(republicanPrecinctPoints)
 
         const dx =
             sampleRows.map(({ percent_group }) => percent_group).reduce((a, b) => Math.max(a, b), 0) / REGRESSION_STEPS

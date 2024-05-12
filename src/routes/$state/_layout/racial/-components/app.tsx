@@ -57,7 +57,7 @@ export default function App() {
                             <Map />
                         </SuspensePanel>
                         <VerticalDivider />
-                        <Panel minSize={20} maxSize={40} collapsible>
+                        <Panel minSize={20} maxSize={50} collapsible>
                             <DynamicSidebar name="racial" options={MODULE_OPTIONS} initialModules={["breakdown"]} />
                         </Panel>
                     </PanelGroup>

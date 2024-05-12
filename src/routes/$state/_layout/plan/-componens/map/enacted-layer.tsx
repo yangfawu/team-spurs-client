@@ -1,5 +1,4 @@
-import { AssemblyDistrictGeoFeature } from "@/api/assembly"
-import { fetchStateAssemblyMap } from "@/api/assembly"
+import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/summary"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -22,7 +21,7 @@ export default function EnactedLayer() {
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         return () => ({
             fillOpacity: 0,
-            color: Fill.REGULAR
+            color: Fill.REGULAR,
         })
     }, [])
 

@@ -1,4 +1,4 @@
-import { PrecinctPoint } from "@/api/precinct"
+import { PrecinctPoint } from "@/api/racial"
 import { createColumnHelper } from "@tanstack/react-table"
 
 const ch = createColumnHelper<PrecinctPoint>()

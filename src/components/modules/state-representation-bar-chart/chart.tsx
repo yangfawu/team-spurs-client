@@ -1,4 +1,4 @@
-import { fetchRepresentatives, fetchStateDemographic } from "@/api/assembly"
+import { fetchRepresentatives, fetchStateDemographic } from "@/api/summary"
 import Group, { GROUP_TO_ABBREV, GROUP_TO_NAME, SUPPORTED_GROUPS } from "@/constants/group"
 import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"

@@ -1,4 +1,4 @@
-import { fetchHeatMap } from "@/api/heat"
+import { fetchHeatMap } from "@/api/racial"
 import State from "@/constants/state"
 import { useHeatSettings } from "@/contexts/heat-settings"
 import { useSuspenseQuery } from "@tanstack/react-query"

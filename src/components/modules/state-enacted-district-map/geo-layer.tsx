@@ -1,4 +1,4 @@
-import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/assembly"
+import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/summary"
 import State from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useMapFocus } from "@/contexts/map-focus"

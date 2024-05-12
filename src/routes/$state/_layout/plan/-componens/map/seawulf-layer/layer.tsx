@@ -1,4 +1,4 @@
-import { SeawulfMapFeature, fetchSeawulfPlan } from "@/api/compare"
+import { SeawulfMapFeature, fetchSeawulfPlan } from "@/api/plan"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"

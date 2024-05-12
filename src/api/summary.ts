@@ -40,7 +40,7 @@ export interface VoterInfo {
     // facts: string[]
 }
 
-const NAME = "assembly"
+const NAME = "summary"
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/${NAME}`
 
 export function fetchStateDemographic(state: State) {

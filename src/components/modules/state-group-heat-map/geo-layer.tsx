@@ -1,4 +1,4 @@
-import { HeatMapFeature, fetchHeatMap } from "@/api/heat"
+import { HeatMapFeature, fetchHeatMap } from "@/api/racial"
 import State from "@/constants/state"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useRegionDemographicShowcase } from "@/contexts/region-demographic-showcase"

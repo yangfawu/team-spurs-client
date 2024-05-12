@@ -1,4 +1,4 @@
-import { fetchStateVoterDistribution } from "@/api/assembly"
+import { fetchStateVoterDistribution } from "@/api/summary"
 import Party, { PARTY_TO_NAME, SUPPORTED_PARTIES } from "@/constants/party"
 import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"

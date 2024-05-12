@@ -1,4 +1,4 @@
-import { Representative, fetchStateAssemblyMap } from "@/api/assembly"
+import { Representative, fetchStateAssemblyMap } from "@/api/summary"
 import State from "@/constants/state"
 import { useMapFocus } from "@/contexts/map-focus"
 import { useMapRef } from "@/contexts/map-ref"

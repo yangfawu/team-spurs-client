@@ -1,4 +1,4 @@
-import { fetchRedistrictingInfo } from "@/api/assembly"
+import { fetchRedistrictingInfo } from "@/api/summary"
 import State from "@/constants/state"
 import { LinkIcon } from "@heroicons/react/20/solid"
 import { useSuspenseQuery } from "@tanstack/react-query"

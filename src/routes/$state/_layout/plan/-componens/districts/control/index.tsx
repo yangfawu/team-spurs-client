@@ -1,4 +1,4 @@
-import { fetchSeawulfPlanOptions } from "@/api/compare"
+import { fetchSeawulfPlanOptions } from "@/api/plan"
 import { useSafeCurrentState } from "@/contexts/current-state"
 import { selectPlan, setPlan } from "@/redux/compare"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"

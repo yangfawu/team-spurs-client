@@ -1,4 +1,4 @@
-import { fetchRepresentatives } from "@/api/assembly"
+import { fetchRepresentatives } from "@/api/summary"
 import TableLoader from "@/components/loader/table-loader"
 import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
