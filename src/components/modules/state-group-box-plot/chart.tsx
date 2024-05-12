@@ -8,7 +8,7 @@ interface Props {
     state: State
     group: Group
 }
-export default function BoxPlotAnalysis({ state, group }: Props) {
+export default function Chart({ state, group }: Props) {
     const source = useMemo(() => {
         const copy = BOX_PLOT_ANALYSIS_DATA.slice()
         copy.sort((a, b) => a.simulation[2] - b.simulation[2])

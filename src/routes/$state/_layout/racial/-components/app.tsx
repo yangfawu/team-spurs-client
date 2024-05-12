@@ -30,7 +30,12 @@ const MODULE_OPTIONS: ModuleOption[] = [
         id: "box",
         name: "Box & Whisker Analysis",
         Component: lazy(() => import("./box-plot")),
-    }
+    },
+    {
+        id: "ei",
+        name: "Ecological Inference",
+        Component: lazy(() => import("./ecological-inference")),
+    },
 ]
 
 export default function App() {

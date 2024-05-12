@@ -77,11 +77,17 @@ export default function Chart({ state, group }: Props) {
                         curve: "straight",
                     },
                     markers: {
-                        size: [4, 4, 0, 0],
+                        size: [4, 0, 4, 0],
                     },
                     tooltip: {
                         shared: false,
                         intersect: true,
+                        x: {
+                            formatter: value => `${+(value * 100).toFixed(2)}% ${GROUP_TO_NAME[group]}`,
+                        },
+                        y: {
+                            formatter: value => `${+(value * 100).toFixed(2)}%`,
+                        },
                     },
                     xaxis: {
                         type: "numeric",
@@ -90,7 +96,7 @@ export default function Chart({ state, group }: Props) {
                             text: `% ${GROUP_TO_NAME[group]}`,
                         },
                         labels: {
-                            formatter: value => `${+(Number(value) * 100).toFixed(2)}%`,
+                            formatter: value => `${+(+value * 100).toFixed(2)}%`,
                         },
                     },
                     yaxis: {
@@ -112,22 +118,22 @@ export default function Chart({ state, group }: Props) {
                 }}
                 series={[
                     {
-                        name: "Democratic",
+                        name: "Democratic Vote Share",
                         type: "scatter",
                         data: demScatterPoints,
-                        color: "#00f",
-                    },
-                    {
-                        name: "Republican",
-                        type: "scatter",
-                        data: repScatterPoints,
-                        color: "#f00",
+                        color: "#55f",
                     },
                     {
                         name: "Democratic Curve",
                         type: "line",
                         data: demLinePoints,
                         color: "#00f",
+                    },
+                    {
+                        name: "Republican Vote Share",
+                        type: "scatter",
+                        data: repScatterPoints,
+                        color: "#f55",
                     },
                     {
                         name: "Republican Curve",
