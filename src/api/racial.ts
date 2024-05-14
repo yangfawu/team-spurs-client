@@ -72,6 +72,15 @@ interface BoxAndWhiskerAnalysis {
     boxes: BoxAndWhisker[]
 }
 
+interface EcologicalInferenceLine {
+    state: State
+    group: Group
+    party: Party
+    min: number
+    max: number
+    values: Record<string, number>
+}
+
 const NAME = "racial"
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/${NAME}`
 
@@ -103,6 +112,17 @@ export function fetchBoxAndWhiskerAnalysis(state: State, group: Group) {
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/box/${state}/${group}`, { signal })
             const data: BoxAndWhiskerAnalysis = await res.json()
+            return data
+        },
+    })
+}
+
+export function fetchEcologicalInference(state: State) {
+    return queryOptions<EcologicalInferenceLine[]>({
+        queryKey: [NAME, "fetchEcologicalInference", state],
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/ei/${state}`, { signal })
+            const data: EcologicalInferenceLine[] = await res.json()
             return data
         },
     })

@@ -1,20 +1,18 @@
 import BarChartLoader from "@/components/loader/bar-chart-loader"
-import Group from "@/constants/group"
 import State from "@/constants/state"
 import { Suspense } from "react"
 import tw from "tailwind-styled-components"
-import Chart from "./chart"
+import Content from "./content"
 
 interface Props {
     state: State
-    group: Group
 }
-export default function StateGroupEIAreaPlot({ state, group }: Props) {
+export default function StateGroupEIAreaPlot({ state }: Props) {
     return (
         <Container>
             <h3 className="text-lg font-bold">Ecological Inference [2020 Presidential]</h3>
             <Suspense fallback={<BarChartLoader />}>
-                <Chart state={state} group={group} />
+                <Content state={state} />
             </Suspense>
         </Container>
     )

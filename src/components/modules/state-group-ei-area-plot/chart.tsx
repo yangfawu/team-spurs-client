@@ -1,42 +1,27 @@
-import { EI_PLOT_DATA } from "@/constants/fake-ei-plot-data"
-import Group from "@/constants/group"
-import State from "@/constants/state"
-import _ from "lodash"
-import { useMemo } from "react"
 import ApexCharts from "react-apexcharts"
 
 interface Props {
-    state: State
-    group: Group
+    id: string
+    title: string
+    categories: number[]
+    series: ApexCharts["props"]["series"]
 }
-export default function Chart({ state, group }: Props) {
-    const { candidate, min, max, data } = EI_PLOT_DATA
-
-    const bins = useMemo(() => _.range(min, max + 1), [min, max])
-
-    const categories = useMemo(() => bins.map(v => v / max), [bins])
-
-    const series = useMemo(
-        () =>
-            data.map(({ key, values }) => ({
-                name: key,
-                data: bins.map(x => values[x] || 0),
-            })),
-        [bins, data],
-    )
-
+export default function Chart({ id, categories, series, title }: Props) {
     return (
-        <div className="flex-1">
+        <div className="flex-1" id={id}>
             <ApexCharts
                 height="100%"
                 type="area"
                 options={{
                     title: {
-                        text: `Support for ${candidate}`,
+                        text: title,
                         align: "center",
+                        offsetY: 20,
                     },
                     chart: {
+                        id,
                         type: "area",
+                        group: "ei",
                         animations: {
                             enabled: false,
                         },
@@ -54,11 +39,11 @@ export default function Chart({ state, group }: Props) {
                     xaxis: {
                         type: "numeric",
                         categories: categories,
+                        min: 0,
+                        max: 1,
+                        tickAmount: 5,
                     },
                     yaxis: {
-                        labels: {
-                            formatter: (value: number) => `${(value * 100).toFixed(0)}`,
-                        },
                         axisBorder: {
                             show: true,
                         },
@@ -73,7 +58,7 @@ export default function Chart({ state, group }: Props) {
                     legend: {
                         position: "top",
                         horizontalAlign: "right",
-                        floating: true,
+                        // floating: true,
                         labels: {
                             useSeriesColors: false,
                         },
