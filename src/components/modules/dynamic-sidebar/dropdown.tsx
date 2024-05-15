@@ -32,7 +32,7 @@ export default function Dropdown() {
                         leaveTo="opacity-0"
                     >
                         <Options>
-                            {options.map((opt, i) => (
+                            {options.map(opt => (
                                 <Listbox.Option
                                     key={opt.id}
                                     className={({ active }) =>
