@@ -40,7 +40,7 @@ export interface VoterInfo {
     // facts: string[]
 }
 
-interface OpportunityDistrictStat {
+export interface OpportunityDistrictStat {
     state: State
     group: Group
     threshold: number // 37, 44, 50
@@ -85,7 +85,6 @@ export function fetchRepresentatives(state: State) {
             data.sort((a, b) => a.district - b.district)
             return data
         },
-        staleTime: Infinity,
     })
 }
 
@@ -111,7 +110,7 @@ export function fetchStateVoterDistribution(state: State) {
     })
 }
 
-export function fetchOpportunityDistrictStats(state: State, threshold: number) {
+export function fetchStateOpportunityDistrictStats(state: State, threshold: number) {
     return queryOptions<OpportunityDistrictStat[]>({
         queryKey: [NAME, "fetchOpportunityDistrictStats", state, threshold],
         queryFn: async ({ signal }) => {

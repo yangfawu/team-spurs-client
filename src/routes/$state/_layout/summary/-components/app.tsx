@@ -27,6 +27,11 @@ const MODULE_OPTIONS: ModuleOption[] = [
         name: "State Voter Breakdown",
         Component: lazy(() => import("./state-voter")),
     },
+    {
+        id: "opp-districts",
+        name: "State Opportunity Districts",
+        Component: lazy(() => import("./opportunity-districts")),
+    },
 ]
 
 export default function App() {
@@ -56,7 +61,7 @@ export default function App() {
                     </PanelGroup>
                 </Panel>
                 <VerticalDivider />
-                <Panel minSize={20} maxSize={40} collapsible>
+                <Panel minSize={20} maxSize={50} collapsible>
                     <DynamicSidebar name="summary" options={MODULE_OPTIONS} initialModules={["state-rep"]} />
                 </Panel>
             </PanelGroup>
