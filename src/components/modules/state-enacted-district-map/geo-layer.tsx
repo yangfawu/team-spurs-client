@@ -30,7 +30,7 @@ export default function GeoLayer({ state }: Props) {
     const opContext = useDistrictShowcase()
     const focusContext = useMapFocus()
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
-        const defaultStyle = { fillOpacity: 0, weight: 0.9 }
+        const defaultStyle = { fillOpacity: 0, weight: 1.5, color: "black" }
 
         return feature => {
             if (!feature) return defaultStyle

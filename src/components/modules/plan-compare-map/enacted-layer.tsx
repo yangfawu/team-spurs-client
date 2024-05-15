@@ -1,30 +1,35 @@
-import { SeawulfFeature, fetchSeawulfPlan } from "@/api/plan"
+import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/summary"
+import State from "@/constants/state"
+import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
 
 interface Props {
-    plan: string
+    state: State
 }
-export default function Layer({ plan }: Props) {
-    const { data } = useSuspenseQuery(fetchSeawulfPlan(plan))
+export default function EnactedLayer({ state }: Props) {
+    const geoRef = useGeoLayerRef()
+
+    const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
-        return ({ properties }: SeawulfFeature, layer) => {
+        return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
             const { district: $d } = properties
-            layer.bindTooltip(`Seawulf District ${$d}`, { sticky: true })
+            layer.bindTooltip(`Enacted District ${$d}`, { sticky: true })
         }
     }, [])
 
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         return () => ({
-            fillColor: Fill.REGULAR,
+            fillOpacity: 0,
             color: Fill.REGULAR,
+            weight: 1.5, 
         })
     }, [])
 
     return (
-        <FeatureGroup>
+        <FeatureGroup ref={geoRef}>
             {data.map(feature => (
                 <GeoJSON key={feature.id} data={feature} onEachFeature={onEachFeature} style={getStyle} />
             ))}
@@ -33,6 +38,6 @@ export default function Layer({ plan }: Props) {
 }
 
 enum Fill {
-    REGULAR = "#d81919",
+    REGULAR = "#3388ff",
     // SELECTED = "black",
 }

@@ -1,5 +1,5 @@
+import DefaultTileLayer from "@/components/leaflet/default-tile-layer"
 import GeoRefocusButton from "@/components/leaflet/geo-refocus-button"
-import GrayTileLayer from "@/components/leaflet/gray-tile-layer"
 import StateMapContainer from "@/components/leaflet/state-map-container"
 import MapLoader from "@/components/loader/map-loader"
 import State from "@/constants/state"
@@ -13,7 +13,7 @@ interface Props {
 export default function StateEnactedDistrictMap({ state }: Props) {
     return (
         <StateMapContainer>
-            <GrayTileLayer />
+            <DefaultTileLayer />
             <Suspense fallback={<MapLoader />}>
                 <GeoLayerRefProvider>
                     <GeoLayer state={state} />

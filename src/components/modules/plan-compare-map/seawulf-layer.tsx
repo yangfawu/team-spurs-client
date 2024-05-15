@@ -1,13 +1,15 @@
 import { SeawulfFeature, fetchSeawulfPlan } from "@/api/plan"
+import State from "@/constants/state"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FeatureGroup, GeoJSON, GeoJSONProps } from "react-leaflet"
 
 interface Props {
-    plan: string
+    state: State
+    plan: number
 }
-export default function Layer({ plan }: Props) {
-    const { data } = useSuspenseQuery(fetchSeawulfPlan(plan))
+export default function SeawulfLayer({ state, plan }: Props) {
+    const { data } = useSuspenseQuery(fetchSeawulfPlan(state, plan))
 
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties }: SeawulfFeature, layer) => {
@@ -20,6 +22,7 @@ export default function Layer({ plan }: Props) {
         return () => ({
             fillColor: Fill.REGULAR,
             color: Fill.REGULAR,
+            weight: 1.5, 
         })
     }, [])
 
