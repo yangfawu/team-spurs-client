@@ -33,6 +33,11 @@ const MODULE_OPTIONS: ModuleOption[] = [
         name: "State Opportunity Districts",
         Component: lazy(() => import("./opportunity-districts")),
     },
+    {
+        id: "od-distribution",
+        name: "Ensemble Opportunity District Distribution",
+        Component: lazy(() => import("./od-distribution")),
+    },
 ]
 
 export default function App() {

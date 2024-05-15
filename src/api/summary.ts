@@ -41,6 +41,7 @@ export interface VoterInfo {
 }
 
 export interface OpportunityDistrictStat {
+    id: string
     state: State
     group: Group
     threshold: number // 37, 44, 50
@@ -49,6 +50,15 @@ export interface OpportunityDistrictStat {
     actual_opp_districts: number[] // list of district IDs
     max_opp_districts: number
     avg_opp_districts: number
+}
+
+export interface OpportunityDistrictDistributionBar {
+    id: string
+    districts: number
+    plans: number
+    state: State
+    group: Group
+    threshold: string
 }
 
 const NAME = "summary"
@@ -116,6 +126,17 @@ export function fetchStateOpportunityDistrictStats(state: State, threshold: numb
         queryFn: async ({ signal }) => {
             const res = await fetch(`${BASE_URL}/${state}/opportunity/${threshold}`, { signal })
             const data: OpportunityDistrictStat[] = await res.json()
+            return data
+        },
+    })
+}
+
+export function fetchOpportunityDistrictDistribution(state: State, group: Group, threshold: number) {
+    return queryOptions<OpportunityDistrictDistributionBar[]>({
+        queryKey: [NAME, "fetchOpportunityDistrictDistribution", state, group, threshold],
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/${state}/od-distribution/${group}/${threshold}`, { signal })
+            const data: OpportunityDistrictDistributionBar[] = await res.json()
             return data
         },
     })
