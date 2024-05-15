@@ -39,7 +39,7 @@ export default function Content({ state, group }: Props) {
     const context = usePrecinctShowcase()
     useEffect(() => {
         if (context?.precinct === null) return
-        console.log("hey", context.precinct)
+        
         const element = document.querySelector(`tr[id="${context.precinct}"]`)
         element?.scrollIntoView({ behavior: "smooth", block: "center" })
     }, [context?.precinct])

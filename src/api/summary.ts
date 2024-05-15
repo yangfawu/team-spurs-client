@@ -40,6 +40,17 @@ export interface VoterInfo {
     // facts: string[]
 }
 
+interface OpportunityDistrictStat {
+    state: State
+    group: Group
+    threshold: number // 37, 44, 50
+    ideal_population: number
+    actual_population: number
+    actual_opp_districts: number[] // list of district IDs
+    max_opp_districts: number
+    avg_opp_districts: number
+}
+
 const NAME = "summary"
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/${NAME}`
 
@@ -82,16 +93,9 @@ export function fetchRedistrictingInfo(state: State) {
     return queryOptions<RedistricitngInfo>({
         queryKey: [NAME, "fetchRedistrictingInfo", state],
         queryFn: async ({ signal }) => {
-            return {
-                state,
-                name: "Virginia Redistricting Commission",
-                website: "https://www.virginiaredistricting.org/",
-                comments: `The Virginia Redistricting Commission, established by a constitutional amendment approved in 2020, is responsible for drawing electoral district boundaries for the United States House of Representatives, as well as the Senate and House of Delegates of the General Assembly. The Commission comprises 16 members, including eight legislative members—four from the Senate and four from the House of Delegates—appointed based on party representation, and eight citizen members selected according to state law. This bipartisan Commission aims to ensure fairness and transparency in the redistricting process.`,
-            }
-            // TODO: uncomment when endpoint is ready
-            // const res = await fetch(`${BASE_URL}/${state}/redistricting`, { signal })
-            // const data: RedistricitngInfo = await res.json()
-            // return data
+            const res = await fetch(`${BASE_URL}/${state}/redistricting`, { signal })
+            const data: RedistricitngInfo = await res.json()
+            return data
         },
     })
 }
@@ -107,3 +111,13 @@ export function fetchStateVoterDistribution(state: State) {
     })
 }
 
+export function fetchOpportunityDistrictStats(state: State, threshold: number) {
+    return queryOptions<OpportunityDistrictStat[]>({
+        queryKey: [NAME, "fetchOpportunityDistrictStats", state, threshold],
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`${BASE_URL}/${state}/opportunity/${threshold}`, { signal })
+            const data: OpportunityDistrictStat[] = await res.json()
+            return data
+        },
+    })
+}
