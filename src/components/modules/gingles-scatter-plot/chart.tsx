@@ -2,6 +2,7 @@ import { fetchPrecinctAnalysis } from "@/api/racial"
 import Group, { GROUP_TO_NAME } from "@/constants/group"
 import Party from "@/constants/party"
 import State from "@/constants/state"
+import { usePrecinctShowcase } from "@/contexts/precinct-showcase"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import _ from "lodash"
 import { useMemo } from "react"
@@ -14,11 +15,12 @@ interface Props {
 export default function Chart({ state, group }: Props) {
     const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
-    const [demScatterPoints, repScatterPoints, demLinePoints, repLinePoints] = useMemo(() => {
+    const [demScatterPoints, repScatterPoints, demLinePoints, repLinePoints, precincts] = useMemo(() => {
         const { rows, lines } = data
 
         const sampleRows = _.sampleSize(rows, Math.min(200, rows.length))
 
+        const chosenPrecincts = sampleRows.map(({ id }) => id)
         const democratPrecinctPoints = sampleRows.map(({ percent_group: x, percent_democrat: y }) => ({ x, y }))
         const republicanPrecinctPoints = sampleRows.map(({ percent_group: x, percent_republican: y }) => ({ x, y }))
 
@@ -44,8 +46,17 @@ export default function Chart({ state, group }: Props) {
             republicanPrecinctPoints,
             democratRegressionPoints,
             republicanRegressionPoints,
+            chosenPrecincts,
         ] as const
     }, [data, REGRESSION_STEPS])
+
+    const context = usePrecinctShowcase()
+
+    const focusOnPrecinct = useMemo(() => {
+        return (i: number) => {
+            context?.setPrecinct(precincts[i])
+        }
+    }, [precincts, context])
 
     return (
         <div className="flex-1">
@@ -64,6 +75,11 @@ export default function Chart({ state, group }: Props) {
                             show: false,
                         },
                         background: "transparent",
+                        events: {
+                            markerClick: (_, __, { dataPointIndex }) => {
+                                focusOnPrecinct(dataPointIndex)
+                            },
+                        },
                     },
                     theme: {
                         mode: "light",

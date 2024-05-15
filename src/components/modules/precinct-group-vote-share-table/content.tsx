@@ -1,11 +1,11 @@
-import { PrecinctPoint } from "@/api/racial"
-import { fetchPrecinctAnalysis } from "@/api/racial"
+import { PrecinctPoint, fetchPrecinctAnalysis } from "@/api/racial"
 import Group from "@/constants/group"
 import State from "@/constants/state"
+import { usePrecinctShowcase } from "@/contexts/precinct-showcase"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Row, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import tw from "tailwind-styled-components"
 import { COLUMNS } from "./data"
 
@@ -14,7 +14,6 @@ interface Props {
     group: Group
 }
 export default function Content({ state, group }: Props) {
-    // const election = useAppSelector(selectElection)
     const { data } = useSuspenseQuery(fetchPrecinctAnalysis(state, group))
 
     const tableRef = useRef<HTMLTableElement>(null)
@@ -36,6 +35,14 @@ export default function Content({ state, group }: Props) {
                 : undefined,
         overscan: 5,
     })
+
+    const context = usePrecinctShowcase()
+    useEffect(() => {
+        if (context?.precinct === null) return
+        console.log("hey", context.precinct)
+        const element = document.querySelector(`tr[id="${context.precinct}"]`)
+        element?.scrollIntoView({ behavior: "smooth", block: "center" })
+    }, [context?.precinct])
 
     const items = getVirtualItems()
     return (
@@ -70,11 +77,17 @@ export default function Content({ state, group }: Props) {
                         </tr>
                     ) : (
                         items.map(virtualRow => {
-                            const { index, id, getVisibleCells } = rows[
+                            const { index, id, getVisibleCells, original } = rows[
                                 virtualRow.index
                             ] as Row<PrecinctPoint>
                             return (
-                                <tr key={id} ref={node => measureElement(node)} data-index={index}>
+                                <tr
+                                    key={id}
+                                    id={original.id}
+                                    className={original.id === context?.precinct ? "bg-yellow-400/30" : ""}
+                                    ref={node => measureElement(node)}
+                                    data-index={index}
+                                >
                                     {getVisibleCells().map(
                                         ({
                                             id: cid,

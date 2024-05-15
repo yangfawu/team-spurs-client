@@ -9,6 +9,7 @@ import useRedrawMap from "@/hooks/use-redraw-map"
 import { lazy } from "react"
 import { Panel, PanelGroup } from "react-resizable-panels"
 import Map from "./map"
+import { PrecinctShowcaseProvider } from "@/contexts/precinct-showcase"
 
 const MODULE_OPTIONS: ModuleOption[] = [
     {
@@ -58,7 +59,9 @@ export default function App() {
                         </SuspensePanel>
                         <VerticalDivider />
                         <Panel minSize={20} maxSize={50} collapsible>
-                            <DynamicSidebar name="racial" options={MODULE_OPTIONS} initialModules={["breakdown"]} />
+                            <PrecinctShowcaseProvider>
+                                <DynamicSidebar name="racial" options={MODULE_OPTIONS} initialModules={["breakdown"]} />
+                            </PrecinctShowcaseProvider>
                         </Panel>
                     </PanelGroup>
                 </RegionDemographicShowcaseProvider>
