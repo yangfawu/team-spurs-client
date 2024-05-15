@@ -5,6 +5,7 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import tw from "tailwind-styled-components"
 import { useThresholdContext } from "./context"
 import { COLUMNS } from "./data"
+import { useDistrictShowcase } from "@/contexts/district-showcase"
 
 interface Props {
     state: State
@@ -18,6 +19,8 @@ export default function Table({ state }: Props) {
         columns: COLUMNS,
         getCoreRowModel: getCoreRowModel(),
     })
+
+    const { setDistricts } = useDistrictShowcase()
 
     return (
         <Container>
@@ -52,8 +55,7 @@ export default function Table({ state }: Props) {
                     getRowModel().rows.map(({ id, getVisibleCells, original }) => (
                         <InteractiveRow
                             key={id}
-                            // className={isFeatured(original.district) ? "bg-green-100" : ""}
-                            // onClick={() => select(original.district)}
+                            onClick={() => setDistricts(original.actual_opp_districts.map(d => `${state}-${d}`))}
                         >
                             {getVisibleCells().map(
                                 ({

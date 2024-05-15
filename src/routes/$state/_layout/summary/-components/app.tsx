@@ -3,6 +3,7 @@ import { ModuleOption } from "@/components/modules/dynamic-sidebar/types"
 import HorizontalDivider from "@/components/resizable-panels/horizontal-divider"
 import SuspensePanel from "@/components/resizable-panels/suspense-panel"
 import VerticalDivider from "@/components/resizable-panels/vertical-divider"
+import { DistrictShowcaseProvider } from "@/contexts/district-showcase"
 import { MapFocusrovider } from "@/contexts/map-focus"
 import { useMapRef } from "@/contexts/map-ref"
 import useRedrawMap from "@/hooks/use-redraw-map"
@@ -40,31 +41,33 @@ export default function App() {
 
     return (
         <div className="flex-1">
-            <PanelGroup direction="horizontal" autoSaveId={AssemblySaveKey.ROOT}>
-                <Panel minSize={20} defaultSize={70} collapsible onResize={redrawMap}>
-                    <PanelGroup direction="vertical" autoSaveId={AssemblySaveKey.LEFT}>
-                        <MapFocusrovider>
-                            <SuspensePanel
-                                className="relative"
-                                minSize={25}
-                                collapsible
-                                defaultSize={80}
-                                onResize={redrawMap}
-                            >
-                                <Map />
-                            </SuspensePanel>
-                            <HorizontalDivider />
-                            <SuspensePanel minSize={25} collapsible>
-                                <Legislature />
-                            </SuspensePanel>
-                        </MapFocusrovider>
-                    </PanelGroup>
-                </Panel>
-                <VerticalDivider />
-                <Panel minSize={20} maxSize={50} collapsible>
-                    <DynamicSidebar name="summary" options={MODULE_OPTIONS} initialModules={["state-rep"]} />
-                </Panel>
-            </PanelGroup>
+            <DistrictShowcaseProvider>
+                <PanelGroup direction="horizontal" autoSaveId={AssemblySaveKey.ROOT}>
+                    <Panel minSize={20} defaultSize={70} collapsible onResize={redrawMap}>
+                        <PanelGroup direction="vertical" autoSaveId={AssemblySaveKey.LEFT}>
+                            <MapFocusrovider>
+                                <SuspensePanel
+                                    className="relative"
+                                    minSize={25}
+                                    collapsible
+                                    defaultSize={80}
+                                    onResize={redrawMap}
+                                >
+                                    <Map />
+                                </SuspensePanel>
+                                <HorizontalDivider />
+                                <SuspensePanel minSize={25} collapsible>
+                                    <Legislature />
+                                </SuspensePanel>
+                            </MapFocusrovider>
+                        </PanelGroup>
+                    </Panel>
+                    <VerticalDivider />
+                    <Panel minSize={20} maxSize={50} collapsible>
+                        <DynamicSidebar name="summary" options={MODULE_OPTIONS} initialModules={["state-rep"]} />
+                    </Panel>
+                </PanelGroup>
+            </DistrictShowcaseProvider>
         </div>
     )
 }

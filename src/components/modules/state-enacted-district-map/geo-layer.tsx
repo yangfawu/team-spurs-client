@@ -1,5 +1,6 @@
 import { AssemblyDistrictGeoFeature, fetchStateAssemblyMap } from "@/api/summary"
 import State from "@/constants/state"
+import { useDistrictShowcase } from "@/contexts/district-showcase"
 import { useGeoLayerRef } from "@/contexts/geo-layer-ref"
 import { useMapFocus } from "@/contexts/map-focus"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -15,8 +16,6 @@ export default function GeoLayer({ state }: Props) {
 
     const { data } = useSuspenseQuery(fetchStateAssemblyMap(state))
 
-    const context = useMapFocus()
-
     const onEachFeature: GeoJSONProps["onEachFeature"] = useMemo(() => {
         return ({ properties }: AssemblyDistrictGeoFeature, layer) => {
             const { district: $d } = properties
@@ -28,8 +27,11 @@ export default function GeoLayer({ state }: Props) {
         }
     }, [])
 
+    const opContext = useDistrictShowcase()
+    const focusContext = useMapFocus()
     const getStyle: GeoJSONProps["style"] = useMemo(() => {
         const defaultStyle = { fillOpacity: 0, weight: 0.9 }
+
         return feature => {
             if (!feature) return defaultStyle
 
@@ -37,12 +39,18 @@ export default function GeoLayer({ state }: Props) {
                 properties: { district: $d },
             } = feature as AssemblyDistrictGeoFeature
 
-            if (`${state}-${$d}` === context?.focus) {
+            const id = `${state}-${$d}`
+            if (id === focusContext?.focus) {
                 return { ...defaultStyle, fillOpacity: 0.5, fillColor: Fill.SELECTED }
             }
+
+            if (opContext.districts.includes(id)) {
+                return { ...defaultStyle, fillOpacity: 0.8, fillColor: Fill.REGULAR }
+            }
+
             return defaultStyle
         }
-    }, [state, context])
+    }, [state, focusContext, opContext])
 
     return (
         <FeatureGroup ref={geoRef}>
@@ -54,6 +62,6 @@ export default function GeoLayer({ state }: Props) {
 }
 
 enum Fill {
-    REGULAR = "#3388ff",
+    REGULAR = "red",
     SELECTED = "black",
 }
